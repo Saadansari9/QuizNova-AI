@@ -1,0 +1,112 @@
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id           String        @id @default(uuid())
+  name         String
+  email        String        @unique
+  phoneNumber  String?       @map("phone_number")
+  passwordHash String        @map("password_hash")
+  role         String        @default("Student") // "Student" or "Educator"
+  quizzes      Quiz[]        @relation("EducatorQuizzes")
+  attempts     QuizAttempt[] @relation("StudentAttempts")
+  createdAt    DateTime      @default(now()) @map("created_at")
+  updatedAt    DateTime      @updatedAt @map("updated_at")
+
+  @@map("users")
+}
+
+model OtpVerification {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  otp       String
+  expiresAt DateTime @map("expires_at")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("otp_verifications")
+}
+
+model Quiz {
+  id              String        @id @default(uuid())
+  title           String
+  description     String
+  topic           String
+  standard        String?       // "Class 9", "Class 10 (SSC)", "Class 11 (HSC)", "Class 12 (HSC)"
+  stream          String?       // "General", "Science", "Commerce", "Arts"
+  subject         String?       // "Physics", "Chemistry", "Accountancy", "Economics", "History", etc.
+  chapter         String?       // e.g. "Chapter 1: Gravitation", "Chapter 2: Periodic Table"
+  isPyq           Boolean       @default(false)
+  pyqYear         Int?          // e.g. 2024, 2023, 2022
+  difficulty      String        @default("Medium") // "Easy", "Medium", "Hard"
+  durationMinutes Int           @default(30)
+  totalMarks      Int           @default(100)
+  passPercentage  Int           @default(40)
+  isPublished     Boolean       @default(true)
+  allowOffline    Boolean       @default(true)
+  educatorId      String
+  educator        User          @relation("EducatorQuizzes", fields: [educatorId], references: [id], onDelete: Cascade)
+  questions       Question[]
+  attempts        QuizAttempt[]
+  createdAt       DateTime      @default(now()) @map("created_at")
+  updatedAt       DateTime      @updatedAt @map("updated_at")
+
+  @@map("quizzes")
+}
+
+model Question {
+  id            String   @id @default(uuid())
+  quizId        String
+  quiz          Quiz     @relation(fields: [quizId], references: [id], onDelete: Cascade)
+  questionText  String
+  questionType  String   @default("MCQ") // "MCQ", "TrueFalse", "ShortAnswer"
+  options       String // JSON array of options: ["Option A", "Option B", "Option C", "Option D"]
+  correctAnswer Int // Index of correct option (0, 1, 2, 3) or string answer
+  explanation   String // Detailed AI explanation for Bloom's taxonomy rationale
+  bloomLevel    String   @default("Understanding") // "Remembering", "Understanding", "Applying", "Analyzing", "Evaluating"
+  points        Int      @default(1)
+  createdAt     DateTime @default(now()) @map("created_at")
+
+  @@map("questions")
+}
+
+model QuizAttempt {
+  id                 String   @id @default(uuid())
+  quizId             String
+  quiz               Quiz     @relation(fields: [quizId], references: [id], onDelete: Cascade)
+  studentId          String
+  student            User     @relation("StudentAttempts", fields: [studentId], references: [id], onDelete: Cascade)
+  score              Float
+  maxScore           Float
+  percentage         Float
+  isPassed           Boolean
+  timeTakenSeconds   Int
+  submittedAnswers   String // JSON map of questionId -> selectedOptionIndex
+  tabSwitchCount     Int      @default(0)
+  aiFeedbackSummary  String // AI generated diagnostic summary
+  isOfflineSynced    Boolean  @default(false)
+  completedAt        DateTime @default(now())
+
+  @@map("quiz_attempts")
+}
+
+model StudyResource {
+  id          String   @id @default(uuid())
+  title       String
+  category    String   // "FORMULA" | "TEXTBOOK" | "PYQ_SHEET"
+  standard    String   // "Class 9", "Class 10 (SSC)", "Class 11 (HSC)", "Class 12 (HSC)"
+  stream      String   // "General", "Science", "Commerce", "Arts"
+  subject     String   // "Physics", "Accountancy", "Economics", etc.
+  chapter     String?
+  description String
+  content     String   // Formulas, LaTeX math, JSON, or key concepts
+  downloadUrl String?  // Balbharati direct PDF link
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  @@map("study_resources")
+}
