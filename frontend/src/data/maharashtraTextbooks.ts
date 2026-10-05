@@ -1,12 +1,15 @@
 export interface BalbharatiTextbook {
   id: string;
   title: string;
+  category?: string;
   standard: string;
   stream: string;
   subject: string;
   chapter?: string;
   description: string;
+  content?: string;
   downloadUrl?: string;
+  createdAt?: string;
 }
 
 export const MAHARASHTRA_ALL_TEXTBOOKS: BalbharatiTextbook[] = [
