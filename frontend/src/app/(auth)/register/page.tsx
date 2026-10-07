@@ -95,7 +95,10 @@ export default function RegisterPage() {
 
     if (result.success) {
       setDemoOtp(result.demoOtp || null);
-      setServerSuccessMsg(result.message || 'Verification code sent!');
+      if (result.demoOtp) {
+        setOtpDigits(result.demoOtp.split(''));
+      }
+      setServerSuccessMsg(result.message || 'Verification code generated successfully!');
       setResendCooldown(60); // 60s cooldown
       setStep('otp');
     } else {
@@ -105,9 +108,10 @@ export default function RegisterPage() {
 
   // Handle OTP digit changes
   const handleOtpChange = (index: number, value: string) => {
-    if (value.length > 1) {
-      // Pasted full code
-      const pasted = value.replace(/\D/g, '').slice(0, 6).split('');
+    const cleaned = value.replace(/\D/g, '');
+    if (cleaned.length > 1) {
+      // Pasted full code or multiple characters
+      const pasted = cleaned.slice(0, 6).split('');
       const newDigits = [...otpDigits];
       pasted.forEach((char, i) => {
         if (i < 6) newDigits[i] = char;
@@ -118,7 +122,7 @@ export default function RegisterPage() {
       return;
     }
 
-    const digit = value.replace(/\D/g, '');
+    const digit = cleaned.slice(-1);
     const newDigits = [...otpDigits];
     newDigits[index] = digit;
     setOtpDigits(newDigits);
@@ -129,10 +133,35 @@ export default function RegisterPage() {
     }
   };
 
-  // Handle Backspace navigation
+  // Handle Paste
+  const handlePaste = (e: React.ClipboardEvent) => {
+    e.preventDefault();
+    const pastedData = e.clipboardData.getData('text').replace(/\D/g, '').slice(0, 6);
+    if (!pastedData) return;
+    const digits = pastedData.split('');
+    const newDigits = [...otpDigits];
+    digits.forEach((char, i) => {
+      if (i < 6) newDigits[i] = char;
+    });
+    setOtpDigits(newDigits);
+    const nextIdx = Math.min(digits.length, 5);
+    otpInputsRef.current[nextIdx]?.focus();
+  };
+
+  // Handle Backspace & Arrow navigation
   const handleKeyDown = (index: number, e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Backspace' && !otpDigits[index] && index > 0) {
+    if (e.key === 'Backspace') {
+      if (!otpDigits[index] && index > 0) {
+        otpInputsRef.current[index - 1]?.focus();
+      } else if (otpDigits[index]) {
+        const newDigits = [...otpDigits];
+        newDigits[index] = '';
+        setOtpDigits(newDigits);
+      }
+    } else if (e.key === 'ArrowLeft' && index > 0) {
       otpInputsRef.current[index - 1]?.focus();
+    } else if (e.key === 'ArrowRight' && index < 5) {
+      otpInputsRef.current[index + 1]?.focus();
     }
   };
 
@@ -182,6 +211,9 @@ export default function RegisterPage() {
 
     if (result.success) {
       setDemoOtp(result.demoOtp || null);
+      if (result.demoOtp) {
+        setOtpDigits(result.demoOtp.split(''));
+      }
       setServerSuccessMsg('A new OTP has been generated!');
       setResendCooldown(60);
     } else {
@@ -440,12 +472,26 @@ export default function RegisterPage() {
                 </p>
               </div>
 
+              {/* Success Notification */}
+              {serverSuccessMsg && (
+                <div className="p-3.5 rounded-2xl bg-emerald-950/60 border border-emerald-500/50 flex items-start gap-3 text-emerald-300 text-xs">
+                  <CheckCircle2 className="w-4 h-4 flex-shrink-0 mt-0.5 text-emerald-400" />
+                  <div>
+                    <p className="font-bold">Code Generated</p>
+                    <p className="text-emerald-400 mt-0.5">{serverSuccessMsg}</p>
+                  </div>
+                </div>
+              )}
+
               {/* Dev / Demo OTP Helper Box */}
               {demoOtp && (
-                <div className="p-3.5 rounded-2xl bg-indigo-950/60 border border-indigo-500/40 flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
-                    <span className="text-xs text-indigo-200 font-semibold">Demo / Evaluator Code:</span>
+                <div className="p-3.5 rounded-2xl bg-indigo-950/70 border border-indigo-500/50 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 shadow-lg shadow-indigo-950/40">
+                  <div className="flex items-center gap-2.5">
+                    <span className="w-2.5 h-2.5 rounded-full bg-cyan-400 animate-ping"></span>
+                    <div>
+                      <p className="text-xs text-white font-bold">Verification OTP:</p>
+                      <p className="text-[11px] text-indigo-300">Auto-filled in the boxes below for instant access</p>
+                    </div>
                   </div>
                   <button
                     type="button"
@@ -453,9 +499,10 @@ export default function RegisterPage() {
                       const splitted = demoOtp.split('');
                       setOtpDigits(splitted);
                     }}
-                    className="px-2.5 py-1 bg-cyan-500/20 hover:bg-cyan-500/30 border border-cyan-400/40 text-cyan-300 text-xs font-mono font-bold rounded-lg cursor-pointer transition-colors"
+                    className="px-3 py-1.5 bg-cyan-500/20 hover:bg-cyan-500/30 border border-cyan-400/50 text-cyan-200 text-xs font-mono font-bold rounded-xl cursor-pointer transition-all flex items-center justify-center gap-2 self-start sm:self-auto hover:scale-105"
                   >
-                    Click to auto-fill: {demoOtp}
+                    <span>Click to re-fill:</span>
+                    <span className="tracking-widest text-cyan-300 font-extrabold bg-slate-950/80 px-2 py-0.5 rounded-md border border-cyan-500/30">{demoOtp}</span>
                   </button>
                 </div>
               )}
@@ -479,12 +526,14 @@ export default function RegisterPage() {
                       ref={(el) => { otpInputsRef.current[index] = el; }}
                       type="text"
                       inputMode="numeric"
-                      maxLength={1}
+                      maxLength={2}
                       value={digit}
                       onChange={(e) => handleOtpChange(index, e.target.value)}
                       onKeyDown={(e) => handleKeyDown(index, e)}
+                      onPaste={handlePaste}
+                      onFocus={(e) => e.target.select()}
                       autoFocus={index === 0}
-                      className="w-11 h-13 sm:w-12 sm:h-14 text-center text-xl font-black text-white bg-slate-950 border border-slate-800 rounded-2xl focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/40 focus:outline-none transition-all shadow-inner"
+                      className="w-11 h-13 sm:w-12 sm:h-14 text-center text-xl font-black text-white bg-slate-950 border border-slate-800 rounded-2xl focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/40 focus:outline-none transition-all shadow-inner hover:border-slate-700"
                     />
                   ))}
                 </div>
