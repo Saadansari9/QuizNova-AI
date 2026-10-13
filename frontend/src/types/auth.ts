@@ -15,7 +15,7 @@ export interface RegisterCredentials {
   phoneNumber?: string;
   password: string;
   role: UserRole;
-  otp: string;
+  otp?: string;
 }
 
 export interface AuthResponse {
