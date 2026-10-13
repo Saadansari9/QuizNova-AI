@@ -3,7 +3,7 @@
 
 ---
 
-<div class="page-break"></div>
+
 
 # CERTIFICATE OF AUTHENTICITY
 
@@ -45,7 +45,7 @@
   </div>
 </div>
 
-<div class="page-break"></div>
+
 
 # CANDIDATE DECLARATION
 
@@ -72,7 +72,7 @@
   </div>
 </div>
 
-<div class="page-break"></div>
+
 
 # ACKNOWLEDGEMENT
 
@@ -99,7 +99,7 @@
   </div>
 </div>
 
-<div class="page-break"></div>
+
 
 # ABSTRACT & EXECUTIVE SUMMARY
 
@@ -118,7 +118,7 @@ To overcome these structural limitations, **QuizNova-AI** was conceptualized and
 - **Cognitive Diagnostic Assessment**: Maps question performance dynamically across all six cognitive tiers of Bloom's Taxonomy (*Remembering, Understanding, Applying, Analyzing, Evaluating, Creating*).
 - **Anti-Cheating Web Proctoring Subsystem**: Enforces full-screen compliance, monitors browser tab visibility, logs violation metrics, and prevents unauthorized examination navigation.
 
-<div class="page-break"></div>
+
 
 # LIST OF FIGURES & LIST OF TABLES
 
@@ -160,7 +160,7 @@ To overcome these structural limitations, **QuizNova-AI** was conceptualized and
 - **Table 5.4**: System Integration Test Cases (SYS-01 through SYS-04)
 - **Table 5.5**: User Acceptance Testing (UAT) Verification Matrix
 
-<div class="page-break"></div>
+
 
 # 📑 TABLE OF CONTENTS (INDEX)
 
@@ -240,7 +240,7 @@ To overcome these structural limitations, **QuizNova-AI** was conceptualized and
 
 ---
 
-<div class="page-break"></div>
+
 
 # CHAPTER 1: INTRODUCTION
 
@@ -309,7 +309,7 @@ This report is structured into eight detailed chapters adhering to standard univ
 
 ---
 
-<div class="page-break"></div>
+
 
 # CHAPTER 2: SYSTEM ANALYSIS
 
@@ -413,7 +413,7 @@ The engineering of QuizNova-AI followed the **Agile Iterative Development Method
 
 ---
 
-<div class="page-break"></div>
+
 
 # CHAPTER 3: SYSTEM DESIGN
 
@@ -609,7 +609,7 @@ The schema guarantees zero data redundancy, enforces referential integrity throu
 
 ---
 
-<div class="page-break"></div>
+
 
 # CHAPTER 4: UI SCREENS
 
@@ -672,7 +672,7 @@ The schema guarantees zero data redundancy, enforces referential integrity throu
 
 ---
 
-<div class="page-break"></div>
+
 
 # CHAPTER 5: TESTINGS
 
@@ -726,7 +726,7 @@ The system was verified against all user criteria:
 
 ---
 
-<div class="page-break"></div>
+
 
 # CHAPTER 6: CODING'S
 
@@ -1005,7 +1005,7 @@ export const logout = async (req: Request, res: Response) => {
 
 ---
 
-<div class="page-break"></div>
+
 
 # CHAPTER 7: CONCLUSION
 
@@ -1033,7 +1033,7 @@ The conceptualization, engineering, and deployment of **QuizNova-AI** successful
 
 ---
 
-<div class="page-break"></div>
+
 
 # CHAPTER 8: BIBLIOGRAPHY
 

@@ -6,87 +6,77 @@
 <style>
   @page {
     size: A4;
-    margin: 25mm 20mm 25mm 20mm;
-    @bottom-center {
-      content: counter(page);
-      font-size: 11px;
-      font-family: 'Times New Roman', serif;
-    }
+    margin: 33mm 28mm 33mm 28mm;
   }
   body {
     font-family: 'Times New Roman', Times, serif;
     color: #111827;
-    line-height: 1.65;
-    font-size: 13px;
+    line-height: 1.95;
+    font-size: 14px;
     background: #ffffff;
-  }
-  .page-break {
-    page-break-before: always;
   }
   h1, h2, h3, h4 {
     font-family: Arial, Helvetica, sans-serif;
     color: #0f172a;
     font-weight: 700;
+    break-after: avoid;
+    page-break-after: avoid;
   }
   h1 {
     font-size: 20px;
     text-align: center;
     border-bottom: 2px solid #1e293b;
     padding-bottom: 8px;
-    margin-top: 30px;
+    margin-top: 25px;
     margin-bottom: 20px;
     text-transform: uppercase;
     letter-spacing: 0.5px;
+    break-before: page;
     page-break-before: always;
   }
   h1:first-of-type {
+    break-before: auto;
     page-break-before: avoid;
     font-size: 24px;
-    margin-top: 150px;
-    margin-bottom: 40px;
+    margin-top: 90px;
+    margin-bottom: 30px;
     border-bottom: 3px double #0f172a;
     padding-bottom: 15px;
   }
   h2 {
-    font-size: 16px;
+    font-size: 15px;
     border-bottom: 1px solid #94a3b8;
     padding-bottom: 4px;
-    margin-top: 24px;
-    margin-bottom: 12px;
+    margin-top: 26px; margin-bottom: 12px;
     color: #1e293b;
   }
   h3 {
-    font-size: 14px;
-    margin-top: 18px;
-    margin-bottom: 8px;
+    font-size: 13.5px;
+    margin-top: 16px;
+    margin-bottom: 6px;
     color: #334155;
   }
   p {
     text-align: justify;
-    text-indent: 30px;
-    margin-bottom: 12px;
-    font-size: 13px;
+    text-indent: 25px;
+    margin-bottom: 12px; font-size: 13.5px;
   }
   ul, ol {
-    margin-bottom: 14px;
-    padding-left: 35px;
+    margin-bottom: 12px;
+    padding-left: 30px;
   }
-  li {
-    margin-bottom: 6px;
-    text-align: justify;
-    font-size: 13px;
-  }
+  li { margin-bottom: 7px; text-align: justify; font-size: 13.5px; }
   table {
     width: 100%;
     border-collapse: collapse;
-    margin: 20px 0;
-    font-size: 11.5px;
-    font-family: Arial, sans-serif;
+    margin: 16px 0;
+    font-size: 12px; font-family: Arial, sans-serif;
     page-break-inside: avoid;
+    break-inside: avoid;
   }
   th, td {
     border: 1px solid #475569;
-    padding: 7px 10px;
+    padding: 8px 10px;
     text-align: left;
   }
   th {
@@ -101,31 +91,21 @@
   pre, code {
     font-family: 'Consolas', 'Courier New', monospace;
   }
-  pre {
-    background: #0f172a;
-    color: #f8fafc;
-    padding: 12px 14px;
-    border-radius: 4px;
-    overflow-x: auto;
-    font-size: 11px;
-    line-height: 1.45;
-    page-break-inside: avoid;
-    white-space: pre-wrap;
-    word-break: break-all;
-    margin: 16px 0;
-  }
+  pre { background: #0f172a; color: #f8fafc; padding: 12px 14px; border-radius: 4px; overflow-x: auto; font-size: 12px; line-height: 1.6; page-break-inside: avoid; break-inside: avoid; white-space: pre-wrap; word-break: break-all; margin: 18px 0; }
   code:not(pre code) {
     background: #f1f5f9;
     color: #0f172a;
     padding: 2px 4px;
     border-radius: 3px;
-    font-size: 11.5px;
+    font-size: 11px;
   }
   .certificate-box, .declaration-box, .acknowledgement-box {
-    margin-top: 40px;
+    margin-top: 30px;
     padding: 20px;
     border: 1px solid #cbd5e1;
-    min-height: 550px;
+    min-height: auto;
+    page-break-inside: avoid;
+    break-inside: avoid;
   }
 </style>
 </head>
@@ -133,7 +113,7 @@
 <h1>ACADEMIC MINI PROJECT REPORT</h1>
 <h2>QUIZNOVA-AI: AI-ENABLED ONLINE &amp; OFFLINE ADAPTIVE ASSESSMENT &amp; MAHARASHTRA STATE BOARD DIGITAL LEARNING PLATFORM</h2>
 <hr>
-<div class="page-break"></div><h1>CERTIFICATE OF AUTHENTICITY</h1>
+<h1>CERTIFICATE OF AUTHENTICITY</h1>
 <div class="certificate-box">
   <p style="text-align: center; font-size: 16px; font-weight: bold; margin-bottom: 25px;">DEPARTMENT OF COMPUTER ENGINEERING / INFORMATION TECHNOLOGY</p>
   <p style="text-align: center; font-size: 14px; font-weight: bold; margin-bottom: 30px;">CERTIFICATE OF COMPLETION</p>  <p style="text-indent: 40px; line-height: 2; font-size: 13px;">
@@ -161,7 +141,7 @@
       College of Engineering
     </div>
   </div>
-</div><div class="page-break"></div><h1>CANDIDATE DECLARATION</h1>
+</div><h1>CANDIDATE DECLARATION</h1>
 <div class="declaration-box">
   <p style="text-indent: 40px; line-height: 2; font-size: 13px;">
     I hereby declare that the project report entitled <strong>"QuizNova-AI: AI-Enabled Online & Offline Adaptive Assessment & Maharashtra State Board Digital Learning Platform"</strong> submitted by me is an authentic record of our own original engineering work carried out under the academic supervision and mentorship of our designated faculty members.
@@ -176,7 +156,7 @@
     <p>Date: October 2026</p>
     <p>Place: Mumbai, Maharashtra</p>
   </div>
-</div><div class="page-break"></div><h1>ACKNOWLEDGEMENT</h1>
+</div><h1>ACKNOWLEDGEMENT</h1>
 <div class="acknowledgement-box">
   <p style="text-indent: 40px; line-height: 2; font-size: 13px;">
     The successful design, engineering, and cloud deployment of <strong>QuizNova-AI</strong> has been a deeply rewarding academic experience. I take this opportunity to convey my heartfelt gratitude to everyone who contributed their invaluable expertise, constructive critique, and guidance throughout this endeavor.
@@ -190,7 +170,7 @@
   <div style="text-align: right; margin-top: 40px;">
     <p><strong>Mohammed Saad Ansari</strong></p>
   </div>
-</div><div class="page-break"></div><h1>ABSTRACT &amp; EXECUTIVE SUMMARY</h1>
+</div><h1>ABSTRACT &amp; EXECUTIVE SUMMARY</h1>
 <p>Modern computerized assessment and educational resource distribution portals are severely impeded by three foundational engineering limitations:</p>
 <ol>
 <li><strong>Unstable External Repository Dependencies</strong>: Many educational platforms merely hyper-link to external government or third-party servers (such as the Maharashtra State Board <code>cart.ebalbharati.in</code> server). During critical examination and study cycles, these remote endpoints frequently experience network timeouts, SSL certificate handshake failures, or server crashes.</li>
@@ -207,7 +187,7 @@
 <li><strong>Cognitive Diagnostic Assessment</strong>: Maps question performance dynamically across all six cognitive tiers of Bloom&#39;s Taxonomy (<em>Remembering, Understanding, Applying, Analyzing, Evaluating, Creating</em>).</li>
 <li><strong>Anti-Cheating Web Proctoring Subsystem</strong>: Enforces full-screen compliance, monitors browser tab visibility, logs violation metrics, and prevents unauthorized examination navigation.</li>
 </ul>
-<div class="page-break"></div><h1>LIST OF FIGURES &amp; LIST OF TABLES</h1>
+<h1>LIST OF FIGURES &amp; LIST OF TABLES</h1>
 <h3>List of Figures</h3>
 <ul>
 <li><strong>Figure 3.1</strong>: Three-Tier Layered Architectural Model of QuizNova-AI</li>
@@ -248,7 +228,7 @@
 <li><strong>Table 5.4</strong>: System Integration Test Cases (SYS-01 through SYS-04)</li>
 <li><strong>Table 5.5</strong>: User Acceptance Testing (UAT) Verification Matrix</li>
 </ul>
-<div class="page-break"></div><h1>📑 TABLE OF CONTENTS (INDEX)</h1>
+<h1>📑 TABLE OF CONTENTS (INDEX)</h1>
 <table>
 <thead>
 <tr>
@@ -686,7 +666,7 @@
 </tr>
 </tbody></table>
 <hr>
-<div class="page-break"></div><h1>CHAPTER 1: INTRODUCTION</h1>
+<h1>CHAPTER 1: INTRODUCTION</h1>
 <h2>1.1 Project Overview &amp; Background</h2>
 <p>In the contemporary era of academic transformation (Education 4.0), computer-based assessment and learning management systems have become essential to pedagogical infrastructure. However, despite rapid technological strides, educational institutions in India—particularly those affiliated with state boards such as the Maharashtra State Board of Secondary and Higher Secondary Education (MSBSHSE)—face substantial hurdles in delivering reliable digital examinations.</p>
 <p>Digital learning portals currently deployed across colleges and coaching institutes suffer from severe operational limitations. When examinations are conducted online, institutions frequently experience high network contention, bandwidth saturation, or server crashes. Furthermore, when students seek authentic curriculum resources, they are routinely redirected to external government repositories (such as the Maharashtra State Board&#39;s <code>cart.ebalbharati.in</code> server). During peak examination seasons, these external servers frequently suffer from HTTP timeouts, SSL handshake failures, or slow response times, leaving students stranded without textbook access.</p>
@@ -756,7 +736,7 @@ To incorporate seamless Google OAuth sign-in alongside direct academic registrat
 <li><strong>Chapter 8: Bibliography</strong> — Cites academic publications, official framework documentation, board curricula blueprints, and repository artifacts.</li>
 </ul>
 <hr>
-<div class="page-break"></div><h1>CHAPTER 2: SYSTEM ANALYSIS</h1>
+<h1>CHAPTER 2: SYSTEM ANALYSIS</h1>
 <h2>2.1 Problem Definition</h2>
 <p>The transition from paper-based examinations to online learning platforms has introduced major operational bottlenecks that hinder academic productivity:</p>
 <ol>
@@ -930,7 +910,7 @@ As a result, operational costs are virtually negligible compared to commercial L
 <li><strong>Sprint 5 (Quality Assurance &amp; Hardening)</strong>: Executed unit, module, cross-browser, and acceptance testing suites.</li>
 </ul>
 <hr>
-<div class="page-break"></div><h1>CHAPTER 3: SYSTEM DESIGN</h1>
+<h1>CHAPTER 3: SYSTEM DESIGN</h1>
 <h2>3.1 Three-Tier Layered Architecture</h2>
 <p>QuizNova-AI adopts a classic, decoupled <strong>Three-Tier Architecture</strong> that enforces separation of concerns:</p>
 <pre><code>┌──────────────────────────────────────────────────────────────────────────┐
@@ -1284,7 +1264,7 @@ Student filters by year (1990-2026) &amp; stream -&gt; Query executes -&gt; Retu
   └────────────────────────┘
 </code></pre>
 <hr>
-<div class="page-break"></div><h1>CHAPTER 4: UI SCREENS</h1>
+<h1>CHAPTER 4: UI SCREENS</h1>
 <h2>4.1 Login Screen</h2>
 <ul>
 <li><strong>Route</strong>: <code>/login</code></li>
@@ -1359,7 +1339,7 @@ Student filters by year (1990-2026) &amp; stream -&gt; Query executes -&gt; Retu
 <li><strong>Interface Ergonomics</strong>: Graceful fallback screens with helpful illustrations and clear navigation links to return users safely to their dashboard in the event of network interruptions or invalid URLs.</li>
 </ul>
 <hr>
-<div class="page-break"></div><h1>CHAPTER 5: TESTINGS</h1>
+<h1>CHAPTER 5: TESTINGS</h1>
 <h2>5.1 Test Cases</h2>
 <p>The platform was subjected to extensive testing using White-Box, Black-Box, Integration, and User Acceptance methodologies.</p>
 <h3>5.1.1 Unit Testing</h3>
@@ -1615,7 +1595,7 @@ Student filters by year (1990-2026) &amp; stream -&gt; Query executes -&gt; Retu
 <li>All acceptance criteria evaluated to <strong>100% SATISFACTORY</strong>.</li>
 </ol>
 <hr>
-<div class="page-break"></div><h1>CHAPTER 6: CODING&#39;S</h1>
+<h1>CHAPTER 6: CODING&#39;S</h1>
 <h2>6.1 Database Connection (Prisma &amp; SQLite Configuration)</h2>
 <pre><code class="language-typescript">// backend/src/config/db.ts
 import { PrismaClient } from &#39;@prisma/client&#39;;
@@ -1874,7 +1854,7 @@ export const logout = async (req: Request, res: Response) =&gt; {
 };
 </code></pre>
 <hr>
-<div class="page-break"></div><h1>CHAPTER 7: CONCLUSION</h1>
+<h1>CHAPTER 7: CONCLUSION</h1>
 <h2>7.1 Key Points</h2>
 <p>The conceptualization, engineering, and deployment of <strong>QuizNova-AI</strong> successfully achieved all established academic and technical benchmarks:</p>
 <ol>
@@ -1901,7 +1881,7 @@ Equipped browser-based examinations with real-time web proctoring, including tab
 <li>Offline Progressive Web App (PWA) and Android APK packaging for direct installation in low-connectivity rural schools.</li>
 </ul>
 <hr>
-<div class="page-break"></div><h1>CHAPTER 8: BIBLIOGRAPHY</h1>
+<h1>CHAPTER 8: BIBLIOGRAPHY</h1>
 <ol>
 <li><strong>Next.js Documentation</strong>: Vercel Inc. (2024). <em>Next.js 14 App Router, Server Components &amp; Route Handlers</em>. Available at: <a href="https://nextjs.org/docs">https://nextjs.org/docs</a></li>
 <li><strong>React Documentation</strong>: Meta Open Source (2024). <em>React 18 Hooks, Suspense &amp; Architecture</em>. Available at: <a href="https://react.dev">https://react.dev</a></li>
