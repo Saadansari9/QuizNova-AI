@@ -210,7 +210,7 @@
 <ul>
 <li><strong>Figure 3.1</strong>: Comprehensive UML Domain Class Diagram</li>
 <li><strong>Figure 3.2</strong>: System Use-Case Diagram for Admin / Educator and Student Roles</li>
-<li><strong>Figure 3.3</strong>: Admin Dedicated Use-Case &amp; Curriculum Management Flow</li>
+<li><strong>Figure 3.3</strong>: Admin Dedicated Use-Case &amp; Assessment Creation Flow</li>
 <li><strong>Figure 3.4</strong>: High-Concurrency Sequence Diagram for Proctored Assessment Lifecycle</li>
 <li><strong>Figure 3.5</strong>: System Activity Diagram for Exam Execution and Anti-Cheating Supervision</li>
 <li><strong>Figure 3.6</strong>: Data Flow Diagram (DFD) Level 0 – Context Level System Boundary</li>
@@ -220,24 +220,23 @@
 <li><strong>Figure 3.10</strong>: Project SDLC Gantt Chart &amp; Engineering Sprint Schedule</li>
 <li><strong>Figure 3.11</strong>: Entity-Relationship (E-R) Diagram (Single Unified Relational Schema)</li>
 <li><strong>Figure 4.1</strong>: Login Interface Layout with Direct Credential &amp; Google Sign-In</li>
-<li><strong>Figure 4.2</strong>: Direct Academic Registration Interface with 1-Click Google Auth</li>
-<li><strong>Figure 4.3</strong>: Student Command Dashboard with Course Progress Metrics</li>
-<li><strong>Figure 4.4</strong>: Educator Management Dashboard with Cohort Analytics</li>
-<li><strong>Figure 4.5</strong>: Interactive Assessment Builder &amp; Question Authoring Tool</li>
-<li><strong>Figure 4.6</strong>: Examination Execution Screen with Fullscreen Anti-Cheating Proctor</li>
-<li><strong>Figure 4.7</strong>: 100% In-App Balbharati Reader Displaying Class 10 Textbook Content</li>
-<li><strong>Figure 4.8</strong>: 36-Year Maharashtra Board Subjective PYQ Repository Interface</li>
-<li><strong>Figure 4.9</strong>: Bloom&#39;s Taxonomy Diagnostic Cognitive Breakdown Chart</li>
-<li><strong>Figure 4.10</strong>: Error Handling &amp; Boundary Fallback Interface</li>
+<li><strong>Figure 4.2</strong>: Student and Educator Dashboard Interface</li>
+<li><strong>Figure 4.3</strong>: Create Assessment / Add Quiz Studio Screen</li>
+<li><strong>Figure 4.4</strong>: Search Assessment, PYQ &amp; Curriculum Search Screen</li>
+<li><strong>Figure 4.5</strong>: View Assessment Details &amp; Syllabus Overview Screen</li>
+<li><strong>Figure 4.6</strong>: Take Assessment Player &amp; Fullscreen Anti-Cheating Screen</li>
+<li><strong>Figure 4.7</strong>: Proctoring Flag &amp; Alert Modal Notification Screen</li>
+<li><strong>Figure 4.8</strong>: Cognitive Diagnostic &amp; Performance Evaluation Report Screen</li>
+<li><strong>Figure 4.9</strong>: Error Handling &amp; Boundary Fallback Interface</li>
 </ul>
 <h3>List of Tables</h3>
 <ul>
 <li><strong>Table 2.1</strong>: Hardware Specifications (Client Workstation vs Production Server)</li>
 <li><strong>Table 2.2</strong>: Software Stack Specifications &amp; Version Matrix</li>
 <li><strong>Table 3.1</strong>: Data Dictionary – Users Table Specification</li>
-<li><strong>Table 3.2</strong>: Data Dictionary – Quizzes / Parts Table Specification</li>
-<li><strong>Table 3.3</strong>: Data Dictionary – Questions &amp; Assessments Table Specification</li>
-<li><strong>Table 3.4</strong>: Data Dictionary – Quiz Attempts / Performance Sales Table Specification</li>
+<li><strong>Table 3.2</strong>: Data Dictionary – Quizzes Table Specification</li>
+<li><strong>Table 3.3</strong>: Data Dictionary – Questions Table Specification</li>
+<li><strong>Table 3.4</strong>: Data Dictionary – Quiz Attempts Table Specification</li>
 <li><strong>Table 3.5</strong>: Relational Schema Cardinality and Foreign Key Constraints</li>
 <li><strong>Table 5.1</strong>: Unit Test Cases (UT-01 through UT-08)</li>
 <li><strong>Table 5.2</strong>: Module Test Cases (MT-01 through MT-06)</li>
@@ -506,12 +505,12 @@
 </tr>
 <tr>
 <td align="center"></td>
-<td align="left">3.6.4} Data Dictionary – Parts / Assessment Table</td>
+<td align="left">3.6.4} Data Dictionary – Quizzes Table</td>
 <td align="center">42</td>
 </tr>
 <tr>
 <td align="center"></td>
-<td align="left">3.6.5} Data Dictionary – Sales / Attempts Table</td>
+<td align="left">3.6.5} Data Dictionary – Quiz Attempts Table</td>
 <td align="center">42</td>
 </tr>
 <tr>
@@ -541,37 +540,37 @@
 </tr>
 <tr>
 <td align="center"></td>
-<td align="left">4.3} Add Spare Parts / Assessment Management</td>
+<td align="left">4.3} Add Assessment / Create Quiz</td>
 <td align="center">47</td>
 </tr>
 <tr>
 <td align="center"></td>
-<td align="left">4.4} Search Spare Parts / PYQ &amp; Curriculum Search</td>
+<td align="left">4.4} Search Assessments / PYQs</td>
 <td align="center">48</td>
 </tr>
 <tr>
 <td align="center"></td>
-<td align="left">4.5} View Spare Parts / Assessment Details</td>
+<td align="left">4.5} View Assessment Details</td>
 <td align="center">49</td>
 </tr>
 <tr>
 <td align="center"></td>
-<td align="left">4.6} Sell Spare Parts / Quiz Submission &amp; Transaction</td>
+<td align="left">4.6} Take Assessment &amp; Submit</td>
 <td align="center">50</td>
 </tr>
 <tr>
 <td align="center"></td>
-<td align="left">4.7} Low Stock / Proctoring Flag &amp; Failure Notifications</td>
+<td align="left">4.7} Proctoring Flag &amp; Alert Modal</td>
 <td align="center">51</td>
 </tr>
 <tr>
 <td align="center"></td>
-<td align="left">4.8} Report / Cognitive Diagnostic &amp; Evaluation Report</td>
+<td align="left">4.8} Cognitive Diagnostic Report</td>
 <td align="center">52</td>
 </tr>
 <tr>
 <td align="center"></td>
-<td align="left">4.9} Error / Fallback Boundary Layout</td>
+<td align="left">4.9} Error &amp; Fallback Boundary</td>
 <td align="center">53</td>
 </tr>
 <tr>
@@ -626,27 +625,27 @@
 </tr>
 <tr>
 <td align="center"></td>
-<td align="left">6.3} Add Spare Part / Quiz Question Builder Module</td>
+<td align="left">6.3} Create Assessment &amp; Add Question Module</td>
 <td align="center">59</td>
 </tr>
 <tr>
 <td align="center"></td>
-<td align="left">6.4} Search Spare Part / PYQ &amp; Textbook Search Engine</td>
+<td align="left">6.4} Search Assessment &amp; PYQ Filtering Engine</td>
 <td align="center">59</td>
 </tr>
 <tr>
 <td align="center"></td>
-<td align="left">6.5} Sell Spare Part &amp; Update Stock / Exam Evaluation Engine</td>
+<td align="left">6.5} Assessment Submission &amp; Evaluation Engine</td>
 <td align="center">60</td>
 </tr>
 <tr>
 <td align="center"></td>
-<td align="left">6.6} Low Stock Check / Telemetry Proctoring Audit</td>
+<td align="left">6.6} Web Proctoring &amp; Anti-Cheating Telemetry</td>
 <td align="center">60</td>
 </tr>
 <tr>
 <td align="center"></td>
-<td align="left">6.7} Sales Report / Performance Diagnostic Generation</td>
+<td align="left">6.7} Performance Analytics &amp; Diagnostic Reporting</td>
 <td align="center">61</td>
 </tr>
 <tr>
@@ -671,7 +670,7 @@
 </tr>
 <tr>
 <td align="center"></td>
-<td align="left">PHP documentation, MySQL Documentation, HTML Documentation, CSS Documentation, Bootstrap Documentation, phpMyAdmin Documentation, Project Source Code, Project Database, Project Screenshots and Testing Results</td>
+<td align="left">Next.js Documentation, React Documentation, TypeScript Documentation, Prisma Documentation, Tailwind CSS Documentation, SQLite Documentation, Bloom&#39;s Taxonomy Guidelines, Project Source Code, Project Database, Project Screenshots and Testing Results</td>
 <td align="center">63</td>
 </tr>
 </tbody></table>
@@ -708,7 +707,7 @@
 <ul>
 <li>Hardware biometric authentication (fingerprint scanning or iris recognition).</li>
 <li>Automatic natural language evaluation of multi-page handwritten subjective essays (handled via educator rubric scoring).</li>
-<li>Financial payment gateway integration for commercial textbook sales (the platform provides open educational access).</li>
+<li>Financial payment gateway integration for commercial textbook distribution (the platform provides open educational access).</li>
 </ul>
 <h2>1.3} Project Objective.</h2>
 <p>The overarching objectives of QuizNova-AI are broken down into measurable, technical, and pedagogical milestones:</p>
@@ -1238,9 +1237,9 @@ Sprint 5: QA, Testing &amp; Deployment  |        |        |        |        | [=
 <p>The relational schema is composed of four foundational entities:</p>
 <ol>
 <li><strong>Users Entity</strong>: Stores candidate and educator identity records, encrypted credentials, and roles.</li>
-<li><strong>Quizzes (Parts / Assessments) Entity</strong>: Maintains examination definitions, durations, and passing standards.</li>
+<li><strong>Quizzes Entity</strong>: Maintains examination definitions, durations, and passing standards.</li>
 <li><strong>Questions Entity</strong>: Contains individual assessment items, options JSON, answer keys, and cognitive Bloom tiers.</li>
-<li><strong>QuizAttempts (Sales / Performance) Entity</strong>: Records student attempt metrics, total scores, violation counts, and Bloom diagnostics.</li>
+<li><strong>QuizAttempts Entity</strong>: Records student attempt metrics, total scores, violation counts, and Bloom diagnostics.</li>
 </ol>
 <h3>3.6.2} Purpose of Data Model</h3>
 <p>The data model enforces relational normalization (3NF) to eliminate data redundancy, maintain referential integrity with cascading deletes, ensure atomic transactions across high concurrency, and provide sub-10ms query performance on SQLite.</p>
@@ -1297,7 +1296,7 @@ Sprint 5: QA, Testing &amp; Deployment  |        |        |        |        | [=
 <td align="left">Account creation timestamp</td>
 </tr>
 </tbody></table>
-<h3>3.6.4} Data Dictionary – Parts / Assessment Table (<code>Quizzes</code>)</h3>
+<h3>3.6.4} Data Dictionary – Quizzes Table</h3>
 <table>
 <thead>
 <tr>
@@ -1350,7 +1349,7 @@ Sprint 5: QA, Testing &amp; Deployment  |        |        |        |        | [=
 <td align="left">Visibility flag for student enrollment</td>
 </tr>
 </tbody></table>
-<h3>3.6.5} Data Dictionary – Sales / Attempts Table (<code>QuizAttempts</code>)</h3>
+<h3>3.6.5} Data Dictionary – Quiz Attempts Table</h3>
 <table>
 <thead>
 <tr>
@@ -1425,7 +1424,7 @@ Sprint 5: QA, Testing &amp; Deployment  |        |        |        |        | [=
 <h2>3.7} E-R Diagram.</h2>
 <p>Below is the Entity-Relationship Diagram representing the unified database schema:</p>
 <pre><code>  ┌────────────────────────┐              1:N              ┌────────────────────────┐
-  │         USERS          │ ─────────────────────────────&lt;│   QUIZZES (PARTS)      │
+  │         USERS          │ ─────────────────────────────&lt;│        QUIZZES         │
   │ PK: id                 │                               │ PK: id                 │
   │     name, email        │                               │ FK: educatorId         │
   │     passwordHash, role │                               │     title, timeLimit   │
@@ -1438,7 +1437,7 @@ Sprint 5: QA, Testing &amp; Deployment  |        |        |        |        | [=
               │                                            │ FK: quizId             │
               ▼                                            │     text, bloomLevel   │
   ┌────────────────────────┐                               └────────────────────────┘
-  │ QUIZ_ATTEMPTS (SALES)  │                                           │
+  │     QUIZ_ATTEMPTS      │                                           │
   │ PK: id                 │&gt;──────────────────────────────────────────┘
   │ FK: quizId, studentId  │              N:1
   │     score, bloomData   │
@@ -1449,8 +1448,8 @@ Sprint 5: QA, Testing &amp; Deployment  |        |        |        |        | [=
 <h2>4.1} Login.</h2>
 <ul>
 <li><strong>Route</strong>: <code>/login</code></li>
-<li><strong>Interface Ergonomics &amp; Design</strong>: The login portal implements a two-column layout. The left pane showcases student imagery and platform branding, while the right pane houses high-contrast input fields for Email and Password alongside a prominent branded <strong>&quot;Continue with Google&quot;</strong> button for instant single-click OAuth sign-in.</li>
-<li><strong>Validation Features</strong>: Real-time email regex verification, password visibility toggles, disabled submit button states during active API requests, and contextual error banners.</li>
+<li><strong>Interface Ergonomics &amp; Design</strong>: The login portal implements a two-column responsive layout. The left column displays inspiring educational imagery alongside QuizNova-AI branding, while the right provides high-contrast input fields for Email and Password alongside an official branded <strong>&quot;Continue with Google&quot;</strong> button for instantaneous single-click OAuth sign-in.</li>
+<li><strong>Validation Features</strong>: Real-time email regex verification, password visibility toggles, disabled submit button states during active authentication requests, and contextual error banners.</li>
 </ul>
 <h2>4.2} Dashboard.</h2>
 <ul>
@@ -1461,24 +1460,24 @@ Sprint 5: QA, Testing &amp; Deployment  |        |        |        |        | [=
 </ul>
 </li>
 </ul>
-<h2>4.3} Add Spare Parts / Assessment Management.</h2>
+<h2>4.3} Add Assessment / Create Quiz.</h2>
 <ul>
 <li><strong>Route</strong>: <code>/dashboard/educator/create</code></li>
 <li><strong>Interface Ergonomics &amp; Design</strong>: A modular examination builder allowing educators to configure assessment metadata (title, duration, standard, passing threshold) and add multiple question cards.</li>
 <li><strong>Cognitive Tagging</strong>: Every question card provides a dropdown to designate its target cognitive level (<em>Remembering, Understanding, Applying, Analyzing, Evaluating, Creating</em>), which powers the automated Bloom diagnostic evaluation engine.</li>
 </ul>
-<h2>4.4} Search Spare Parts / PYQ &amp; Curriculum Search.</h2>
+<h2>4.4} Search Assessments / PYQs.</h2>
 <ul>
 <li><strong>Route</strong>: <code>/pyqs</code> &amp; <code>/textbooks</code></li>
 <li><strong>Interface Ergonomics &amp; Design</strong>: A fast, searchable catalog for locating past board papers and textbooks.</li>
 <li><strong>Filtering Capabilities</strong>: Users can filter across 36 years (1990 — 2026), Standard (Class 10 SSC / Class 12 HSC), Stream (Science, Commerce, Arts), and Subject. The repository presents authentic subjective question papers with strictly <strong>zero multiple-choice distractions and zero answer spoilers</strong>.</li>
 </ul>
-<h2>4.5} View Spare Parts / Assessment Details.</h2>
+<h2>4.5} View Assessment Details.</h2>
 <ul>
 <li><strong>Route</strong>: <code>/quiz/[id]</code></li>
 <li><strong>Interface Ergonomics &amp; Design</strong>: An overview screen presented prior to commencing an assessment. Details total questions, time limit, passing percentage, syllabus topics covered, and explicit rules regarding fullscreen compliance and anti-cheating supervision.</li>
 </ul>
-<h2>4.6} Sell Spare Parts / Quiz Submission &amp; Transaction.</h2>
+<h2>4.6} Take Assessment &amp; Submit.</h2>
 <ul>
 <li><strong>Route</strong>: <code>/quiz/[id]/take</code></li>
 <li><strong>Interface Ergonomics &amp; Design</strong>: A distraction-free, full-screen examination player designed to maximize focus.</li>
@@ -1489,7 +1488,7 @@ Sprint 5: QA, Testing &amp; Deployment  |        |        |        |        | [=
 </ul>
 </li>
 </ul>
-<h2>4.7} Low Stock / Proctoring Flag &amp; Failure Notifications.</h2>
+<h2>4.7} Proctoring Flag &amp; Alert Modal.</h2>
 <ul>
 <li><strong>Route</strong>: In-Exam Modal Overlay &amp; Proctoring Audit Feeds</li>
 <li><strong>Interface Ergonomics &amp; Design</strong>: Warning overlays triggered when an anomaly occurs:<ul>
@@ -1499,7 +1498,7 @@ Sprint 5: QA, Testing &amp; Deployment  |        |        |        |        | [=
 </ul>
 </li>
 </ul>
-<h2>4.8} Report / Cognitive Diagnostic &amp; Evaluation Report.</h2>
+<h2>4.8} Cognitive Diagnostic Report.</h2>
 <ul>
 <li><strong>Route</strong>: <code>/quiz/[id]/result/[attemptId]</code></li>
 <li><strong>Interface Ergonomics &amp; Design</strong>: A diagnostic report dashboard providing:<ul>
@@ -1508,7 +1507,7 @@ Sprint 5: QA, Testing &amp; Deployment  |        |        |        |        | [=
 </ul>
 </li>
 </ul>
-<h2>4.9} Error / Fallback Boundary Layout.</h2>
+<h2>4.9} Error &amp; Fallback Boundary.</h2>
 <ul>
 <li><strong>Route</strong>: <code>/_not-found</code> &amp; Application Error Boundaries</li>
 <li><strong>Interface Ergonomics &amp; Design</strong>: Friendly fallback screens providing clear navigation links to return users safely to their dashboard in the event of invalid routes or runtime exceptions.</li>
@@ -1851,7 +1850,7 @@ export const register = async (data: RegisterCredentials) =&gt; {
   }
 };
 </code></pre>
-<h2>6.3} Add Spare Part / Quiz Question Builder Module.</h2>
+<h2>6.3} Create Assessment &amp; Add Question Module.</h2>
 <pre><code class="language-typescript">// backend/src/controllers/quizController.ts
 export const createQuizWithQuestions = async (req: Request, res: Response) =&gt; {
   try {
@@ -1883,7 +1882,7 @@ export const createQuizWithQuestions = async (req: Request, res: Response) =&gt;
   }
 };
 </code></pre>
-<h2>6.4} Search Spare Part / PYQ &amp; Textbook Search Engine.</h2>
+<h2>6.4} Search Assessment &amp; PYQ Filtering Engine.</h2>
 <pre><code class="language-typescript">// backend/src/routes/quizRoutes.ts
 router.get(&#39;/pyqs/search&#39;, async (req: Request, res: Response) =&gt; {
   try {
@@ -1905,7 +1904,7 @@ router.get(&#39;/pyqs/search&#39;, async (req: Request, res: Response) =&gt; {
   }
 });
 </code></pre>
-<h2>6.5} Sell Spare Part &amp; Update Stock / Exam Evaluation Engine.</h2>
+<h2>6.5} Assessment Submission &amp; Evaluation Engine.</h2>
 <pre><code class="language-typescript">// backend/src/controllers/quizController.ts
 export const submitAssessmentAttempt = async (req: Request, res: Response) =&gt; {
   try {
@@ -1958,7 +1957,7 @@ export const submitAssessmentAttempt = async (req: Request, res: Response) =&gt;
   }
 };
 </code></pre>
-<h2>6.6} Low Stock Check / Telemetry Proctoring Audit.</h2>
+<h2>6.6} Web Proctoring &amp; Anti-Cheating Telemetry.</h2>
 <pre><code class="language-typescript">// frontend/src/hooks/useWebProctor.ts
 import { useEffect, useState } from &#39;react&#39;;
 
@@ -1999,7 +1998,7 @@ export const useWebProctor = (maxViolations = 3, onAutoSubmit?: () =&gt; void) =
   return { violationCount, showWarning, dismissWarning: () =&gt; setShowWarning(false) };
 };
 </code></pre>
-<h2>6.7} Sales Report / Performance Diagnostic Generation.</h2>
+<h2>6.7} Performance Analytics &amp; Diagnostic Reporting.</h2>
 <pre><code class="language-typescript">// frontend/src/utils/diagnosticCalculator.ts
 export interface BloomTierScore {
   tier: string;
@@ -2057,12 +2056,13 @@ Equipped browser-based examinations with real-time web proctoring, including tab
 <hr>
 <h1>Chapter 8: BIBLIOGRAHPHY</h1>
 <ol>
-<li><strong>PHP Documentation</strong>: The PHP Group (2024). <em>PHP: Hypertext Preprocessor Documentation &amp; Language Reference</em>. Available at: <a href="https://www.php.net/docs.php">https://www.php.net/docs.php</a></li>
-<li><strong>MySQL Documentation</strong>: Oracle Corporation (2024). <em>MySQL 8.0 Reference Manual</em>. Available at: <a href="https://dev.mysql.com/doc/">https://dev.mysql.com/doc/</a></li>
-<li><strong>HTML Documentation</strong>: World Wide Web Consortium (W3C) &amp; WHATWG (2024). <em>HTML5 Living Standard Specification</em>. Available at: <a href="https://html.spec.whatwg.org">https://html.spec.whatwg.org</a></li>
-<li><strong>CSS Documentation</strong>: World Wide Web Consortium (W3C) (2024). <em>Cascading Style Sheets (CSS) Snapshot</em>. Available at: <a href="https://www.w3.org/Style/CSS/">https://www.w3.org/Style/CSS/</a></li>
-<li><strong>Bootstrap Documentation</strong>: Bootstrap Team (2024). <em>Bootstrap Front-End Component Library</em>. Available at: <a href="https://getbootstrap.com/docs">https://getbootstrap.com/docs</a></li>
-<li><strong>phpMyAdmin Documentation</strong>: The phpMyAdmin Project (2024). <em>phpMyAdmin Documentation for MySQL Administration</em>. Available at: <a href="https://docs.phpmyadmin.net">https://docs.phpmyadmin.net</a></li>
+<li><strong>Next.js Documentation</strong>: Vercel Inc. (2024). <em>Next.js 14 App Router, Server Components &amp; Route Handlers</em>. Available at: <a href="https://nextjs.org/docs">https://nextjs.org/docs</a></li>
+<li><strong>React Documentation</strong>: Meta Open Source (2024). <em>React 18 Hooks, Suspense &amp; Architecture</em>. Available at: <a href="https://react.dev">https://react.dev</a></li>
+<li><strong>TypeScript Documentation</strong>: Microsoft Corporation (2024). <em>TypeScript Language Specification &amp; Type System</em>. Available at: <a href="https://www.typescriptlang.org/docs">https://www.typescriptlang.org/docs</a></li>
+<li><strong>Prisma Documentation</strong>: Prisma Data Inc. (2024). <em>Prisma ORM for SQLite &amp; Relational Data Modeling</em>. Available at: <a href="https://www.prisma.io/docs">https://www.prisma.io/docs</a></li>
+<li><strong>Tailwind CSS Documentation</strong>: Tailwind Labs (2024). <em>Utility-First CSS Framework Specification</em>. Available at: <a href="https://tailwindcss.com/docs">https://tailwindcss.com/docs</a></li>
+<li><strong>SQLite Architectural Reference</strong>: Hipp, D. R. (2024). <em>SQLite Database Engine Architecture</em>. Available at: <a href="https://www.sqlite.org/arch.html">https://www.sqlite.org/arch.html</a></li>
+<li><strong>Bloom&#39;s Taxonomy Framework</strong>: Anderson, L. W., &amp; Krathwohl, D. R. (2001). <em>A Taxonomy for Learning, Teaching, and Assessing: A Revision of Bloom&#39;s Taxonomy of Educational Objectives</em>. Longman.</li>
 <li><strong>Project Source Code</strong>: QuizNova-AI Production Repository. Available at: <a href="https://github.com/Saadansari9/QuizNova-AI.git">https://github.com/Saadansari9/QuizNova-AI.git</a></li>
 <li><strong>Project Database</strong>: Single Unified Relational SQLite Schema &amp; Prisma Models.</li>
 <li><strong>Project Screenshots and Testing Results</strong>: QuizNova-AI Quality Assurance &amp; Test Verification Suite. Available in Project Documentation Archive.</li>

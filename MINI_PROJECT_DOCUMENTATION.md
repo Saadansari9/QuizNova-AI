@@ -115,7 +115,7 @@ To overcome these structural limitations, **QuizNova-AI** was conceptualized and
 ### List of Figures
 - **Figure 3.1**: Comprehensive UML Domain Class Diagram
 - **Figure 3.2**: System Use-Case Diagram for Admin / Educator and Student Roles
-- **Figure 3.3**: Admin Dedicated Use-Case & Curriculum Management Flow
+- **Figure 3.3**: Admin Dedicated Use-Case & Assessment Creation Flow
 - **Figure 3.4**: High-Concurrency Sequence Diagram for Proctored Assessment Lifecycle
 - **Figure 3.5**: System Activity Diagram for Exam Execution and Anti-Cheating Supervision
 - **Figure 3.6**: Data Flow Diagram (DFD) Level 0 – Context Level System Boundary
@@ -125,23 +125,22 @@ To overcome these structural limitations, **QuizNova-AI** was conceptualized and
 - **Figure 3.10**: Project SDLC Gantt Chart & Engineering Sprint Schedule
 - **Figure 3.11**: Entity-Relationship (E-R) Diagram (Single Unified Relational Schema)
 - **Figure 4.1**: Login Interface Layout with Direct Credential & Google Sign-In
-- **Figure 4.2**: Direct Academic Registration Interface with 1-Click Google Auth
-- **Figure 4.3**: Student Command Dashboard with Course Progress Metrics
-- **Figure 4.4**: Educator Management Dashboard with Cohort Analytics
-- **Figure 4.5**: Interactive Assessment Builder & Question Authoring Tool
-- **Figure 4.6**: Examination Execution Screen with Fullscreen Anti-Cheating Proctor
-- **Figure 4.7**: 100% In-App Balbharati Reader Displaying Class 10 Textbook Content
-- **Figure 4.8**: 36-Year Maharashtra Board Subjective PYQ Repository Interface
-- **Figure 4.9**: Bloom's Taxonomy Diagnostic Cognitive Breakdown Chart
-- **Figure 4.10**: Error Handling & Boundary Fallback Interface
+- **Figure 4.2**: Student and Educator Dashboard Interface
+- **Figure 4.3**: Create Assessment / Add Quiz Studio Screen
+- **Figure 4.4**: Search Assessment, PYQ & Curriculum Search Screen
+- **Figure 4.5**: View Assessment Details & Syllabus Overview Screen
+- **Figure 4.6**: Take Assessment Player & Fullscreen Anti-Cheating Screen
+- **Figure 4.7**: Proctoring Flag & Alert Modal Notification Screen
+- **Figure 4.8**: Cognitive Diagnostic & Performance Evaluation Report Screen
+- **Figure 4.9**: Error Handling & Boundary Fallback Interface
 
 ### List of Tables
 - **Table 2.1**: Hardware Specifications (Client Workstation vs Production Server)
 - **Table 2.2**: Software Stack Specifications & Version Matrix
 - **Table 3.1**: Data Dictionary – Users Table Specification
-- **Table 3.2**: Data Dictionary – Quizzes / Parts Table Specification
-- **Table 3.3**: Data Dictionary – Questions & Assessments Table Specification
-- **Table 3.4**: Data Dictionary – Quiz Attempts / Performance Sales Table Specification
+- **Table 3.2**: Data Dictionary – Quizzes Table Specification
+- **Table 3.3**: Data Dictionary – Questions Table Specification
+- **Table 3.4**: Data Dictionary – Quiz Attempts Table Specification
 - **Table 3.5**: Relational Schema Cardinality and Foreign Key Constraints
 - **Table 5.1**: Unit Test Cases (UT-01 through UT-08)
 - **Table 5.2**: Module Test Cases (MT-01 through MT-06)
@@ -203,20 +202,20 @@ To overcome these structural limitations, **QuizNova-AI** was conceptualized and
 | | 3.6.1} Main Database Entities | 40 |
 | | 3.6.2} Purpose of Data Model | 41 |
 | | 3.6.3} Data Dictionary – Users Table | 41 |
-| | 3.6.4} Data Dictionary – Parts / Assessment Table | 42 |
-| | 3.6.5} Data Dictionary – Sales / Attempts Table | 42 |
+| | 3.6.4} Data Dictionary – Quizzes Table | 42 |
+| | 3.6.5} Data Dictionary – Quiz Attempts Table | 42 |
 | | 3.6.6} Relationship between tables | 43 |
 | | 3.7} E-R Diagram | 44 |
 | **4.** | **Chapter 4 : UI SCREENS** | **45** |
 | | 4.1} Login | 45 |
 | | 4.2} Dashboard | 46 |
-| | 4.3} Add Spare Parts / Assessment Management | 47 |
-| | 4.4} Search Spare Parts / PYQ & Curriculum Search | 48 |
-| | 4.5} View Spare Parts / Assessment Details | 49 |
-| | 4.6} Sell Spare Parts / Quiz Submission & Transaction | 50 |
-| | 4.7} Low Stock / Proctoring Flag & Failure Notifications | 51 |
-| | 4.8} Report / Cognitive Diagnostic & Evaluation Report | 52 |
-| | 4.9} Error / Fallback Boundary Layout | 53 |
+| | 4.3} Add Assessment / Create Quiz | 47 |
+| | 4.4} Search Assessments / PYQs | 48 |
+| | 4.5} View Assessment Details | 49 |
+| | 4.6} Take Assessment & Submit | 50 |
+| | 4.7} Proctoring Flag & Alert Modal | 51 |
+| | 4.8} Cognitive Diagnostic Report | 52 |
+| | 4.9} Error & Fallback Boundary | 53 |
 | **5.** | **Chapter 5: TESTINGS** | **54** |
 | | 5.1} Test Case | 54 |
 | | 5.1.1} Unit Testing | 54 |
@@ -227,16 +226,16 @@ To overcome these structural limitations, **QuizNova-AI** was conceptualized and
 | **6.** | **Chapter 6: CODING'S** | **58** |
 | | 6.1} Database Connection | 58 |
 | | 6.2} Administrator Login & Google Authentication | 58 |
-| | 6.3} Add Spare Part / Quiz Question Builder Module | 59 |
-| | 6.4} Search Spare Part / PYQ & Textbook Search Engine | 59 |
-| | 6.5} Sell Spare Part & Update Stock / Exam Evaluation Engine | 60 |
-| | 6.6} Low Stock Check / Telemetry Proctoring Audit | 60 |
-| | 6.7} Sales Report / Performance Diagnostic Generation | 61 |
+| | 6.3} Create Assessment & Add Question Module | 59 |
+| | 6.4} Search Assessment & PYQ Filtering Engine | 59 |
+| | 6.5} Assessment Submission & Evaluation Engine | 60 |
+| | 6.6} Web Proctoring & Anti-Cheating Telemetry | 60 |
+| | 6.7} Performance Analytics & Diagnostic Reporting | 61 |
 | | 6.8} Logout & Session Invalidation | 61 |
 | **7.** | **Chapter 7: CONCLUSION** | **62** |
 | | 7.1 Key Points | 62 |
 | **8.** | **Chapter 8: BIBLIOGRAHPHY** | **63** |
-| | PHP documentation, MySQL Documentation, HTML Documentation, CSS Documentation, Bootstrap Documentation, phpMyAdmin Documentation, Project Source Code, Project Database, Project Screenshots and Testing Results | 63 |
+| | Next.js Documentation, React Documentation, TypeScript Documentation, Prisma Documentation, Tailwind CSS Documentation, SQLite Documentation, Bloom's Taxonomy Guidelines, Project Source Code, Project Database, Project Screenshots and Testing Results | 63 |
 
 
 ---
@@ -273,7 +272,7 @@ The operational and architectural scope of QuizNova-AI encompasses the following
 To maintain razor-sharp engineering focus, the following elements are intentionally demarcated outside the current scope:
 - Hardware biometric authentication (fingerprint scanning or iris recognition).
 - Automatic natural language evaluation of multi-page handwritten subjective essays (handled via educator rubric scoring).
-- Financial payment gateway integration for commercial textbook sales (the platform provides open educational access).
+- Financial payment gateway integration for commercial textbook distribution (the platform provides open educational access).
 
 ## 1.3} Project Objective.
 The overarching objectives of QuizNova-AI are broken down into measurable, technical, and pedagogical milestones:
@@ -723,9 +722,9 @@ Sprint 5: QA, Testing & Deployment  |        |        |        |        | [====]
 ### 3.6.1} Main Database Entities
 The relational schema is composed of four foundational entities:
 1. **Users Entity**: Stores candidate and educator identity records, encrypted credentials, and roles.
-2. **Quizzes (Parts / Assessments) Entity**: Maintains examination definitions, durations, and passing standards.
+2. **Quizzes Entity**: Maintains examination definitions, durations, and passing standards.
 3. **Questions Entity**: Contains individual assessment items, options JSON, answer keys, and cognitive Bloom tiers.
-4. **QuizAttempts (Sales / Performance) Entity**: Records student attempt metrics, total scores, violation counts, and Bloom diagnostics.
+4. **QuizAttempts Entity**: Records student attempt metrics, total scores, violation counts, and Bloom diagnostics.
 
 ### 3.6.2} Purpose of Data Model
 The data model enforces relational normalization (3NF) to eliminate data redundancy, maintain referential integrity with cascading deletes, ensure atomic transactions across high concurrency, and provide sub-10ms query performance on SQLite.
@@ -741,7 +740,7 @@ The data model enforces relational normalization (3NF) to eliminate data redunda
 | `phoneNumber` | VARCHAR(20) | NULLABLE | Optional contact phone number |
 | `createdAt` | DATETIME | DEFAULT CURRENT_TIMESTAMP | Account creation timestamp |
 
-### 3.6.4} Data Dictionary – Parts / Assessment Table (`Quizzes`)
+### 3.6.4} Data Dictionary – Quizzes Table
 | Column Name | Data Type | Constraint | Description |
 | :--- | :--- | :--- | :--- |
 | `id` | VARCHAR(36) | PRIMARY KEY | Unique UUID identifier for the assessment |
@@ -752,7 +751,7 @@ The data model enforces relational normalization (3NF) to eliminate data redunda
 | `passingScore` | FLOAT | NOT NULL, DEFAULT 40.0 | Minimum percentage required to pass |
 | `isPublished` | BOOLEAN | DEFAULT TRUE | Visibility flag for student enrollment |
 
-### 3.6.5} Data Dictionary – Sales / Attempts Table (`QuizAttempts`)
+### 3.6.5} Data Dictionary – Quiz Attempts Table
 | Column Name | Data Type | Constraint | Description |
 | :--- | :--- | :--- | :--- |
 | `id` | VARCHAR(36) | PRIMARY KEY | Unique UUID identifier for the attempt record |
@@ -776,7 +775,7 @@ Below is the Entity-Relationship Diagram representing the unified database schem
 
 ```
   ┌────────────────────────┐              1:N              ┌────────────────────────┐
-  │         USERS          │ ─────────────────────────────<│   QUIZZES (PARTS)      │
+  │         USERS          │ ─────────────────────────────<│        QUIZZES         │
   │ PK: id                 │                               │ PK: id                 │
   │     name, email        │                               │ FK: educatorId         │
   │     passwordHash, role │                               │     title, timeLimit   │
@@ -789,7 +788,7 @@ Below is the Entity-Relationship Diagram representing the unified database schem
               │                                            │ FK: quizId             │
               ▼                                            │     text, bloomLevel   │
   ┌────────────────────────┐                               └────────────────────────┘
-  │ QUIZ_ATTEMPTS (SALES)  │                                           │
+  │     QUIZ_ATTEMPTS      │                                           │
   │ PK: id                 │>──────────────────────────────────────────┘
   │ FK: quizId, studentId  │              N:1
   │     score, bloomData   │
@@ -803,8 +802,8 @@ Below is the Entity-Relationship Diagram representing the unified database schem
 
 ## 4.1} Login.
 - **Route**: `/login`
-- **Interface Ergonomics & Design**: The login portal implements a two-column layout. The left pane showcases student imagery and platform branding, while the right pane houses high-contrast input fields for Email and Password alongside a prominent branded **"Continue with Google"** button for instant single-click OAuth sign-in.
-- **Validation Features**: Real-time email regex verification, password visibility toggles, disabled submit button states during active API requests, and contextual error banners.
+- **Interface Ergonomics & Design**: The login portal implements a two-column responsive layout. The left column displays inspiring educational imagery alongside QuizNova-AI branding, while the right provides high-contrast input fields for Email and Password alongside an official branded **"Continue with Google"** button for instantaneous single-click OAuth sign-in.
+- **Validation Features**: Real-time email regex verification, password visibility toggles, disabled submit button states during active authentication requests, and contextual error banners.
 
 ## 4.2} Dashboard.
 - **Route**: `/dashboard/student` & `/dashboard/educator`
@@ -812,21 +811,21 @@ Below is the Entity-Relationship Diagram representing the unified database schem
   - **Student View**: Highlights active assessments, average score percentages, recent cognitive growth trends, and instant navigation shortcuts to the 41 Balbharati textbooks and 36-year PYQ archives.
   - **Educator View**: Features the Assessment Authoring Studio launchpad, a roster of published quizzes, cohort score histograms, and an active violation alert feed.
 
-## 4.3} Add Spare Parts / Assessment Management.
+## 4.3} Add Assessment / Create Quiz.
 - **Route**: `/dashboard/educator/create`
 - **Interface Ergonomics & Design**: A modular examination builder allowing educators to configure assessment metadata (title, duration, standard, passing threshold) and add multiple question cards.
 - **Cognitive Tagging**: Every question card provides a dropdown to designate its target cognitive level (*Remembering, Understanding, Applying, Analyzing, Evaluating, Creating*), which powers the automated Bloom diagnostic evaluation engine.
 
-## 4.4} Search Spare Parts / PYQ & Curriculum Search.
+## 4.4} Search Assessments / PYQs.
 - **Route**: `/pyqs` & `/textbooks`
 - **Interface Ergonomics & Design**: A fast, searchable catalog for locating past board papers and textbooks.
 - **Filtering Capabilities**: Users can filter across 36 years (1990 — 2026), Standard (Class 10 SSC / Class 12 HSC), Stream (Science, Commerce, Arts), and Subject. The repository presents authentic subjective question papers with strictly **zero multiple-choice distractions and zero answer spoilers**.
 
-## 4.5} View Spare Parts / Assessment Details.
+## 4.5} View Assessment Details.
 - **Route**: `/quiz/[id]`
 - **Interface Ergonomics & Design**: An overview screen presented prior to commencing an assessment. Details total questions, time limit, passing percentage, syllabus topics covered, and explicit rules regarding fullscreen compliance and anti-cheating supervision.
 
-## 4.6} Sell Spare Parts / Quiz Submission & Transaction.
+## 4.6} Take Assessment & Submit.
 - **Route**: `/quiz/[id]/take`
 - **Interface Ergonomics & Design**: A distraction-free, full-screen examination player designed to maximize focus.
 - **Execution & Submission**:
@@ -834,20 +833,20 @@ Below is the Entity-Relationship Diagram representing the unified database schem
   - Maintains state persistently across local storage to survive accidental tab reloads.
   - Submits answers atomically and returns a receipt confirmation.
 
-## 4.7} Low Stock / Proctoring Flag & Failure Notifications.
+## 4.7} Proctoring Flag & Alert Modal.
 - **Route**: In-Exam Modal Overlay & Proctoring Audit Feeds
 - **Interface Ergonomics & Design**: Warning overlays triggered when an anomaly occurs:
   - **Proctoring Flag Modal**: Appears when a student switches tabs or minimizes fullscreen, displaying an alert with the current violation count.
   - **Time Critical Alert**: Flashes when less than two minutes remain.
   - **Network Reconnection Banner**: Notifies candidates that an offline attempt has been saved and will synchronize once connectivity resumes.
 
-## 4.8} Report / Cognitive Diagnostic & Evaluation Report.
+## 4.8} Cognitive Diagnostic Report.
 - **Route**: `/quiz/[id]/result/[attemptId]`
 - **Interface Ergonomics & Design**: A diagnostic report dashboard providing:
   - An interactive 6-bar cognitive breakdown chart across Bloom's Taxonomy (*Remembering, Understanding, Applying, Analyzing, Evaluating, Creating*).
   - Time elapsed metrics, question-wise answer analysis, and proctoring violation counts.
 
-## 4.9} Error / Fallback Boundary Layout.
+## 4.9} Error & Fallback Boundary.
 - **Route**: `/_not-found` & Application Error Boundaries
 - **Interface Ergonomics & Design**: Friendly fallback screens providing clear navigation links to return users safely to their dashboard in the event of invalid routes or runtime exceptions.
 
@@ -991,7 +990,7 @@ export const register = async (data: RegisterCredentials) => {
 };
 ```
 
-## 6.3} Add Spare Part / Quiz Question Builder Module.
+## 6.3} Create Assessment & Add Question Module.
 ```typescript
 // backend/src/controllers/quizController.ts
 export const createQuizWithQuestions = async (req: Request, res: Response) => {
@@ -1025,7 +1024,7 @@ export const createQuizWithQuestions = async (req: Request, res: Response) => {
 };
 ```
 
-## 6.4} Search Spare Part / PYQ & Textbook Search Engine.
+## 6.4} Search Assessment & PYQ Filtering Engine.
 ```typescript
 // backend/src/routes/quizRoutes.ts
 router.get('/pyqs/search', async (req: Request, res: Response) => {
@@ -1049,7 +1048,7 @@ router.get('/pyqs/search', async (req: Request, res: Response) => {
 });
 ```
 
-## 6.5} Sell Spare Part & Update Stock / Exam Evaluation Engine.
+## 6.5} Assessment Submission & Evaluation Engine.
 ```typescript
 // backend/src/controllers/quizController.ts
 export const submitAssessmentAttempt = async (req: Request, res: Response) => {
@@ -1104,7 +1103,7 @@ export const submitAssessmentAttempt = async (req: Request, res: Response) => {
 };
 ```
 
-## 6.6} Low Stock Check / Telemetry Proctoring Audit.
+## 6.6} Web Proctoring & Anti-Cheating Telemetry.
 ```typescript
 // frontend/src/hooks/useWebProctor.ts
 import { useEffect, useState } from 'react';
@@ -1147,7 +1146,7 @@ export const useWebProctor = (maxViolations = 3, onAutoSubmit?: () => void) => {
 };
 ```
 
-## 6.7} Sales Report / Performance Diagnostic Generation.
+## 6.7} Performance Analytics & Diagnostic Reporting.
 ```typescript
 // frontend/src/utils/diagnosticCalculator.ts
 export interface BloomTierScore {
@@ -1211,12 +1210,13 @@ The conceptualization, engineering, and deployment of **QuizNova-AI** successful
 
 # Chapter 8: BIBLIOGRAHPHY
 
-1. **PHP Documentation**: The PHP Group (2024). *PHP: Hypertext Preprocessor Documentation & Language Reference*. Available at: https://www.php.net/docs.php
-2. **MySQL Documentation**: Oracle Corporation (2024). *MySQL 8.0 Reference Manual*. Available at: https://dev.mysql.com/doc/
-3. **HTML Documentation**: World Wide Web Consortium (W3C) & WHATWG (2024). *HTML5 Living Standard Specification*. Available at: https://html.spec.whatwg.org
-4. **CSS Documentation**: World Wide Web Consortium (W3C) (2024). *Cascading Style Sheets (CSS) Snapshot*. Available at: https://www.w3.org/Style/CSS/
-5. **Bootstrap Documentation**: Bootstrap Team (2024). *Bootstrap Front-End Component Library*. Available at: https://getbootstrap.com/docs
-6. **phpMyAdmin Documentation**: The phpMyAdmin Project (2024). *phpMyAdmin Documentation for MySQL Administration*. Available at: https://docs.phpmyadmin.net
-7. **Project Source Code**: QuizNova-AI Production Repository. Available at: https://github.com/Saadansari9/QuizNova-AI.git
-8. **Project Database**: Single Unified Relational SQLite Schema & Prisma Models.
-9. **Project Screenshots and Testing Results**: QuizNova-AI Quality Assurance & Test Verification Suite. Available in Project Documentation Archive.
+1. **Next.js Documentation**: Vercel Inc. (2024). *Next.js 14 App Router, Server Components & Route Handlers*. Available at: https://nextjs.org/docs
+2. **React Documentation**: Meta Open Source (2024). *React 18 Hooks, Suspense & Architecture*. Available at: https://react.dev
+3. **TypeScript Documentation**: Microsoft Corporation (2024). *TypeScript Language Specification & Type System*. Available at: https://www.typescriptlang.org/docs
+4. **Prisma Documentation**: Prisma Data Inc. (2024). *Prisma ORM for SQLite & Relational Data Modeling*. Available at: https://www.prisma.io/docs
+5. **Tailwind CSS Documentation**: Tailwind Labs (2024). *Utility-First CSS Framework Specification*. Available at: https://tailwindcss.com/docs
+6. **SQLite Architectural Reference**: Hipp, D. R. (2024). *SQLite Database Engine Architecture*. Available at: https://www.sqlite.org/arch.html
+7. **Bloom's Taxonomy Framework**: Anderson, L. W., & Krathwohl, D. R. (2001). *A Taxonomy for Learning, Teaching, and Assessing: A Revision of Bloom's Taxonomy of Educational Objectives*. Longman.
+8. **Project Source Code**: QuizNova-AI Production Repository. Available at: https://github.com/Saadansari9/QuizNova-AI.git
+9. **Project Database**: Single Unified Relational SQLite Schema & Prisma Models.
+10. **Project Screenshots and Testing Results**: QuizNova-AI Quality Assurance & Test Verification Suite. Available in Project Documentation Archive.
