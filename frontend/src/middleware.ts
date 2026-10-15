@@ -20,17 +20,10 @@ export function middleware(request: NextRequest) {
     }
   }
 
-  // 2. If already logged in and trying to access /login or /register, redirect to /dashboard
-  if (pathname === '/login' || pathname === '/register') {
-    if (token) {
-      return NextResponse.redirect(new URL('/dashboard', request.url));
-    }
-  }
-
   return NextResponse.next();
 }
 
-// Apply middleware to relevant routes
+// Apply middleware to protected dashboard routes
 export const config = {
-  matcher: ['/dashboard/:path*', '/login', '/register'],
+  matcher: ['/dashboard/:path*'],
 };
