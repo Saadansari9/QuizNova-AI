@@ -18,6 +18,8 @@ import {
   FileCheck,
 } from 'lucide-react';
 
+import { getAllQuizzes, getEducatorAnalytics } from '@/lib/quizStorage';
+
 export default function EducatorDashboard() {
   const { user } = useAuth();
   const [quizzes, setQuizzes] = useState<Quiz[]>([]);
@@ -32,10 +34,20 @@ export default function EducatorDashboard() {
         api.get('/quiz/analytics/educator'),
       ]);
 
-      if (qRes.data.success) setQuizzes(qRes.data.quizzes || []);
-      if (aRes.data.success) setAnalytics(aRes.data);
-    } catch (err) {
-      console.error('Failed to load educator data:', err);
+      if (qRes.data?.success && qRes.data?.quizzes?.length > 0) {
+        setQuizzes(qRes.data.quizzes);
+      } else {
+        setQuizzes(getAllQuizzes());
+      }
+      if (aRes.data?.success && aRes.data?.stats) {
+        setAnalytics(aRes.data);
+      } else {
+        setAnalytics(getEducatorAnalytics());
+      }
+    } catch {
+      // Offline or serverless fallback
+      setQuizzes(getAllQuizzes());
+      setAnalytics(getEducatorAnalytics());
     } finally {
       setLoading(false);
     }

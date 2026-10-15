@@ -7,6 +7,7 @@ import { useAuth } from '@/context/AuthContext';
 import { api } from '@/lib/api';
 import { Quiz, StudentAnalytics, OfflinePackage } from '@/types/quiz';
 import { saveQuizForOffline, getOfflineQuizzes } from '@/lib/offlineStorage';
+import { getAllQuizzes, getStudentAnalytics } from '@/lib/quizStorage';
 import {
   GraduationCap,
   Clock,
@@ -51,13 +52,29 @@ export default function StudentDashboard() {
         api.get('/quiz/analytics/student'),
       ]);
 
-      if (qRes.data.success) setQuizzes(qRes.data.quizzes || []);
-      if (aRes.data.success) setAnalytics(aRes.data);
+      if (qRes.data?.success && qRes.data?.quizzes?.length > 0) {
+        setQuizzes(qRes.data.quizzes);
+      } else {
+        setQuizzes(getAllQuizzes());
+      }
+      if (aRes.data?.success && aRes.data?.stats) {
+        setAnalytics(aRes.data);
+      } else {
+        setAnalytics(getStudentAnalytics());
+      }
 
       const saved = getOfflineQuizzes().map((p) => p.quizId);
       setOfflineSavedIds(saved);
-    } catch (err) {
-      console.error('Failed to load student data:', err);
+    } catch {
+      // Offline / serverless fallback
+      setQuizzes(getAllQuizzes());
+      setAnalytics(getStudentAnalytics());
+      try {
+        const saved = getOfflineQuizzes().map((p) => p.quizId);
+        setOfflineSavedIds(saved);
+      } catch {
+        // ignore
+      }
     } finally {
       setLoading(false);
     }
