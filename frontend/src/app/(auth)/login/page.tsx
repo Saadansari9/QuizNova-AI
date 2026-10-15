@@ -45,7 +45,13 @@ function LoginForm() {
     setIsSubmitting(false);
 
     if (result.success) {
-      router.push(redirectUrl);
+      if (redirectUrl && redirectUrl !== '/dashboard') {
+        router.push(redirectUrl);
+      } else {
+        // Direct route based on user or fallback
+        const isEdu = formData.email.toLowerCase().includes('educator') || formData.email.toLowerCase().includes('teacher') || formData.email.toLowerCase().includes('admin');
+        router.push(isEdu ? '/dashboard/educator' : '/dashboard/student');
+      }
     } else {
       setServerError(result.message || 'Invalid email or password');
     }
@@ -56,7 +62,11 @@ function LoginForm() {
     const result = await googleLogin('Student');
     setIsGoogleLoading(false);
     if (result.success) {
-      router.push(redirectUrl);
+      if (redirectUrl && redirectUrl !== '/dashboard') {
+        router.push(redirectUrl);
+      } else {
+        router.push('/dashboard/student');
+      }
     } else {
       setServerError(result.message || 'Google sign-in failed');
     }
