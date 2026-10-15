@@ -10,6 +10,7 @@ const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || '/api';
 export const api = axios.create({
   baseURL: API_BASE_URL,
   withCredentials: true, // Required for HTTP-only cookies
+  timeout: 3000, // Fail fast if backend is offline or unreachable
   headers: {
     'Content-Type': 'application/json',
   },

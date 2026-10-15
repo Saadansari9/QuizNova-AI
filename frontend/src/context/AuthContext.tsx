@@ -31,6 +31,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         setUser(res.data.user);
         if (typeof window !== 'undefined') {
           localStorage.setItem('quiznova_current_user', JSON.stringify(res.data.user));
+          document.cookie = `token=active_session_${Date.now()}; path=/; max-age=604800; SameSite=Lax`;
         }
         return;
       }
@@ -43,6 +44,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       if (cached) {
         try {
           setUser(JSON.parse(cached));
+          document.cookie = `token=active_session_${Date.now()}; path=/; max-age=604800; SameSite=Lax`;
           return;
         } catch {
           // ignore parse error
@@ -202,6 +204,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         setUser(res.data.user);
         if (typeof window !== 'undefined') {
           localStorage.setItem('quiznova_current_user', JSON.stringify(res.data.user));
+          document.cookie = `token=active_session_${Date.now()}; path=/; max-age=604800; SameSite=Lax`;
           sessionStorage.removeItem('pending_otp_' + normalizedEmail);
         }
         return { success: true, message: res.data.message };

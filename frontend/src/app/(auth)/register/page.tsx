@@ -71,32 +71,46 @@ export default function RegisterPage() {
 
     if (!validateForm()) return;
 
-    setIsSubmitting(true);
-    const result = await register({
-      name: formData.name,
-      email: formData.email,
-      phoneNumber: formData.phoneNumber.trim() || undefined,
-      password: formData.password,
-      role: formData.role,
-    });
-    setIsSubmitting(false);
+    try {
+      setIsSubmitting(true);
+      const result = await register({
+        name: formData.name,
+        email: formData.email,
+        phoneNumber: formData.phoneNumber.trim() || undefined,
+        password: formData.password,
+        role: formData.role,
+      });
 
-    if (result.success) {
-      router.push('/dashboard');
-    } else {
-      setServerError(result.message || 'Registration failed');
+      if (result.success) {
+        const target = formData.role === 'Educator' ? '/dashboard/educator' : '/dashboard/student';
+        window.location.href = target;
+        return;
+      } else {
+        setServerError(result.message || 'Registration failed');
+        setIsSubmitting(false);
+      }
+    } catch (err: any) {
+      setServerError(err?.message || 'Registration encountered an error');
+      setIsSubmitting(false);
     }
   };
 
   // 1-Click Google Sign In / Sign Up
   const handleGoogleAuth = async () => {
-    setIsGoogleLoading(true);
-    const result = await googleLogin(formData.role);
-    setIsGoogleLoading(false);
-    if (result.success) {
-      router.push('/dashboard');
-    } else {
-      setServerError(result.message || 'Google authentication failed');
+    try {
+      setIsGoogleLoading(true);
+      const result = await googleLogin(formData.role);
+      if (result.success) {
+        const target = formData.role === 'Educator' ? '/dashboard/educator' : '/dashboard/student';
+        window.location.href = target;
+        return;
+      } else {
+        setServerError(result.message || 'Google authentication failed');
+        setIsGoogleLoading(false);
+      }
+    } catch (err: any) {
+      setServerError(err?.message || 'Google authentication encountered an error');
+      setIsGoogleLoading(false);
     }
   };
 

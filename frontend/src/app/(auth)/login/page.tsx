@@ -40,35 +40,50 @@ function LoginForm() {
 
     if (!validateForm()) return;
 
-    setIsSubmitting(true);
-    const result = await login(formData.email, formData.password);
-    setIsSubmitting(false);
-
-    if (result.success) {
-      if (redirectUrl && redirectUrl !== '/dashboard') {
-        router.push(redirectUrl);
+    try {
+      setIsSubmitting(true);
+      const result = await login(formData.email, formData.password);
+      if (result.success) {
+        const isEdu =
+          formData.email.toLowerCase().includes('educator') ||
+          formData.email.toLowerCase().includes('teacher') ||
+          formData.email.toLowerCase().includes('admin');
+        const target =
+          redirectUrl && redirectUrl !== '/dashboard'
+            ? redirectUrl
+            : isEdu
+            ? '/dashboard/educator'
+            : '/dashboard/student';
+        window.location.href = target;
+        return;
       } else {
-        // Direct route based on user or fallback
-        const isEdu = formData.email.toLowerCase().includes('educator') || formData.email.toLowerCase().includes('teacher') || formData.email.toLowerCase().includes('admin');
-        router.push(isEdu ? '/dashboard/educator' : '/dashboard/student');
+        setServerError(result.message || 'Invalid email or password');
+        setIsSubmitting(false);
       }
-    } else {
-      setServerError(result.message || 'Invalid email or password');
+    } catch (err: any) {
+      setServerError(err?.message || 'Login encountered an unexpected error');
+      setIsSubmitting(false);
     }
   };
 
   const handleGoogleSignIn = async () => {
-    setIsGoogleLoading(true);
-    const result = await googleLogin('Student');
-    setIsGoogleLoading(false);
-    if (result.success) {
-      if (redirectUrl && redirectUrl !== '/dashboard') {
-        router.push(redirectUrl);
+    try {
+      setIsGoogleLoading(true);
+      const result = await googleLogin('Student');
+      if (result.success) {
+        const target =
+          redirectUrl && redirectUrl !== '/dashboard'
+            ? redirectUrl
+            : '/dashboard/student';
+        window.location.href = target;
+        return;
       } else {
-        router.push('/dashboard/student');
+        setServerError(result.message || 'Google sign-in failed');
+        setIsGoogleLoading(false);
       }
-    } else {
-      setServerError(result.message || 'Google sign-in failed');
+    } catch (err: any) {
+      setServerError(err?.message || 'Google sign-in encountered an error');
+      setIsGoogleLoading(false);
     }
   };
 
