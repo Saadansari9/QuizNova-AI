@@ -88,134 +88,135 @@ function LoginForm() {
   };
 
   return (
-    <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center p-4 sm:p-6 lg:p-8 relative">
-      <div className="absolute w-[500px] h-[500px] bg-gradient-to-tr from-indigo-600/20 via-purple-600/20 to-cyan-500/20 rounded-full blur-[110px] pointer-events-none"></div>
+    <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center p-4 sm:p-6 lg:p-8 relative font-minecraft">
+      {/* Background Pixel Grid Accents */}
+      <div className="absolute w-[500px] h-[500px] bg-indigo-600/10 rounded-full blur-[120px] pointer-events-none"></div>
 
-      <div className="w-full max-w-4xl z-10 grid grid-cols-1 md:grid-cols-12 rounded-3xl overflow-hidden bg-slate-900/90 backdrop-blur-2xl border border-slate-800 shadow-2xl">
-        {/* Left Side: Real Student Photo Banner */}
-        <div className="hidden md:flex md:col-span-5 relative flex-col justify-between p-8 overflow-hidden bg-slate-950">
+      <div className="w-full max-w-4xl z-10 grid grid-cols-1 md:grid-cols-12 bg-[#121826] border-4 border-black shadow-[10px_10px_0_0_#000000]">
+        {/* Left Side: Retro Arcade Poster Banner */}
+        <div className="hidden md:flex md:col-span-5 relative flex-col justify-between p-8 overflow-hidden bg-[#0a0d14] border-r-4 border-black">
           <img
             src="/images/student_quiz_fun.jpg"
             alt="Smiling student winning a quiz"
-            className="absolute inset-0 w-full h-full object-cover opacity-60"
+            className="absolute inset-0 w-full h-full object-cover opacity-40 mix-blend-luminosity filter contrast-125"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/70 to-slate-950/30"></div>
+          <div className="absolute inset-0 bg-gradient-to-t from-[#0a0d14] via-[#0a0d14]/70 to-transparent"></div>
 
           <div className="relative z-10">
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-500/20 text-indigo-300 text-[10px] font-extrabold uppercase tracking-wider border border-indigo-500/30">
-              <Sparkles className="w-3 h-3 text-cyan-300" /> QuizNova-AI Portal
+            <span className="inline-block px-3 py-1 bg-yellow-400 text-black border-2 border-black shadow-[3px_3px_0_0_#000000] text-xs font-bold uppercase tracking-wider">
+              ★ PLAYER AUTHENTICATION
             </span>
           </div>
 
           <div className="relative z-10">
-            <h3 className="text-xl font-bold text-white leading-snug">
-              "Taking tests has never been this engaging and motivating."
+            <h3 className="text-xl font-bold text-white leading-tight">
+              "READY PLAYER ONE? SYNC YOUR ASSESSMENT QUEST!"
             </h3>
-            <p className="text-xs text-slate-300 mt-2">
-              Instant AI diagnostics, Bloom taxonomies, and seamless offline examination sync for every learner.
+            <p className="text-xs text-cyan-300 mt-2 font-normal">
+              State Board syllabus chapters, Bloom AI analytics & offline sync ready for battle.
             </p>
           </div>
         </div>
 
-        {/* Right Side: Form */}
-        <div className="md:col-span-7 p-8 sm:p-10 flex flex-col justify-center">
+        {/* Right Side: Retro Form */}
+        <div className="md:col-span-7 p-8 sm:p-10 flex flex-col justify-center bg-[#151c2e]">
           <div className="mb-6">
-            <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-gradient-to-tr from-indigo-500 to-purple-600 p-[1.5px] mb-3 shadow-lg shadow-indigo-500/30">
-              <div className="w-full h-full bg-slate-950 rounded-[14px] flex items-center justify-center">
-                <Zap className="w-6 h-6 text-indigo-400 fill-indigo-400/20" />
-              </div>
+            <div className="inline-flex items-center justify-center w-12 h-12 bg-yellow-400 border-3 border-black shadow-[3px_3px_0_0_#000000] mb-3">
+              <Zap className="w-7 h-7 text-black fill-black" />
             </div>
-            <h1 className="text-2xl font-black text-white tracking-tight">Sign In to Console</h1>
-            <p className="text-xs text-slate-400 mt-1">Enter your credentials to access your tests and courses</p>
+            <h1 className="text-2xl font-bold text-white tracking-wide uppercase">
+              SIGN IN TO CONSOLE
+            </h1>
+            <p className="text-xs text-slate-400 mt-1">Insert credentials to resume your academic quest</p>
           </div>
 
           {serverError && (
-            <div className="mb-6 p-4 rounded-2xl bg-rose-950/50 border border-rose-800/60 flex items-start gap-3 text-rose-300 text-xs">
-              <AlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5 text-rose-400" />
+            <div className="mb-6 p-3 bg-red-950/80 border-3 border-black shadow-[3px_3px_0_0_#000000] flex items-start gap-2.5 text-red-300 text-xs">
+              <AlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5 text-red-400" />
               <div>
-                <p className="font-bold">Authentication Failed</p>
-                <p className="text-rose-400 mt-0.5">{serverError}</p>
+                <p className="font-bold uppercase tracking-wider">Authentication Error</p>
+                <p className="text-red-400 mt-0.5">{serverError}</p>
               </div>
             </div>
           )}
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block text-[11px] font-bold text-slate-300 uppercase tracking-wider mb-1.5">
-                Email Address
+              <label className="block text-xs font-bold text-yellow-300 uppercase tracking-wider mb-1.5">
+                PLAYER EMAIL ADDRESS
               </label>
               <div className="relative">
-                <Mail className="w-4 h-4 text-slate-500 absolute left-3.5 top-3" />
+                <Mail className="w-4 h-4 text-slate-400 absolute left-3 top-3.5" />
                 <input
                   type="email"
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  placeholder="student@university.edu"
-                  className={'w-full pl-10 pr-4 py-2.5 rounded-xl border text-xs text-white placeholder:text-slate-600 focus:outline-none focus:ring-2 transition-all ' +
+                  placeholder="scholar@university.edu"
+                  className={'w-full pl-10 pr-4 py-2.5 bg-[#0a0d14] border-3 text-xs text-white placeholder:text-slate-600 focus:outline-none transition-all ' +
                     (errors.email
-                      ? 'border-rose-500/50 bg-rose-950/20 focus:ring-rose-500'
-                      : 'border-slate-800 bg-slate-950/60 focus:border-indigo-500 focus:ring-indigo-500/40')}
+                      ? 'border-red-500 shadow-[3px_3px_0_0_#ef4444]'
+                      : 'border-black shadow-[3px_3px_0_0_#000000] focus:shadow-[4px_4px_0_0_#6366f1]')}
                 />
               </div>
-              {errors.email && <p className="mt-1 text-xs text-rose-400">{errors.email}</p>}
+              {errors.email && <p className="mt-1 text-xs text-red-400">{errors.email}</p>}
             </div>
 
             <div>
               <div className="flex justify-between items-center mb-1.5">
-                <label className="block text-[11px] font-bold text-slate-300 uppercase tracking-wider">
-                  Password
+                <label className="block text-xs font-bold text-yellow-300 uppercase tracking-wider">
+                  SECURITY KEY / PASSWORD
                 </label>
-                <span className="text-[11px] text-indigo-400 hover:text-indigo-300 transition-colors cursor-pointer">
-                  Forgot?
+                <span className="text-[11px] text-cyan-400 hover:underline cursor-pointer">
+                  [ FORGOT? ]
                 </span>
               </div>
               <div className="relative">
-                <Lock className="w-4 h-4 text-slate-500 absolute left-3.5 top-3" />
+                <Lock className="w-4 h-4 text-slate-400 absolute left-3 top-3.5" />
                 <input
                   type="password"
                   value={formData.password}
                   onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                   placeholder="••••••••••••"
-                  className={'w-full pl-10 pr-4 py-2.5 rounded-xl border text-xs text-white placeholder:text-slate-600 focus:outline-none focus:ring-2 transition-all ' +
+                  className={'w-full pl-10 pr-4 py-2.5 bg-[#0a0d14] border-3 text-xs text-white placeholder:text-slate-600 focus:outline-none transition-all ' +
                     (errors.password
-                      ? 'border-rose-500/50 bg-rose-950/20 focus:ring-rose-500'
-                      : 'border-slate-800 bg-slate-950/60 focus:border-indigo-500 focus:ring-indigo-500/40')}
+                      ? 'border-red-500 shadow-[3px_3px_0_0_#ef4444]'
+                      : 'border-black shadow-[3px_3px_0_0_#000000] focus:shadow-[4px_4px_0_0_#6366f1]')}
                 />
               </div>
-              {errors.password && <p className="mt-1 text-xs text-rose-400">{errors.password}</p>}
+              {errors.password && <p className="mt-1 text-xs text-red-400">{errors.password}</p>}
             </div>
 
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full py-3 bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-600 hover:from-indigo-500 hover:to-purple-500 text-white font-bold rounded-xl text-xs shadow-lg shadow-indigo-600/30 transition-all flex items-center justify-center gap-2 disabled:opacity-60 cursor-pointer hover:scale-[1.02]"
+              className="pixel-btn w-full py-3 bg-yellow-400 hover:bg-yellow-300 text-black font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 cursor-pointer disabled:opacity-60 shadow-[4px_4px_0_0_#000000]"
             >
               {isSubmitting ? (
                 <>
-                  <div className="w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                  <span>Verifying Session...</span>
+                  <div className="w-3.5 h-3.5 border-2 border-black border-t-transparent rounded-full animate-spin"></div>
+                  <span>VERIFYING PLAYER...</span>
                 </>
               ) : (
                 <>
-                  <LogIn className="w-4 h-4" />
-                  <span>Sign In to Console</span>
+                  <LogIn className="w-4 h-4 text-black" />
+                  <span>[ INSERT CREDENTIALS / SIGN IN ]</span>
                 </>
               )}
             </button>
 
             <div className="relative flex items-center justify-center my-3">
-              <div className="border-t border-slate-800 w-full"></div>
-              <span className="bg-slate-900 px-3 text-[10px] uppercase font-bold text-slate-500 tracking-wider">
-                Or Continue With
+              <div className="border-t-2 border-black w-full"></div>
+              <span className="bg-[#151c2e] px-2 text-[10px] uppercase font-bold text-slate-400 tracking-wider">
+                OR
               </span>
-              <div className="border-t border-slate-800 w-full"></div>
+              <div className="border-t-2 border-black w-full"></div>
             </div>
 
             <button
               type="button"
               onClick={handleGoogleSignIn}
               disabled={isGoogleLoading}
-              className="w-full py-2.5 bg-slate-950 hover:bg-slate-800/80 border border-slate-700/80 text-white font-bold rounded-xl text-xs shadow-md transition-all flex items-center justify-center gap-2.5 cursor-pointer hover:border-slate-600"
+              className="pixel-btn w-full py-2.5 bg-[#0a0d14] hover:bg-[#1a2236] border-3 border-black text-white font-bold text-xs flex items-center justify-center gap-2.5 cursor-pointer shadow-[3px_3px_0_0_#000000]"
             >
               {isGoogleLoading ? (
                 <div className="w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
@@ -239,15 +240,15 @@ function LoginForm() {
                   />
                 </svg>
               )}
-              <span>Continue with Google</span>
+              <span>[ CONTINUE WITH GOOGLE ]</span>
             </button>
           </form>
 
-          <div className="mt-6 pt-4 border-t border-slate-800 text-center">
+          <div className="mt-6 pt-4 border-t-2 border-black text-center">
             <p className="text-xs text-slate-400">
-              Need an academic account?{' '}
-              <Link href="/register" className="font-bold text-indigo-400 hover:text-indigo-300 hover:underline">
-                Create Account
+              NEW PLAYER?{' '}
+              <Link href="/register" className="font-bold text-cyan-400 hover:text-cyan-300 hover:underline">
+                [ CREATE ACCOUNT ]
               </Link>
             </p>
           </div>

@@ -29,6 +29,8 @@ import {
   Palette,
   Layers,
   FileText,
+  Gamepad2,
+  Trophy,
 } from 'lucide-react';
 
 export default function StudentDashboard() {
@@ -139,157 +141,170 @@ export default function StudentDashboard() {
   return (
     <ProtectedRoute allowedRoles={['Student']}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Student Welcome Banner with Student Photo */}
-        <div className="rounded-3xl border border-indigo-800/40 shadow-2xl mb-8 relative overflow-hidden bg-slate-900/90 backdrop-blur-2xl">
+        {/* Student Welcome Banner in Retro Gaming Cabinet Style */}
+        <div className="pixel-box bg-[#171926] p-0 mb-8 overflow-hidden">
           <div className="grid grid-cols-1 md:grid-cols-12 items-center">
-            <div className="md:col-span-8 p-8 relative z-10">
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-500/20 text-indigo-300 text-[10px] font-extrabold uppercase tracking-wider mb-2 border border-indigo-400/30">
-                <GraduationCap className="w-3.5 h-3.5 text-cyan-300" /> Maharashtra State Board Examination Arena
+            <div className="md:col-span-8 p-6 sm:p-8">
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-[#FFD000] text-black font-minecraft text-[10px] uppercase border-2 border-black shadow-[2px_2px_0_0_#000] mb-3">
+                <GraduationCap className="w-3.5 h-3.5 text-black" /> [ MAHARASHTRA STATE BOARD ARENA ]
               </span>
-              <h1 className="text-3xl font-black text-white tracking-tight">
-                Welcome back, {user?.name || 'Scholar'}!
+              <h1 className="text-2xl sm:text-3xl font-minecraft font-black text-white tracking-tight uppercase">
+                WELCOME BACK, {user?.name || 'PLAYER 1'}!
               </h1>
-              <p className="text-slate-300 text-xs mt-1 max-w-xl">
+              <p className="font-mono text-xs text-slate-300 mt-2 max-w-xl leading-relaxed">
                 Balbharati textbook curriculum exams for Class 9, 10 (SSC), 11 (HSC), and 12 (HSC) across Science, Commerce, and Arts streams with instant AI Bloom diagnostics.
               </p>
 
               <div className="mt-5 flex flex-wrap items-center gap-3">
                 <Link
                   href="/dashboard/student/offline"
-                  className="flex items-center gap-2 bg-slate-950/80 hover:bg-slate-950 border border-emerald-500/30 px-4 py-2 rounded-xl text-xs font-bold transition-all shadow-md shadow-emerald-500/10 cursor-pointer"
+                  className="pixel-btn px-3.5 py-2 bg-[#27E279] text-black font-minecraft text-xs uppercase flex items-center gap-2 cursor-pointer"
                 >
-                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                  <WifiOff className="w-3.5 h-3.5 text-emerald-400" />
-                  <span className="text-emerald-300">Offline Sync Hub ({offlineSavedIds.length} Saved)</span>
+                  <WifiOff className="w-3.5 h-3.5 text-black" />
+                  <span>[ OFFLINE SYNC: {offlineSavedIds.length} SAVED ]</span>
                 </Link>
-                <div className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-purple-950/60 border border-purple-800/40 text-xs text-purple-300">
-                  <Flame className="w-3.5 h-3.5 text-amber-400" />
-                  <span>State Board Syllabus 2026</span>
+                <div className="px-3 py-2 bg-[#0c0d14] border-2 border-black font-minecraft text-xs text-[#FFD000] flex items-center gap-1.5 shadow-[2px_2px_0_0_#000]">
+                  <Flame className="w-3.5 h-3.5 text-[#FF4582]" />
+                  <span>SYLLABUS EDITION 2026</span>
                 </div>
               </div>
             </div>
 
-            <div className="hidden md:block md:col-span-4 h-48 relative overflow-hidden">
+            <div className="hidden md:block md:col-span-4 h-full min-h-[220px] relative border-l-4 border-black overflow-hidden bg-black">
               <img
                 src="/images/student_quiz_fun.jpg"
                 alt="Student quiz winner"
                 className="w-full h-full object-cover object-center opacity-80"
               />
-              <div className="absolute inset-0 bg-gradient-to-r from-slate-900 via-transparent to-transparent"></div>
+              <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-transparent to-transparent"></div>
             </div>
           </div>
         </div>
 
         {/* 4 Academic Department Portals */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-          <div className="p-4 rounded-2xl bg-gradient-to-br from-indigo-950/80 to-slate-900 border border-indigo-500/50 shadow-lg">
-            <div className="flex items-center gap-2 mb-1 text-cyan-400">
+          <div className="pixel-box bg-[#1a1833] p-4 text-left">
+            <div className="flex items-center gap-2 mb-1 text-[#38E5FF] font-minecraft text-xs uppercase">
               <GraduationCap className="w-4 h-4" />
-              <span className="text-[11px] font-extrabold uppercase tracking-wider">Dept 1</span>
+              <span>DEPT 1</span>
             </div>
-            <h3 className="text-sm font-bold text-white">Exams & Quizzes</h3>
-            <p className="text-[10px] text-slate-400 mt-0.5">Balbharati textbook chapter tests</p>
-            <span className="inline-block mt-2 text-[10px] font-bold text-cyan-300">Active Viewing ↓</span>
+            <h3 className="font-minecraft text-sm font-bold text-white uppercase">EXAMS & QUIZZES</h3>
+            <p className="text-[10px] font-mono text-slate-300 mt-0.5">Balbharati textbook chapter tests</p>
+            <span className="inline-block mt-2 font-minecraft text-[10px] text-[#FFD000] bg-black px-1.5 py-0.5 border border-black uppercase font-bold">
+              ACTIVE VIEWING ↓
+            </span>
           </div>
 
           <Link
             href="/pyqs"
-            className="p-4 rounded-2xl bg-slate-900/80 hover:bg-slate-900 border border-amber-500/30 hover:border-amber-500/60 shadow-lg transition-all hover:scale-[1.02] group"
+            className="pixel-box bg-[#1f1a14] p-4 text-left hover:bg-[#2a2219] transition-colors cursor-pointer group"
           >
-            <div className="flex items-center gap-2 mb-1 text-amber-400">
+            <div className="flex items-center gap-2 mb-1 text-[#FFD000] font-minecraft text-xs uppercase">
               <FileText className="w-4 h-4" />
-              <span className="text-[11px] font-extrabold uppercase tracking-wider">Dept 2</span>
+              <span>DEPT 2</span>
             </div>
-            <h3 className="text-sm font-bold text-white group-hover:text-amber-300 transition-colors">Board PYQs (1990-2026)</h3>
-            <p className="text-[10px] text-slate-400 mt-0.5">36 Years Descriptive Papers (No Quiz)</p>
-            <span className="inline-flex items-center gap-1 mt-2 text-[10px] font-bold text-amber-400">View Question Papers →</span>
+            <h3 className="font-minecraft text-sm font-bold text-white uppercase group-hover:text-[#FFD000] transition-colors">
+              BOARD PYQS (1990-2026)
+            </h3>
+            <p className="text-[10px] font-mono text-slate-300 mt-0.5">36 Years Descriptive Papers</p>
+            <span className="inline-flex items-center gap-1 mt-2 font-minecraft text-[10px] text-[#FFD000]">
+              VIEW PAPERS →
+            </span>
           </Link>
 
           <Link
             href="/dashboard/student/formulas"
-            className="p-4 rounded-2xl bg-slate-900/80 hover:bg-slate-900 border border-cyan-500/30 hover:border-cyan-500/60 shadow-lg transition-all hover:scale-[1.02] group"
+            className="pixel-box bg-[#102126] p-4 text-left hover:bg-[#152e35] transition-colors cursor-pointer group"
           >
-            <div className="flex items-center gap-2 mb-1 text-cyan-400">
+            <div className="flex items-center gap-2 mb-1 text-[#38E5FF] font-minecraft text-xs uppercase">
               <Zap className="w-4 h-4" />
-              <span className="text-[11px] font-extrabold uppercase tracking-wider">Dept 3</span>
+              <span>DEPT 3</span>
             </div>
-            <h3 className="text-sm font-bold text-white group-hover:text-cyan-300 transition-colors">Formula Sheets</h3>
-            <p className="text-[10px] text-slate-400 mt-0.5">Science, Commerce, Arts Formulas</p>
-            <span className="inline-flex items-center gap-1 mt-2 text-[10px] font-bold text-cyan-400">Revise Formulas →</span>
+            <h3 className="font-minecraft text-sm font-bold text-white uppercase group-hover:text-[#38E5FF] transition-colors">
+              FORMULA SHEETS
+            </h3>
+            <p className="text-[10px] font-mono text-slate-300 mt-0.5">Science, Commerce, Arts Formulas</p>
+            <span className="inline-flex items-center gap-1 mt-2 font-minecraft text-[10px] text-[#38E5FF]">
+              REVISE FORMULAS →
+            </span>
           </Link>
 
           <Link
             href="/textbooks"
-            className="p-4 rounded-2xl bg-slate-900/80 hover:bg-slate-900 border border-emerald-500/30 hover:border-emerald-500/60 shadow-lg transition-all hover:scale-[1.02] group"
+            className="pixel-box bg-[#10241b] p-4 text-left hover:bg-[#173327] transition-colors cursor-pointer group"
           >
-            <div className="flex items-center gap-2 mb-1 text-emerald-400">
+            <div className="flex items-center gap-2 mb-1 text-[#27E279] font-minecraft text-xs uppercase">
               <BookOpen className="w-4 h-4" />
-              <span className="text-[11px] font-extrabold uppercase tracking-wider">Dept 4</span>
+              <span>DEPT 4</span>
             </div>
-            <h3 className="text-sm font-bold text-white group-hover:text-emerald-300 transition-colors">All Subjects Textbooks</h3>
-            <p className="text-[10px] text-slate-400 mt-0.5">41+ Official Balbharati Books (9-12)</p>
-            <span className="inline-flex items-center gap-1 mt-2 text-[10px] font-bold text-emerald-400">Read Textbooks →</span>
+            <h3 className="font-minecraft text-sm font-bold text-white uppercase group-hover:text-[#27E279] transition-colors">
+              TEXTBOOKS
+            </h3>
+            <p className="text-[10px] font-mono text-slate-300 mt-0.5">41+ Official Balbharati Books (9-12)</p>
+            <span className="inline-flex items-center gap-1 mt-2 font-minecraft text-[10px] text-[#27E279]">
+              READ BOOKS →
+            </span>
           </Link>
         </div>
 
         {/* Stats Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 mb-8">
-          <div className="bg-slate-900/80 backdrop-blur-xl p-6 rounded-3xl border border-slate-800 shadow-xl">
-            <div className="flex items-center justify-between text-slate-400 text-[10px] font-bold uppercase tracking-wider">
-              <span>Tests Completed</span>
-              <BookOpen className="w-4 h-4 text-indigo-400" />
+          <div className="pixel-box bg-[#171926] p-5">
+            <div className="flex items-center justify-between font-minecraft text-[11px] text-slate-400 uppercase">
+              <span>TESTS COMPLETED</span>
+              <BookOpen className="w-4 h-4 text-[#8A5CFF]" />
             </div>
-            <p className="text-3xl font-black text-white mt-2">{analytics?.stats.totalAttempted || 0}</p>
-            <p className="text-[11px] text-indigo-400 font-medium mt-1">Assessed test sets</p>
+            <p className="font-minecraft text-3xl font-black text-white mt-2">{analytics?.stats.totalAttempted || 0}</p>
+            <p className="font-mono text-[10px] text-[#8A5CFF] mt-1">Assessed test sets</p>
           </div>
 
-          <div className="bg-slate-900/80 backdrop-blur-xl p-6 rounded-3xl border border-slate-800 shadow-xl">
-            <div className="flex items-center justify-between text-slate-400 text-[10px] font-bold uppercase tracking-wider">
-              <span>Average Accuracy</span>
-              <BarChart2 className="w-4 h-4 text-cyan-400" />
+          <div className="pixel-box bg-[#171926] p-5">
+            <div className="flex items-center justify-between font-minecraft text-[11px] text-slate-400 uppercase">
+              <span>AVERAGE ACCURACY</span>
+              <BarChart2 className="w-4 h-4 text-[#38E5FF]" />
             </div>
-            <p className="text-3xl font-black text-white mt-2">{analytics?.stats.averageScore || 0}%</p>
-            <p className="text-[11px] text-cyan-400 font-medium mt-1">Cumulative score level</p>
+            <p className="font-minecraft text-3xl font-black text-[#38E5FF] mt-2">{analytics?.stats.averageScore || 0}%</p>
+            <p className="font-mono text-[10px] text-[#38E5FF] mt-1">Cumulative score level</p>
           </div>
 
-          <div className="bg-slate-900/80 backdrop-blur-xl p-6 rounded-3xl border border-slate-800 shadow-xl">
-            <div className="flex items-center justify-between text-slate-400 text-[10px] font-bold uppercase tracking-wider">
-              <span>Passed Assessments</span>
-              <Award className="w-4 h-4 text-emerald-400" />
+          <div className="pixel-box bg-[#171926] p-5">
+            <div className="flex items-center justify-between font-minecraft text-[11px] text-slate-400 uppercase">
+              <span>PASSED ASSESSMENTS</span>
+              <Trophy className="w-4 h-4 text-[#27E279]" />
             </div>
-            <p className="text-3xl font-black text-white mt-2">{analytics?.stats.passedAttempts || 0}</p>
-            <p className="text-[11px] text-emerald-400 font-medium mt-1">Satisfying passing target</p>
+            <p className="font-minecraft text-3xl font-black text-[#27E279] mt-2">{analytics?.stats.passedAttempts || 0}</p>
+            <p className="font-mono text-[10px] text-[#27E279] mt-1">Passing target satisfied</p>
           </div>
         </div>
 
         {/* ==================================================== */}
         {/* MAHARASHTRA STATE BOARD COMPARTMENTS NAVIGATOR */}
         {/* ==================================================== */}
-        <div className="bg-slate-900/90 backdrop-blur-xl border border-indigo-500/30 rounded-3xl p-6 mb-8 shadow-2xl">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-5 border-b border-slate-800">
+        <div className="pixel-box bg-[#171926] p-6 mb-8 text-left">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b-2 border-black">
             <div>
-              <span className="inline-flex items-center gap-1.5 text-xs font-bold text-cyan-400 uppercase tracking-wider mb-1">
-                <Compass className="w-4 h-4" /> Maharashtra State Board Compartments
+              <span className="inline-flex items-center gap-1.5 font-minecraft text-xs text-[#38E5FF] uppercase tracking-wider mb-1">
+                <Compass className="w-4 h-4" /> [ MAHARASHTRA STATE BOARD COMPARTMENTS ]
               </span>
-              <h2 className="text-xl font-black text-white">Select Your Academic Standard & Stream</h2>
+              <h2 className="text-xl font-minecraft font-black text-white uppercase">SELECT YOUR ACADEMIC STANDARD & STREAM</h2>
             </div>
-            <span className="text-xs font-mono text-slate-400 bg-slate-950 px-3 py-1.5 rounded-xl border border-slate-800">
-              {filteredQuizzes.length} Quizzes Found
+            <span className="font-minecraft text-xs text-black bg-[#FFD000] px-3 py-1.5 border-2 border-black shadow-[2px_2px_0_0_#000] uppercase font-bold">
+              {filteredQuizzes.length} QUIZZES FOUND
             </span>
           </div>
 
           {/* 1. Standard / Class Selector */}
           <div className="mt-5">
-            <label className="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2.5">
-              1. Choose Standard (Class 9 to 12)
+            <label className="block font-minecraft text-xs text-slate-300 uppercase mb-2.5">
+              1. CHOOSE STANDARD (CLASS 9 TO 12)
             </label>
             <div className="grid grid-cols-2 sm:grid-cols-5 gap-2.5">
               {[
-                { id: 'all', label: '🌟 All Classes' },
-                { id: 'Class 9', label: '📘 Class 9' },
-                { id: 'Class 10', label: '🏆 Class 10 (SSC)' },
-                { id: 'Class 11', label: '🎓 Class 11 (HSC)' },
-                { id: 'Class 12', label: '🏅 Class 12 (HSC)' },
+                { id: 'all', label: '🌟 ALL CLASSES' },
+                { id: 'Class 9', label: '📘 CLASS 9' },
+                { id: 'Class 10', label: '🏆 CLASS 10 (SSC)' },
+                { id: 'Class 11', label: '🎓 CLASS 11 (HSC)' },
+                { id: 'Class 12', label: '🏅 CLASS 12 (HSC)' },
               ].map((std) => (
                 <button
                   key={std.id}
@@ -299,10 +314,10 @@ export default function StudentDashboard() {
                       setSelectedStream('all');
                     }
                   }}
-                  className={'px-3.5 py-2.5 rounded-2xl text-xs font-bold transition-all cursor-pointer border text-center ' +
+                  className={'px-3 py-2 border-2 border-black font-minecraft text-xs uppercase transition-all cursor-pointer text-center ' +
                     (selectedStandard === std.id
-                      ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white border-indigo-400 shadow-lg shadow-indigo-600/30 scale-[1.02]'
-                      : 'bg-slate-950/60 hover:bg-slate-800 text-slate-300 border-slate-800')}
+                      ? 'bg-[#FFD000] text-black font-bold shadow-[3px_3px_0_0_#000]'
+                      : 'bg-[#10121d] text-slate-300 hover:bg-[#1b1e30]')}
                 >
                   {std.label}
                 </button>
@@ -311,20 +326,20 @@ export default function StudentDashboard() {
           </div>
 
           {/* 2. Stream Compartment Selector */}
-          <div className="mt-5 pt-4 border-t border-slate-800/80">
-            <label className="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2.5 flex items-center justify-between">
-              <span>2. Stream Compartment (For Classes 11 & 12)</span>
+          <div className="mt-5 pt-4 border-t-2 border-black">
+            <label className="block font-minecraft text-xs text-slate-300 uppercase mb-2.5 flex items-center justify-between">
+              <span>2. STREAM COMPARTMENT (FOR CLASSES 11 & 12)</span>
               {selectedStandard === 'Class 9' || selectedStandard === 'Class 10' ? (
-                <span className="text-[10px] text-amber-400 font-semibold">(General Core Curriculum for 9th & 10th)</span>
+                <span className="font-mono text-[10px] text-[#FFD000]">(General Core Curriculum for 9th & 10th)</span>
               ) : null}
             </label>
 
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
               {[
-                { id: 'all', label: '📚 All Streams', icon: Layers, color: 'text-slate-300', border: 'border-slate-700' },
-                { id: 'Science', label: '🧪 Science Compartment', icon: FlaskConical, color: 'text-cyan-300', border: 'border-cyan-500/40 bg-cyan-950/20' },
-                { id: 'Commerce', label: '📊 Commerce Compartment', icon: Briefcase, color: 'text-amber-300', border: 'border-amber-500/40 bg-amber-950/20' },
-                { id: 'Arts', label: '🎨 Arts Compartment', icon: Palette, color: 'text-purple-300', border: 'border-purple-500/40 bg-purple-950/20' },
+                { id: 'all', label: '📚 ALL STREAMS', icon: Layers, activeBg: 'bg-[#FFD000] text-black' },
+                { id: 'Science', label: '🧪 SCIENCE', icon: FlaskConical, activeBg: 'bg-[#38E5FF] text-black' },
+                { id: 'Commerce', label: '📊 COMMERCE', icon: Briefcase, activeBg: 'bg-[#FFD000] text-black' },
+                { id: 'Arts', label: '🎨 ARTS', icon: Palette, activeBg: 'bg-[#FF4582] text-white' },
               ].map((st) => {
                 const IconComponent = st.icon;
                 const isSelected = selectedStream === st.id;
@@ -332,13 +347,13 @@ export default function StudentDashboard() {
                   <button
                     key={st.id}
                     onClick={() => setSelectedStream(st.id)}
-                    className={'p-3 rounded-2xl border text-left transition-all cursor-pointer flex items-center gap-2.5 ' +
+                    className={'p-3 border-2 border-black font-minecraft text-xs uppercase text-left transition-all cursor-pointer flex items-center gap-2.5 ' +
                       (isSelected
-                        ? 'bg-indigo-950/80 border-indigo-400 ring-2 ring-indigo-500/30 text-white shadow-md'
-                        : 'bg-slate-950/40 hover:bg-slate-800/80 border-slate-800 ' + st.color)}
+                        ? `${st.activeBg} font-bold shadow-[3px_3px_0_0_#000]`
+                        : 'bg-[#10121d] text-slate-300 hover:bg-[#1b1e30]')}
                   >
                     <IconComponent className="w-4 h-4 flex-shrink-0" />
-                    <span className="text-xs font-bold">{st.label}</span>
+                    <span>{st.label}</span>
                   </button>
                 );
               })}
@@ -347,27 +362,27 @@ export default function StudentDashboard() {
 
           {/* 3. Subject Quick Filter Pills */}
           {availableSubjects.length > 0 && (
-            <div className="mt-4 pt-3 flex flex-wrap items-center gap-1.5">
-              <span className="text-[10px] font-bold text-slate-500 uppercase mr-1 flex items-center gap-1">
-                <Filter className="w-3 h-3" /> Subject:
+            <div className="mt-4 pt-3 flex flex-wrap items-center gap-2">
+              <span className="font-minecraft text-[10px] text-slate-400 uppercase mr-1 flex items-center gap-1">
+                <Filter className="w-3 h-3 text-[#FFD000]" /> SUBJECT:
               </span>
               <button
                 onClick={() => setSelectedSubject('all')}
-                className={'px-2.5 py-1 rounded-lg text-[11px] font-semibold transition-colors cursor-pointer ' +
+                className={'px-2.5 py-1 font-minecraft text-[10px] uppercase border-2 border-black transition-colors cursor-pointer ' +
                   (selectedSubject === 'all'
-                    ? 'bg-cyan-500 text-slate-950 font-bold'
-                    : 'bg-slate-800 text-slate-400 hover:text-white')}
+                    ? 'bg-[#38E5FF] text-black font-bold shadow-[2px_2px_0_0_#000]'
+                    : 'bg-[#10121d] text-slate-400 hover:text-white')}
               >
-                All Subjects
+                ALL SUBJECTS
               </button>
               {availableSubjects.map((sub) => (
                 <button
                   key={sub}
                   onClick={() => setSelectedSubject(sub)}
-                  className={'px-2.5 py-1 rounded-lg text-[11px] font-semibold transition-colors cursor-pointer ' +
+                  className={'px-2.5 py-1 font-minecraft text-[10px] uppercase border-2 border-black transition-colors cursor-pointer ' +
                     (selectedSubject === sub
-                      ? 'bg-cyan-500 text-slate-950 font-bold'
-                      : 'bg-slate-800/80 text-slate-400 hover:text-white')}
+                      ? 'bg-[#38E5FF] text-black font-bold shadow-[2px_2px_0_0_#000]'
+                      : 'bg-[#10121d] text-slate-400 hover:text-white')}
                 >
                   {sub}
                 </button>
@@ -377,28 +392,28 @@ export default function StudentDashboard() {
         </div>
 
         {/* Quizzes List */}
-        <div className="mb-8">
+        <div className="mb-8 text-left">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-bold text-white flex items-center gap-2">
-              <Zap className="w-5 h-5 text-cyan-400" />
-              <span>Available Examinations ({filteredQuizzes.length})</span>
+            <h2 className="font-minecraft text-base sm:text-lg font-bold text-white flex items-center gap-2 uppercase">
+              <Zap className="w-5 h-5 text-[#38E5FF]" />
+              <span>AVAILABLE EXAMINATIONS ({filteredQuizzes.length})</span>
             </h2>
           </div>
 
           {loading ? (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
               {[1, 2, 3, 4].map((i) => (
-                <div key={i} className="bg-slate-900 rounded-3xl border border-slate-800 p-6 animate-pulse">
+                <div key={i} className="pixel-box bg-[#171926] p-6 animate-pulse">
                   <div className="h-4 bg-slate-800 rounded w-1/3 mb-4"></div>
                   <div className="h-6 bg-slate-800 rounded w-2/3 mb-2"></div>
                 </div>
               ))}
             </div>
           ) : filteredQuizzes.length === 0 ? (
-            <div className="bg-slate-900/60 border border-dashed border-slate-800 rounded-3xl p-12 text-center">
-              <BookOpen className="w-10 h-10 text-slate-500 mx-auto mb-3" />
-              <p className="text-base font-bold text-white">No Exams Found for Selected Compartment</p>
-              <p className="text-xs text-slate-400 mt-1 max-w-sm mx-auto">
+            <div className="pixel-box bg-[#171926] p-10 text-center">
+              <BookOpen className="w-10 h-10 text-[#FFD000] mx-auto mb-3" />
+              <p className="font-minecraft text-base font-bold text-white uppercase">NO EXAMS FOUND FOR SELECTED COMPARTMENT</p>
+              <p className="font-mono text-xs text-slate-400 mt-1 max-w-sm mx-auto">
                 Try selecting "All Classes" or "All Streams" above to browse the full Maharashtra State Board catalogue.
               </p>
               <button
@@ -407,9 +422,9 @@ export default function StudentDashboard() {
                   setSelectedStream('all');
                   setSelectedSubject('all');
                 }}
-                className="mt-4 px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold rounded-xl cursor-pointer"
+                className="mt-4 pixel-btn px-4 py-2 bg-[#FFD000] text-black font-minecraft text-xs uppercase cursor-pointer"
               >
-                Reset All Filters
+                [ RESET ALL FILTERS ]
               </button>
             </div>
           ) : (
@@ -419,69 +434,56 @@ export default function StudentDashboard() {
                 const isDownloading = downloadingId === quiz.id;
                 const pastAttempt = quiz.attempts && quiz.attempts.length > 0 ? quiz.attempts[0] : null;
 
-                // Stream color badges
-                const streamBadgeColor =
-                  quiz.stream === 'Science'
-                    ? 'bg-cyan-950/80 text-cyan-300 border-cyan-700/50'
-                    : quiz.stream === 'Commerce'
-                    ? 'bg-amber-950/80 text-amber-300 border-amber-700/50'
-                    : quiz.stream === 'Arts'
-                    ? 'bg-purple-950/80 text-purple-300 border-purple-700/50'
-                    : 'bg-indigo-950/80 text-indigo-300 border-indigo-700/50';
-
                 return (
                   <div
                     key={quiz.id}
-                    className="bg-slate-900/80 backdrop-blur-xl rounded-3xl border border-slate-800 p-6 shadow-xl hover:border-indigo-500/50 transition-all flex flex-col justify-between group"
+                    className="pixel-box bg-[#171926] p-5 flex flex-col justify-between"
                   >
                     <div>
                       <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
                         <div className="flex items-center gap-1.5 flex-wrap">
                           {quiz.standard && (
-                            <span className="text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full bg-slate-800 text-white border border-slate-700">
+                            <span className="font-minecraft text-[10px] uppercase px-2 py-0.5 bg-black text-[#FFD000] border border-black font-bold">
                               {quiz.standard}
                             </span>
                           )}
                           {quiz.stream && (
-                            <span className={'text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full border ' + streamBadgeColor}>
+                            <span className="font-minecraft text-[10px] uppercase px-2 py-0.5 bg-black text-[#38E5FF] border border-black font-bold">
                               {quiz.stream}
                             </span>
                           )}
-                          <span className="text-[10px] font-bold text-slate-400 bg-slate-950 px-2 py-0.5 rounded-full border border-slate-800">
+                          <span className="font-minecraft text-[10px] text-slate-300 bg-black px-2 py-0.5 border border-black">
                             {quiz.topic}
                           </span>
                         </div>
 
                         <div className="flex items-center gap-2">
-                          <span className="flex items-center gap-1 text-xs text-slate-400 font-medium">
-                            <Clock className="w-3.5 h-3.5 text-cyan-400" /> {quiz.durationMinutes} Mins
+                          <span className="flex items-center gap-1 font-mono text-xs text-slate-400">
+                            <Clock className="w-3.5 h-3.5 text-[#38E5FF]" /> {quiz.durationMinutes}m
                           </span>
-                          <span
-                            className={'text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-full ' +
-                              (quiz.difficulty === 'Hard' ? 'bg-rose-950 text-rose-300 border border-rose-800/40' : quiz.difficulty === 'Medium' ? 'bg-amber-950 text-amber-300 border border-amber-800/40' : 'bg-emerald-950 text-emerald-300 border border-emerald-800/40')}
-                          >
+                          <span className="font-minecraft text-[10px] uppercase px-2 py-0.5 bg-[#FF4582] text-white border border-black font-bold">
                             {quiz.difficulty}
                           </span>
                         </div>
                       </div>
 
-                      <h3 className="text-base font-bold text-white group-hover:text-cyan-300 transition-colors leading-snug">
+                      <h3 className="font-minecraft text-base font-bold text-white uppercase leading-snug">
                         {quiz.title}
                       </h3>
-                      <p className="text-xs text-slate-400 mt-1 line-clamp-2">{quiz.description}</p>
-                      <p className="text-[11px] text-slate-500 mt-2">
+                      <p className="font-mono text-xs text-slate-300 mt-1 line-clamp-2">{quiz.description}</p>
+                      <p className="font-mono text-[11px] text-slate-500 mt-2">
                         Faculty: <span className="font-semibold text-slate-300">{quiz.educator?.name || 'Maharashtra Board Faculty'}</span>
                       </p>
                     </div>
 
-                    <div className="mt-5 pt-4 border-t border-slate-800 flex items-center justify-between">
-                      <div className="text-xs text-slate-400">
+                    <div className="mt-5 pt-4 border-t-2 border-black flex items-center justify-between">
+                      <div className="font-mono text-xs text-slate-400">
                         {pastAttempt ? (
-                          <span className="font-bold text-cyan-400">
-                            Last Score: {pastAttempt.score}/{pastAttempt.maxScore} ({pastAttempt.percentage}%)
+                          <span className="font-minecraft text-[#38E5FF] font-bold">
+                            SCORE: {pastAttempt.score}/{pastAttempt.maxScore} ({pastAttempt.percentage}%)
                           </span>
                         ) : (
-                          <span>{quiz._count?.questions || 0} Questions • Pass: {quiz.passPercentage}%</span>
+                          <span>{quiz._count?.questions || 0} Qs • Pass: {quiz.passPercentage}%</span>
                         )}
                       </div>
 
@@ -490,28 +492,28 @@ export default function StudentDashboard() {
                           <button
                             onClick={() => handleSaveForOffline(quiz.id)}
                             disabled={isSaved || isDownloading}
-                            className={'px-3 py-1.5 text-xs font-bold rounded-xl flex items-center gap-1.5 transition-colors border ' +
+                            className={'pixel-btn px-3 py-1.5 font-minecraft text-xs uppercase flex items-center gap-1.5 ' +
                               (isSaved
-                                ? 'bg-emerald-950/60 text-emerald-300 border-emerald-800/50 cursor-default'
-                                : 'bg-slate-800 hover:bg-slate-700 text-slate-200 border-slate-700 cursor-pointer')}
+                                ? 'bg-[#27E279] text-black cursor-default'
+                                : 'bg-[#10121d] text-slate-200 cursor-pointer')}
                             title={isSaved ? 'Quiz is cached offline' : 'Save quiz to take offline'}
                           >
                             {isDownloading ? (
-                              <div className="w-3.5 h-3.5 border-2 border-slate-400 border-t-transparent rounded-full animate-spin"></div>
+                              <div className="w-3.5 h-3.5 border-2 border-white border-t-transparent animate-spin"></div>
                             ) : isSaved ? (
-                              <Check className="w-3.5 h-3.5 text-emerald-400" />
+                              <Check className="w-3.5 h-3.5 text-black" />
                             ) : (
-                              <Download className="w-3.5 h-3.5 text-cyan-400" />
+                              <Download className="w-3.5 h-3.5 text-[#38E5FF]" />
                             )}
-                            <span>{isSaved ? 'Offline Ready' : 'Save Offline'}</span>
+                            <span>{isSaved ? 'CACHED' : 'SAVE OFFLINE'}</span>
                           </button>
                         )}
 
                         <Link
                           href={'/quiz/' + quiz.id + '/take'}
-                          className="px-4 py-1.5 bg-gradient-to-r from-indigo-600 to-cyan-600 hover:from-indigo-500 hover:to-cyan-500 text-white text-xs font-bold rounded-xl flex items-center gap-1 transition-all shadow-md shadow-indigo-600/25 cursor-pointer hover:scale-105"
+                          className="pixel-btn px-4 py-1.5 bg-[#FFD000] text-black font-minecraft text-xs uppercase flex items-center gap-1 cursor-pointer font-bold"
                         >
-                          <span>{pastAttempt ? 'Retake Exam' : 'Start Exam'}</span>
+                          <span>{pastAttempt ? 'RETAKE' : 'START EXAM'}</span>
                           <ArrowRight className="w-3.5 h-3.5" />
                         </Link>
                       </div>
@@ -525,42 +527,42 @@ export default function StudentDashboard() {
 
         {/* Recent Scorecard History */}
         {analytics?.recentHistory && analytics.recentHistory.length > 0 && (
-          <div className="bg-slate-900/80 backdrop-blur-xl rounded-3xl border border-slate-800 p-6 shadow-xl">
-            <h3 className="text-base font-bold text-white mb-4 flex items-center gap-2">
-              <Award className="w-4 h-4 text-cyan-400" />
-              <span>Your Recent Examination Attempts</span>
+          <div className="pixel-box bg-[#171926] p-6 text-left">
+            <h3 className="font-minecraft text-base font-bold text-white mb-4 flex items-center gap-2 uppercase">
+              <Award className="w-4 h-4 text-[#FFD000]" />
+              <span>[ YOUR RECENT EXAMINATION ATTEMPTS ]</span>
             </h3>
 
             <div className="overflow-x-auto">
-              <table className="w-full text-left text-xs">
+              <table className="w-full text-left font-mono text-xs">
                 <thead>
-                  <tr className="border-b border-slate-800 text-slate-400 font-bold uppercase tracking-wider text-[10px]">
-                    <th className="pb-3">Exam Title</th>
-                    <th className="pb-3">Topic</th>
-                    <th className="pb-3">Score</th>
-                    <th className="pb-3">Outcome</th>
-                    <th className="pb-3">Action</th>
+                  <tr className="border-b-2 border-black font-minecraft text-slate-400 uppercase text-[10px]">
+                    <th className="pb-3">EXAM TITLE</th>
+                    <th className="pb-3">TOPIC</th>
+                    <th className="pb-3">SCORE</th>
+                    <th className="pb-3">OUTCOME</th>
+                    <th className="pb-3">ACTION</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-800/60 text-slate-300">
+                <tbody className="divide-y divide-black/40 text-slate-300">
                   {analytics.recentHistory.map((att) => (
-                    <tr key={att.id} className="hover:bg-slate-800/40">
+                    <tr key={att.id} className="hover:bg-black/30">
                       <td className="py-3 font-semibold text-white">{att.quiz.title}</td>
                       <td className="py-3">{att.quiz.topic}</td>
-                      <td className="py-3 font-bold text-cyan-400">{att.score} / {att.maxScore} ({att.percentage}%)</td>
+                      <td className="py-3 font-bold text-[#38E5FF]">{att.score} / {att.maxScore} ({att.percentage}%)</td>
                       <td className="py-3">
-                        <span className={'px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase ' +
-                          (att.isPassed ? 'bg-emerald-950 text-emerald-300 border border-emerald-800/40' : 'bg-rose-950 text-rose-300 border border-rose-800/40')}>
-                          {att.isPassed ? 'Passed' : 'Failed'}
+                        <span className={'px-2 py-0.5 font-minecraft text-[10px] uppercase border border-black ' +
+                          (att.isPassed ? 'bg-[#27E279] text-black' : 'bg-[#FF4582] text-white')}>
+                          {att.isPassed ? 'PASSED' : 'FAILED'}
                         </span>
                       </td>
                       <td className="py-3">
                         <Link
                           href={'/quiz/' + att.id + '/result/' + att.id}
-                          className="font-bold text-indigo-400 hover:text-indigo-300 flex items-center gap-1"
+                          className="font-minecraft text-xs text-[#FFD000] hover:underline flex items-center gap-1 uppercase"
                         >
-                          <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
-                          <span>View AI Breakdown</span>
+                          <Sparkles className="w-3.5 h-3.5 text-[#FFD000]" />
+                          <span>AI BREAKDOWN</span>
                         </Link>
                       </td>
                     </tr>

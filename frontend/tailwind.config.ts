@@ -9,7 +9,30 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        minecraft: ['Minecraft', 'monospace', 'sans-serif'],
+      },
       colors: {
+        primary: {
+          bg: 'var(--primary-bg-color, #6366f1)',
+          text: 'var(--primary-text-color, #ffffff)',
+          shadow: 'var(--primary-box-shadow, #000000)',
+        },
+        secondary: {
+          bg: 'var(--secondary-bg-color, #06b6d4)',
+          text: 'var(--secondary-text-color, #000000)',
+          shadow: 'var(--secondary-box-shadow, #000000)',
+        },
+        retro: {
+          bg: '#0a0d14',
+          card: '#121826',
+          border: '#000000',
+          yellow: '#facc15',
+          pink: '#f43f5e',
+          cyan: '#06b6d4',
+          purple: '#a855f7',
+          green: '#22c55e',
+        },
         brand: {
           50: '#eef2ff',
           100: '#e0e7ff',
