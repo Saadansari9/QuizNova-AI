@@ -16,6 +16,9 @@ import {
   Clock,
   TrendingUp,
   FileCheck,
+  Gamepad2,
+  Zap,
+  Trophy,
 } from 'lucide-react';
 
 import { getAllQuizzes, getEducatorAnalytics } from '@/lib/quizStorage';
@@ -75,145 +78,144 @@ export default function EducatorDashboard() {
   return (
     <ProtectedRoute allowedRoles={['Educator']}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Welcome Header */}
-        <div className="bg-gradient-to-r from-slate-900 via-purple-950 to-indigo-950 rounded-3xl p-8 text-white border border-purple-800/40 shadow-2xl mb-8 relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-80 h-80 bg-purple-500/10 rounded-full blur-3xl pointer-events-none"></div>
-
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 relative z-10">
+        {/* Welcome Header — Retro Gaming Cabinet Style */}
+        <div className="pixel-box bg-[#171926] p-0 mb-8 overflow-hidden">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 p-6 sm:p-8">
             <div>
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-purple-500/20 text-purple-300 text-[10px] font-extrabold uppercase tracking-wider mb-2 border border-purple-400/30">
-                <Sparkles className="w-3 h-3 text-purple-300" /> Educator Control Console
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-[#FF4582] text-white font-minecraft text-[10px] uppercase border-2 border-black shadow-[2px_2px_0_0_#000] mb-3">
+                <Gamepad2 className="w-3.5 h-3.5" /> [ EDUCATOR CONTROL CONSOLE ]
               </span>
-              <h1 className="text-3xl font-black tracking-tight">
-                Welcome, {user?.name || 'Professor'}!
+              <h1 className="text-2xl sm:text-3xl font-minecraft font-black text-white tracking-tight uppercase">
+                WELCOME, {user?.name || 'PROFESSOR'}!
               </h1>
-              <p className="text-slate-300 text-xs mt-1">
-                Manage your academic quizzes, generate AI questions, and monitor real-time student assessments.
+              <p className="font-mono text-xs text-slate-300 mt-1">
+                Manage academic quizzes, generate AI questions, and monitor real-time student assessments.
               </p>
             </div>
             <Link
               href="/dashboard/educator/create"
-              className="px-6 py-3 bg-gradient-to-r from-purple-600 via-indigo-600 to-cyan-600 hover:from-purple-500 hover:to-indigo-500 text-white text-xs font-bold rounded-2xl shadow-lg shadow-purple-600/30 transition-all flex items-center gap-2 cursor-pointer hover:scale-105"
+              className="pixel-btn px-5 py-3 bg-[#FFD000] text-black font-minecraft text-xs uppercase flex items-center gap-2 cursor-pointer font-bold flex-shrink-0"
             >
-              <PlusCircle className="w-4 h-4" />
-              <span>Launch AI Question Forge</span>
+              <PlusCircle className="w-4 h-4 text-black" />
+              <span>[ LAUNCH AI QUESTION FORGE ]</span>
             </Link>
           </div>
         </div>
 
         {/* Statistics Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
-          <div className="bg-slate-900/80 backdrop-blur-xl p-6 rounded-3xl border border-slate-800 shadow-xl">
-            <div className="flex items-center justify-between text-slate-400 text-[10px] font-bold uppercase tracking-wider">
-              <span>Total Quizzes Deployed</span>
-              <BookOpenCheck className="w-4 h-4 text-purple-400" />
+          <div className="pixel-box bg-[#171926] p-5">
+            <div className="flex items-center justify-between font-minecraft text-[11px] text-slate-400 uppercase">
+              <span>QUIZZES DEPLOYED</span>
+              <BookOpenCheck className="w-4 h-4 text-[#FF4582]" />
             </div>
-            <p className="text-3xl font-black text-white mt-2">{analytics?.stats.totalQuizzes || quizzes.length}</p>
-            <p className="text-[11px] text-purple-400 font-medium mt-1">Active examination sets</p>
+            <p className="font-minecraft text-3xl font-black text-white mt-2">{analytics?.stats.totalQuizzes || quizzes.length}</p>
+            <p className="font-mono text-[10px] text-[#FF4582] mt-1">Active examination sets</p>
           </div>
 
-          <div className="bg-slate-900/80 backdrop-blur-xl p-6 rounded-3xl border border-slate-800 shadow-xl">
-            <div className="flex items-center justify-between text-slate-400 text-[10px] font-bold uppercase tracking-wider">
-              <span>Total Submissions</span>
-              <Users className="w-4 h-4 text-cyan-400" />
+          <div className="pixel-box bg-[#171926] p-5">
+            <div className="flex items-center justify-between font-minecraft text-[11px] text-slate-400 uppercase">
+              <span>TOTAL SUBMISSIONS</span>
+              <Users className="w-4 h-4 text-[#38E5FF]" />
             </div>
-            <p className="text-3xl font-black text-white mt-2">{analytics?.stats.totalAttempts || 0}</p>
-            <p className="text-[11px] text-cyan-400 font-medium mt-1">Graded online & offline</p>
+            <p className="font-minecraft text-3xl font-black text-white mt-2">{analytics?.stats.totalAttempts || 0}</p>
+            <p className="font-mono text-[10px] text-[#38E5FF] mt-1">Graded online & offline</p>
           </div>
 
-          <div className="bg-slate-900/80 backdrop-blur-xl p-6 rounded-3xl border border-slate-800 shadow-xl">
-            <div className="flex items-center justify-between text-slate-400 text-[10px] font-bold uppercase tracking-wider">
-              <span>Average Class Score</span>
-              <BarChart3 className="w-4 h-4 text-indigo-400" />
+          <div className="pixel-box bg-[#171926] p-5">
+            <div className="flex items-center justify-between font-minecraft text-[11px] text-slate-400 uppercase">
+              <span>AVG CLASS SCORE</span>
+              <BarChart3 className="w-4 h-4 text-[#8A5CFF]" />
             </div>
-            <p className="text-3xl font-black text-white mt-2">{analytics?.stats.averagePercentage || 0}%</p>
-            <p className="text-[11px] text-indigo-400 font-medium mt-1">Across all assessment topics</p>
+            <p className="font-minecraft text-3xl font-black text-[#8A5CFF] mt-2">{analytics?.stats.averagePercentage || 0}%</p>
+            <p className="font-mono text-[10px] text-[#8A5CFF] mt-1">Across all topics</p>
           </div>
 
-          <div className="bg-slate-900/80 backdrop-blur-xl p-6 rounded-3xl border border-slate-800 shadow-xl">
-            <div className="flex items-center justify-between text-slate-400 text-[10px] font-bold uppercase tracking-wider">
-              <span>Overall Pass Rate</span>
-              <TrendingUp className="w-4 h-4 text-emerald-400" />
+          <div className="pixel-box bg-[#171926] p-5">
+            <div className="flex items-center justify-between font-minecraft text-[11px] text-slate-400 uppercase">
+              <span>PASS RATE</span>
+              <Trophy className="w-4 h-4 text-[#27E279]" />
             </div>
-            <p className="text-3xl font-black text-white mt-2">{analytics?.stats.passRate || 0}%</p>
-            <p className="text-[11px] text-emerald-400 font-medium mt-1">Satisfying passing target</p>
+            <p className="font-minecraft text-3xl font-black text-[#27E279] mt-2">{analytics?.stats.passRate || 0}%</p>
+            <p className="font-mono text-[10px] text-[#27E279] mt-1">Satisfying passing target</p>
           </div>
         </div>
 
         {/* Quizzes List */}
-        <div className="mb-8">
+        <div className="mb-8 text-left">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-bold text-white flex items-center gap-2">
-              <BookOpenCheck className="w-5 h-5 text-indigo-400" />
-              <span>Your Deployed Quizzes</span>
+            <h2 className="font-minecraft text-base sm:text-lg font-bold text-white flex items-center gap-2 uppercase">
+              <BookOpenCheck className="w-5 h-5 text-[#FF4582]" />
+              <span>YOUR DEPLOYED QUIZZES</span>
             </h2>
             <Link
               href="/dashboard/educator/create"
-              className="text-xs font-bold text-indigo-400 hover:text-indigo-300 flex items-center gap-1"
+              className="font-minecraft text-xs text-[#FFD000] hover:underline flex items-center gap-1 uppercase"
             >
-              <span>+ Create / AI Generate</span>
+              <Zap className="w-3.5 h-3.5" />
+              <span>+ AI GENERATE</span>
             </Link>
           </div>
 
           {loading ? (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
               {[1, 2].map((i) => (
-                <div key={i} className="bg-slate-900 rounded-3xl border border-slate-800 p-6 animate-pulse">
-                  <div className="h-4 bg-slate-800 rounded w-1/3 mb-4"></div>
-                  <div className="h-6 bg-slate-800 rounded w-2/3 mb-2"></div>
+                <div key={i} className="pixel-box bg-[#171926] p-6 animate-pulse">
+                  <div className="h-4 bg-slate-800 w-1/3 mb-4"></div>
+                  <div className="h-6 bg-slate-800 w-2/3 mb-2"></div>
                 </div>
               ))}
             </div>
           ) : quizzes.length === 0 ? (
-            <div className="bg-slate-900/60 border border-dashed border-slate-800 rounded-3xl p-12 text-center">
-              <Sparkles className="w-10 h-10 text-purple-400/50 mx-auto mb-3" />
-              <p className="text-base font-bold text-white">No Quizzes Created Yet</p>
-              <p className="text-xs text-slate-400 mt-1 max-w-sm mx-auto">
+            <div className="pixel-box bg-[#171926] p-10 text-center">
+              <Sparkles className="w-10 h-10 text-[#FF4582] mx-auto mb-3" />
+              <p className="font-minecraft text-base font-bold text-white uppercase">NO QUIZZES DEPLOYED YET</p>
+              <p className="font-mono text-xs text-slate-400 mt-1 max-w-sm mx-auto">
                 Synthesize your first AI-enabled quiz in seconds with custom Bloom's taxonomy questions.
               </p>
               <Link
                 href="/dashboard/educator/create"
-                className="mt-4 inline-flex items-center gap-2 px-5 py-2 bg-gradient-to-r from-purple-600 to-indigo-600 text-white text-xs font-bold rounded-xl shadow-lg shadow-purple-600/30"
+                className="mt-4 inline-flex pixel-btn px-5 py-2 bg-[#FFD000] text-black font-minecraft text-xs uppercase items-center gap-2 cursor-pointer"
               >
-                <Sparkles className="w-3.5 h-3.5" />
-                <span>Launch AI Question Forge</span>
+                <Sparkles className="w-3.5 h-3.5 text-black" />
+                <span>[ LAUNCH AI FORGE ]</span>
               </Link>
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
               {quizzes.map((q) => (
-                <div key={q.id} className="bg-slate-900/80 backdrop-blur-xl rounded-3xl border border-slate-800 p-6 shadow-xl hover:border-purple-500/50 transition-all flex flex-col justify-between group">
+                <div key={q.id} className="pixel-box bg-[#171926] p-5 flex flex-col justify-between">
                   <div>
                     <div className="flex justify-between items-start mb-3">
-                      <span className="text-[10px] font-bold uppercase tracking-wider text-purple-300 bg-purple-950/60 px-2.5 py-1 rounded-full border border-purple-800/40">
+                      <span className="font-minecraft text-[10px] uppercase px-2 py-0.5 bg-black text-[#FF4582] border border-black font-bold">
                         {q.topic}
                       </span>
                       <div className="flex items-center gap-2">
-                        <span className="text-xs text-slate-400 font-medium flex items-center gap-1">
-                          <Clock className="w-3.5 h-3.5 text-cyan-400" /> {q.durationMinutes}m
+                        <span className="font-mono text-xs text-slate-400 flex items-center gap-1">
+                          <Clock className="w-3.5 h-3.5 text-[#38E5FF]" /> {q.durationMinutes}m
                         </span>
-                        <span className={'text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-full ' +
-                          (q.difficulty === 'Hard' ? 'bg-rose-950 text-rose-400 border border-rose-800/40' : q.difficulty === 'Medium' ? 'bg-amber-950 text-amber-400 border border-amber-800/40' : 'bg-emerald-950 text-emerald-400 border border-emerald-800/40')}>
+                        <span className={'font-minecraft text-[10px] uppercase px-2 py-0.5 border border-black ' +
+                          (q.difficulty === 'Hard' ? 'bg-[#FF4582] text-white' : q.difficulty === 'Medium' ? 'bg-[#FFD000] text-black' : 'bg-[#27E279] text-black')}>
                           {q.difficulty}
                         </span>
                       </div>
                     </div>
-                    <h3 className="text-base font-bold text-white group-hover:text-purple-300 transition-colors">{q.title}</h3>
-                    <p className="text-xs text-slate-400 mt-1 line-clamp-2">{q.description}</p>
+                    <h3 className="font-minecraft text-sm font-bold text-white uppercase leading-snug">{q.title}</h3>
+                    <p className="font-mono text-xs text-slate-300 mt-1 line-clamp-2">{q.description}</p>
                   </div>
 
-                  <div className="mt-5 pt-4 border-t border-slate-800 flex items-center justify-between">
-                    <div className="text-xs text-slate-400">
-                      <span className="font-semibold text-slate-200">{q._count?.questions || 0} Questions</span> •{' '}
-                      <span className="font-semibold text-purple-400">{q._count?.attempts || 0} Submissions</span>
+                  <div className="mt-5 pt-4 border-t-2 border-black flex items-center justify-between">
+                    <div className="font-minecraft text-xs text-slate-400">
+                      <span className="font-bold text-white">{q._count?.questions || 0} QS</span> •{' '}
+                      <span className="font-bold text-[#FF4582]">{q._count?.attempts || 0} SUBMISSIONS</span>
                     </div>
                     <button
                       onClick={() => handleExportOffline(q.id, q.title)}
-                      className="px-3.5 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold rounded-xl flex items-center gap-1.5 cursor-pointer transition-colors border border-slate-700"
+                      className="pixel-btn px-3 py-1.5 bg-[#0c0d14] text-white font-minecraft text-xs uppercase flex items-center gap-1.5 cursor-pointer"
                       title="Download offline package"
                     >
-                      <Download className="w-3.5 h-3.5 text-cyan-400" />
-                      <span>Export Pack</span>
+                      <Download className="w-3.5 h-3.5 text-[#38E5FF]" />
+                      <span>EXPORT</span>
                     </button>
                   </div>
                 </div>
@@ -224,36 +226,36 @@ export default function EducatorDashboard() {
 
         {/* Recent Submissions Feed */}
         {analytics?.recentSubmissions && analytics.recentSubmissions.length > 0 && (
-          <div className="bg-slate-900/80 backdrop-blur-xl rounded-3xl border border-slate-800 p-6 shadow-xl">
-            <h3 className="text-base font-bold text-white mb-4 flex items-center gap-2">
-              <FileCheck className="w-4 h-4 text-emerald-400" />
-              <span>Recent Student Submissions</span>
+          <div className="pixel-box bg-[#171926] p-6 text-left">
+            <h3 className="font-minecraft text-base font-bold text-white mb-4 flex items-center gap-2 uppercase">
+              <FileCheck className="w-4 h-4 text-[#27E279]" />
+              <span>[ RECENT STUDENT SUBMISSIONS ]</span>
             </h3>
 
             <div className="overflow-x-auto">
-              <table className="w-full text-left text-xs">
+              <table className="w-full text-left font-mono text-xs">
                 <thead>
-                  <tr className="border-b border-slate-800 text-slate-400 font-bold uppercase tracking-wider text-[10px]">
-                    <th className="pb-3">Student</th>
-                    <th className="pb-3">Quiz Name</th>
-                    <th className="pb-3">Score</th>
-                    <th className="pb-3">Outcome</th>
-                    <th className="pb-3">Timestamp</th>
+                  <tr className="border-b-2 border-black font-minecraft text-slate-400 uppercase text-[10px]">
+                    <th className="pb-3">STUDENT</th>
+                    <th className="pb-3">QUIZ NAME</th>
+                    <th className="pb-3">SCORE</th>
+                    <th className="pb-3">OUTCOME</th>
+                    <th className="pb-3">DATE</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-800/60 text-slate-300">
+                <tbody className="divide-y divide-black/40 text-slate-300">
                   {analytics.recentSubmissions.map((sub) => (
-                    <tr key={sub.attemptId} className="hover:bg-slate-800/40">
+                    <tr key={sub.attemptId} className="hover:bg-black/30">
                       <td className="py-3 font-semibold text-white">{sub.studentName}</td>
                       <td className="py-3">{sub.quizTitle}</td>
-                      <td className="py-3 font-bold text-cyan-400">{sub.score} / {sub.maxScore} ({sub.percentage}%)</td>
+                      <td className="py-3 font-bold text-[#38E5FF]">{sub.score} / {sub.maxScore} ({sub.percentage}%)</td>
                       <td className="py-3">
-                        <span className={'px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase ' +
-                          (sub.isPassed ? 'bg-emerald-950 text-emerald-300 border border-emerald-800/40' : 'bg-rose-950 text-rose-300 border border-rose-800/40')}>
-                          {sub.isPassed ? 'Passed' : 'Failed'}
+                        <span className={'font-minecraft text-[10px] uppercase px-2 py-0.5 border border-black ' +
+                          (sub.isPassed ? 'bg-[#27E279] text-black' : 'bg-[#FF4582] text-white')}>
+                          {sub.isPassed ? 'PASSED' : 'FAILED'}
                         </span>
                       </td>
-                      <td className="py-3 text-slate-500">{new Date(sub.completedAt).toLocaleDateString()}</td>
+                      <td className="py-3 font-mono text-slate-500">{new Date(sub.completedAt).toLocaleDateString()}</td>
                     </tr>
                   ))}
                 </tbody>
