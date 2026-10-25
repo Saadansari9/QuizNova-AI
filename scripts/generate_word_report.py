@@ -324,10 +324,19 @@ add_heading2("3.7} E-R Diagram.")
 add_p("Below is the comprehensive Entity-Relationship Diagram representing the unified database schema, relational cardinalities, attributes, and primary/foreign key mappings:")
 add_diagram("3.7_ER_Diagram.png", "Figure 3.11: Entity-Relationship (E-R) Diagram (Single Unified Relational Schema)", width_in=6.0)
 
-print(f"Saving final formatted Word document to: {output_project_docx}")
-doc.save(output_project_docx)
+def safe_save(document, target_path):
+    try:
+        document.save(target_path)
+        print(f"Saved: {target_path}")
+        return target_path
+    except PermissionError:
+        base, ext = os.path.splitext(target_path)
+        alt_path = f"{base}_HD_VISUALS{ext}"
+        document.save(alt_path)
+        print(f"File is currently open in Word. Saved updated HD version to: {alt_path}")
+        return alt_path
 
-print(f"Saving copy directly to user Desktop: {output_desktop_docx}")
-doc.save(output_desktop_docx)
-
-print("SUCCESS: Both documents generated successfully!")
+print(f"Saving final formatted Word document...")
+p1 = safe_save(doc, output_project_docx)
+p2 = safe_save(doc, output_desktop_docx)
+print(f"SUCCESS: Documents generated successfully!")

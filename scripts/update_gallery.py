@@ -1,0 +1,65 @@
+import os
+
+dir_path = r"C:\Users\mohammed saad\OneDrive\Desktop\quiz-platform-auth\Project_Diagrams_Word"
+files = [
+  ("3.1_Class_Diagram", "3.1} Class Diagram (UML Domain Architecture)"),
+  ("3.2_Use_Case_Diagram", "3.2} Use-Case Diagram (Student & Educator)"),
+  ("3.2.1_Admin_Use_Case", "3.2.1} Admin Dedicated Use-Case (System Governance)"),
+  ("3.3_Sequence_Diagram", "3.3} Sequence Diagram (Proctored Exam Lifecycle)"),
+  ("3.4_Activity_Diagram", "3.4} Activity Diagram (Supervision & Exam Workflow)"),
+  ("3.5.1_Level_0_DFD", "3.5.1} Level 0 DFD (Context Boundary Diagram)"),
+  ("3.5.2_Level_1_DFD", "3.5.2} Level 1 DFD (Subsystem Decomposition)"),
+  ("3.5.3_Level_2A_DFD", "3.5.3} Level 2A DFD (Online Proctored Engine)"),
+  ("3.5.4_Level_2B_DFD", "3.5.4} Level 2B DFD (Offline Packaging & Sync Engine)"),
+  ("3.5.6_Gantt_Chart", "3.5.6} SDLC Gantt Chart & Engineering Sprints"),
+  ("3.7_ER_Diagram", "3.7} Entity-Relationship (E-R) Relational Schema")
+]
+
+cards_html = ""
+for name, title in files:
+    cards_html += f"""
+    <div class="card">
+      <h2>
+        <span>{title}</span>
+        <div>
+          <a class="btn" href="{name}.png" download>Download PNG</a>
+          <a class="btn btn-svg" href="{name}.svg" download>Download SVG</a>
+        </div>
+      </h2>
+      <div class="img-box"><img src="{name}.png" alt="{title}"></div>
+      <p class="hint">File: <code>Project_Diagrams_Word/{name}.png</code></p>
+    </div>"""
+
+html = f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>QuizNova-AI High-Resolution Diagrams Portfolio</title>
+  <style>
+    body {{ font-family: 'Segoe UI', Arial, sans-serif; background: #0f172a; padding: 40px 20px; margin: 0; color: #f8fafc; }}
+    .container {{ max-width: 1200px; margin: 0 auto; }}
+    h1 {{ text-align: center; color: #38bdf8; font-size: 32px; margin-bottom: 8px; }}
+    p.sub {{ text-align: center; color: #94a3b8; font-size: 16px; margin-bottom: 35px; }}
+    .card {{ background: #1e293b; border-radius: 16px; box-shadow: 0 10px 25px rgba(0,0,0,0.4); padding: 26px; margin-bottom: 40px; border: 1px solid #334155; }}
+    .card h2 {{ margin-top: 0; color: #f1f5f9; border-bottom: 1px solid #334155; padding-bottom: 12px; font-size: 19px; display: flex; justify-content: space-between; align-items: center; }}
+    .img-box {{ background: #ffffff; border-radius: 12px; padding: 24px; margin: 20px 0; display: flex; justify-content: center; align-items: center; box-shadow: inset 0 2px 6px rgba(0,0,0,0.06); }}
+    .card img {{ max-width: 100%; height: auto; display: block; border-radius: 4px; }}
+    .btn {{ background: #0284c7; color: white; padding: 7px 16px; border-radius: 8px; text-decoration: none; font-size: 13px; font-weight: bold; }}
+    .btn-svg {{ background: #059669; margin-left: 8px; }}
+    .btn:hover {{ opacity: 0.9; }}
+    .hint {{ font-size: 13px; color: #94a3b8; font-style: italic; }}
+    code {{ background: #334155; padding: 2px 6px; border-radius: 4px; color: #38bdf8; }}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>QuizNova-AI Ultra High-Definition Diagrams</h1>
+    <p class="sub">Retina Scaled (1800px Width) Modern Engineering Aesthetics for Microsoft Word & Academic Black Book</p>
+    {cards_html}
+  </div>
+</body>
+</html>"""
+
+with open(os.path.join(dir_path, "diagrams_preview.html"), "w", encoding="utf-8") as f:
+    f.write(html)
+print("SUCCESS: diagrams_preview.html generated cleanly!")
