@@ -472,104 +472,133 @@ A comparative field analysis between traditional assessment portals and QuizNova
 ## 3.1} Class Diagram.
 The system's domain model is organized according to object-oriented software engineering principles. Below is the structural UML Class Diagram defining the principal entities, their private attributes, and public member functions:
 
-```
-+-----------------------------------------------------------------------------+
-|                                    User                                     |
-+-----------------------------------------------------------------------------+
-| - id: String                                                                |
-| - name: String                                                              |
-| - email: String                                                             |
-| - passwordHash: String                                                      |
-| - role: UserRole (STUDENT | EDUCATOR | ADMIN)                              |
-| - phoneNumber: String?                                                      |
-| - createdAt: DateTime                                                       |
-+-----------------------------------------------------------------------------+
-| + loginWithGoogle(): Promise<AuthResult>                                    |
-| + registerDirect(data: RegisterData): Promise<User>                         |
-| + invalidateSession(): void                                                 |
-| + getAssignedQuizzes(): Promise<List<Quiz>>                                 |
-+-----------------------------------------------------------------------------+
-                                       │ 1
-                                       │
-                                       │ creates / owns
-                                       ▼ 0..*
-+-----------------------------------------------------------------------------+
-|                                    Quiz                                     |
-+-----------------------------------------------------------------------------+
-| - id: String                                                                |
-| - title: String                                                             |
-| - description: String                                                       |
-| - educatorId: String                                                        |
-| - timeLimitMinutes: Integer                                                 |
-| - passingScorePercentage: Float                                             |
-| - standardLevel: String (SSC | HSC)                                         |
-| - isPublished: Boolean                                                      |
-+-----------------------------------------------------------------------------+
-| + addQuestion(q: Question): void                                            |
-| + publishAssessment(): void                                                 |
-| + computeCohortAnalytics(): AnalyticsSummary                                |
-| + exportOfflinePackage(): EncryptedPayload                                  |
-+-----------------------------------------------------------------------------+
-                                       │ 1
-                                       │
-                                       │ aggregates
-                                       ▼ 1..*
-+-----------------------------------------------------------------------------+
-|                                  Question                                   |
-+-----------------------------------------------------------------------------+
-| - id: String                                                                |
-| - quizId: String                                                            |
-| - questionText: String                                                      |
-| - optionsJson: String                                                       |
-| - correctAnswer: String                                                     |
-| - bloomTaxonomyLevel: BloomTier (REMEMBERING..CREATING)                     |
-| - marksAllocated: Integer                                                   |
-+-----------------------------------------------------------------------------+
-| + validateAnswer(submitted: String): Boolean                                |
-| + getCognitiveTier(): BloomTier                                             |
-+-----------------------------------------------------------------------------+
-                                       ▲
-                                       │ evaluates
-                                       │ 1..*
-+-----------------------------------------------------------------------------+
-|                                 QuizAttempt                                 |
-+-----------------------------------------------------------------------------+
-| - id: String                                                                |
-| - quizId: String                                                            |
-| - studentId: String                                                         |
-| - scoreObtained: Float                                                      |
-| - totalPossibleMarks: Float                                                 |
-| - percentageScore: Float                                                    |
-| - bloomDiagnosticsJson: String                                              |
-| - violationCount: Integer                                                   |
-| - timeTakenSeconds: Integer                                                 |
-| - completedAt: DateTime                                                     |
-+-----------------------------------------------------------------------------+
-| + calculateDiagnosticBloomScore(): DiagnosticBreakdown                      |
-| + recordProctorViolation(type: String): void                                |
-| + finalizeAndSubmit(): AssessmentReport                                     |
-+-----------------------------------------------------------------------------+
+<p align="center">
+  <img src="./Project_Diagrams_Word/3.1_Class_Diagram.png" alt="Figure 3.1: Comprehensive UML Domain Class Diagram" width="85%" />
+  <br><em>Figure 3.1: Comprehensive UML Domain Class Diagram</em>
+</p>
+
+```mermaid
+classDiagram
+    class User {
+        +String id
+        +String name
+        +String email
+        +String passwordHash
+        +String role
+        +validatePassword(plainPassword) Boolean
+    }
+
+    class Quiz {
+        +String id
+        +String educatorId
+        +String title
+        +String topic
+        +String difficulty
+        +Int durationMinutes
+        +Int passPercentage
+        +Boolean allowOffline
+        +exportPackage() Object
+    }
+
+    class Question {
+        +String id
+        +String quizId
+        +String questionText
+        +String[] options
+        +Int correctAnswer
+        +String explanation
+        +String bloomLevel
+        +Int points
+        +checkAnswer(selectedIndex) Boolean
+    }
+
+    class QuizAttempt {
+        +String id
+        +String quizId
+        +String studentId
+        +Float score
+        +Float percentage
+        +Boolean isPassed
+        +Int tabSwitchCount
+        +String aiFeedbackSummary
+        +Boolean isOfflineSynced
+    }
+
+    class AuthController {
+        +register(data)
+        +login(credentials)
+        +googleLogin(role)
+        +logout()
+    }
+
+    class ExamController {
+        +fetchAvailableQuizzes()
+        +startExamSession(quizId)
+        +submitExam(answers, tabSwitches)
+        +syncOfflineAttempts(batch)
+    }
+
+    class AISynthesizerService {
+        +generateQuestions(topic, count, difficulty)
+        +generateDiagnosticFeedback(score, topic)
+    }
+
+    class OfflineStorageManager {
+        +saveQuizOffline(pkg)
+        +recordAttemptLocally(attempt)
+        +getPendingSyncQueue()
+    }
+
+    User "1" --> "0..*" Quiz : creates
+    User "1" --> "0..*" QuizAttempt : submits
+    Quiz "1" *-- "1..*" Question : contains
+    Quiz "1" --> "0..*" QuizAttempt : evaluated_in
+    ExamController ..> Quiz : manages
+    ExamController ..> QuizAttempt : records
+    ExamController ..> AISynthesizerService : invokes
+    OfflineStorageManager ..> Quiz : caches
 ```
 
 ## 3.2} Use-Case Diagram.
 The Use-Case model delineates system interactions between external actors (**Student** and **Educator / Admin**) and the functional boundaries of QuizNova-AI:
 
-```
-       [ Student Actor ]                              [ Educator / Admin Actor ]
-              │                                                   │
-              ├───► (1-Click Google Sign-In / Register) ◄─────────┤
-              │                                                   │
-              ├───► (Browse & Stream 41 Balbharati Textbooks)     │
-              │                                                   │
-              ├───► (Search & Filter 36-Year Subjective PYQs)     │
-              │                                                   │
-              ├───► (Take Proctored Assessment)                   ├───► (Author Assessment & Questions)
-              │           │                                       │           │
-              │           └──► <<include>> (Fullscreen & Proctor) │           └──► <<include>> (Bloom Tagging)
-              │                                                   │
-              ├───► (Review Cognitive Diagnostic Report)          ├───► (Review Cohort Performance Histograms)
-              │                                                   │
-              └───► (Download Offline Exam Package)               └───► (Inspect Proctor Violation Audits)
+<p align="center">
+  <img src="./Project_Diagrams_Word/3.2_Use_Case_Diagram.png" alt="Figure 3.2: System Use-Case Diagram for Admin / Educator and Student Roles" width="85%" />
+  <br><em>Figure 3.2: System Use-Case Diagram for Admin / Educator and Student Roles</em>
+</p>
+
+```mermaid
+flowchart LR
+    Student((Student))
+    Educator((Educator))
+
+    subgraph SystemBoundary["QuizNova-AI Platform"]
+        UC1(["1. Register & Authenticate (OTP / Google)"])
+        UC2(["2. Browse Syllabus Compartments & PYQs"])
+        UC3(["3. Take Live Proctored Exam (Tab-Switch Monitored)"])
+        UC4(["4. Download Encrypted Offline Exam (.quizpkg)"])
+        UC5(["5. Sync Offline Submissions"])
+        UC6(["6. View AI Diagnostic Scorecard"])
+        UC7(["7. AI Question Synthesis (Bloom Taxonomy)"])
+        UC8(["8. Manual Question Authoring & Editing"])
+        UC9(["9. Publish & Configure Exam Rules"])
+        UC10(["10. Export Offline Exam Bundle"])
+        UC11(["11. View Aggregate Performance Analytics"])
+    end
+
+    Student --> UC1
+    Student --> UC2
+    Student --> UC3
+    Student --> UC4
+    Student --> UC5
+    Student --> UC6
+
+    Educator --> UC1
+    Educator --> UC7
+    Educator --> UC8
+    Educator --> UC9
+    Educator --> UC10
+    Educator --> UC11
 ```
 
 ### 3.2.1} Admin Use-Case.
@@ -579,75 +608,125 @@ The Admin / Educator Use-Case workflow specifically governs administrative super
 3. **Examination Enforcement Configuration**: Define exam time limits, passing scores, allowed tab-switch violation limits, and fullscreen mandates.
 4. **Evaluation & Audit Verification**: Access cohort grade distributions, analyze question difficulty ratings, and audit student security violation logs.
 
+<p align="center">
+  <img src="./Project_Diagrams_Word/3.2.1_Admin_Use_Case.png" alt="Figure 3.3: Admin Dedicated Use-Case & Assessment Creation Flow" width="85%" />
+  <br><em>Figure 3.3: Admin Dedicated Use-Case & Assessment Creation Flow</em>
+</p>
+
+```mermaid
+flowchart LR
+    Admin((Admin / Super Educator))
+
+    subgraph AdminSubsystem["QuizNova-AI Admin Management Console"]
+        AUC1(["User Management (Activate / Deactivate Accounts)"])
+        AUC2(["Curriculum & Subject Configuration (Class 9-12)"])
+        AUC3(["Global Exam Moderation & Content Approval"])
+        AUC4(["Proctoring Violation Audits & Flagged Attempts"])
+        AUC5(["Offline Cryptographic Sync Queue Inspection"])
+        AUC6(["System Performance & Database Backup"])
+    end
+
+    Admin --> AUC1
+    Admin --> AUC2
+    Admin --> AUC3
+    Admin --> AUC4
+    Admin --> AUC5
+    Admin --> AUC6
+```
+
 ## 3.3} Sequence Diagram.
 The following Sequence Diagram illustrates the high-concurrency interaction among the **Candidate Browser**, **Anti-Cheating Proctor Hook**, **Express API Controller**, **Prisma ORM**, and **Single Unified Database** during an assessment:
 
-```
-Candidate Browser        Proctor Hook           Exam Controller         Prisma ORM          Unified Database
-       │                       │                       │                     │                     │
-       │─── Select Exam ──────►│                       │                     │                     │
-       │                       │─── Initialize Exam ──►│                     │                     │
-       │                       │                       │─── Fetch Quiz ─────►│                     │
-       │                       │                       │                     │─── SELECT * ───────►│
-       │                       │                       │                     │◄── Return Records ──│
-       │                       │                       │◄── Return Payload ──│                     │
-       │◄── Load Questions ────│◄── Start Countdown ───│                     │                     │
-       │                       │                       │                     │                     │
-       │== Tab Switch Occurs ==│                       │                     │                     │
-       │─── visibilitychange ─►│                       │                     │                     │
-       │◄── Show Warning Alert ┤                       │                     │                     │
-       │                       │─── Log Violation ────►│                     │                     │
-       │                       │                       │─── Record Event ───►│─── INSERT Log ─────►│
-       │                       │                       │                     │                     │
-       │== Final Submit ==     │                       │                     │                     │
-       │─── Submit Answers ───►│                       │                     │                     │
-       │                       │─── Evaluate Score ───►│                     │                     │
-       │                       │                       │─── Compute Bloom ──►│                     │
-       │                       │                       │─── Save Attempt ───►│─── INSERT Attempt ─►│
-       │                       │                       │                     │◄── Confirmation ────│
-       │◄── Render Scorecard ──│◄── Diagnostic Report ─│                     │                     │
+<p align="center">
+  <img src="./Project_Diagrams_Word/3.3_Sequence_Diagram.png" alt="Figure 3.4: High-Concurrency Sequence Diagram for Proctored Assessment Lifecycle" width="90%" />
+  <br><em>Figure 3.4: High-Concurrency Sequence Diagram for Proctored Assessment Lifecycle</em>
+</p>
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Student as Student
+    actor Educator as Educator
+    participant Frontend as Next.js Client
+    participant Controller as Exam / Quiz Controller
+    participant AIService as AI Bloom Synthesizer
+    participant DB as Unified Database (Prisma)
+
+    Educator->>Frontend: Enter Topic, Count (5) & Bloom Level
+    Frontend->>Controller: POST /api/quiz/generate-ai
+    Controller->>AIService: generateQuestions(topic, count, difficulty)
+    AIService-->>Controller: Return validated MCQs + explanations
+    Controller-->>Frontend: Display generated questions in Editor
+    Educator->>Frontend: Set time limit (30m) & click "Publish Quiz"
+    Frontend->>Controller: POST /api/quiz/create
+    Controller->>DB: INSERT Quiz and Questions records
+    DB-->>Controller: Saved successfully
+    Controller-->>Frontend: 201 Created
+
+    Student->>Frontend: Select Quiz & click "Start Exam"
+    Frontend->>Controller: GET /api/quiz/:id
+    Controller->>DB: Fetch Quiz & randomized Question array
+    DB-->>Controller: Quiz payload
+    Controller-->>Frontend: Render active proctored exam room
+    
+    opt Focus Loss Detection
+        Student->>Frontend: Switches window/tab
+        Frontend->>Frontend: Increment tabSwitchCount & trigger warning
+    end
+
+    Student->>Frontend: Finalize & Submit Test
+    Frontend->>Controller: POST /api/quiz/:id/submit
+    Controller->>DB: Compare options with correct answer keys
+    Controller->>AIService: Formulate Bloom diagnostic feedback
+    AIService-->>Controller: Feedback summary text
+    Controller->>DB: INSERT QuizAttempt record
+    DB-->>Controller: Saved Attempt
+    Controller-->>Frontend: Return Scorecard with AI Rationale
+    Frontend-->>Student: Display visual mastery badge & analytics
 ```
 
 ## 3.4} Activity Diagram.
 The Activity Diagram models the dynamic operational flow from user authentication through proctored exam delivery, integrity enforcement, and cognitive scoring:
 
-```
-      [ Start User Journey ]
-                 │
-                 ▼
-      [ Select Authentication: Google OAuth or Direct Registration ]
-                 │
-                 ▼
-      [ Authenticate Credentials & Route by Role ]
-                 │
-        ┌────────┴────────┐
-        ▼                 ▼
-   (Educator)         (Student)
-        │                 │
-        ▼                 ▼
- [ Author Exam ]    [ Select Assessment / Textbook / PYQ ]
-        │                 │
-        ▼                 ▼
- [ Bloom Tagging ]  [ Enter Fullscreen Exam Player ]
-        │                 │
-        ▼                 ▼
- [ Publish Exam ]   [ Monitor Active Timer & Page Visibility ]
-                          │
-                 ┌────────┴────────┐
-                 ▼                 ▼
-            [ Violation? ]     [ Timer Expired? ]
-                 │ Yes             │ Yes
-                 ▼                 ▼
-            [ Log Warning / Auto-Submit ]
-                 │
-                 ▼
-      [ Calculate Score & Bloom Cognitive Metrics ]
-                 │
-                 ▼
-      [ Display Diagnostic Radar Report ]
-                 │
-                 ▼
-           [ Terminate ]
+<p align="center">
+  <img src="./Project_Diagrams_Word/3.4_Activity_Diagram.png" alt="Figure 3.5: System Activity Diagram for Exam Execution and Anti-Cheating Supervision" width="85%" />
+  <br><em>Figure 3.5: System Activity Diagram for Exam Execution and Anti-Cheating Supervision</em>
+</p>
+
+```mermaid
+flowchart TD
+    StartNode([Start]) --> LoginNode[User Authentication]
+    LoginNode --> RoleChoice{Choose Role}
+    
+    RoleChoice -->|Educator| ForgeNode[Open AI Question Forge]
+    ForgeNode --> InputNode[Input Topic and Difficulty]
+    InputNode --> AIGenNode[AI Synthesizes Questions]
+    AIGenNode --> ReviewChoice{Review Questions}
+    ReviewChoice -->|Edit| EditNode[Modify Options and Rationales]
+    EditNode --> ConfigNode[Configure Time Limit and Passing Score]
+    ReviewChoice -->|Approve| ConfigNode
+    ConfigNode --> DeployNode[Publish Quiz to Exam Catalog]
+    DeployNode --> EndEducatorNode([Quiz Live for Students])
+
+    RoleChoice -->|Student| CatalogNode[Browse Syllabus and Select Quiz]
+    CatalogNode --> ModeChoice{Select Mode}
+    ModeChoice -->|Offline| PkgNode[Download quizpkg Bundle]
+    PkgNode --> LabNode[Attempt Test in Offline Lab]
+    LabNode --> LocalSaveNode[Save Encrypted Attempt in Browser]
+    LocalSaveNode --> SyncNode[Reconnect to Network and Sync]
+    SyncNode --> SubmitNode
+    
+    ModeChoice -->|Online| RoomNode[Enter Proctored Exam Room]
+    RoomNode --> AnswerNode[Answer Questions within Timer]
+    AnswerNode --> FocusChoice{Focus Lost?}
+    FocusChoice -->|Yes| WarnNode[Log Proctor Violation and Alert]
+    WarnNode --> SubmitNode[Finalize and Submit Exam]
+    FocusChoice -->|No| SubmitNode
+    
+    SubmitNode --> ScoreNode[Automated Grading vs Answer Key]
+    ScoreNode --> BloomNode[AI Synthesizes Concept Summary]
+    BloomNode --> CardNode[Display Interactive Scorecard]
+    CardNode --> EndStudentNode([End])
 ```
 
 ## 3.5} Data flow Diagram (DFD).
@@ -655,18 +734,25 @@ The Activity Diagram models the dynamic operational flow from user authenticatio
 ### 3.5.1} Level 0 DFD (Context Level Diagram)
 The Context Diagram defines the external entities interacting with the QuizNova-AI system boundary:
 
-```
-                            ┌───────────────────────────────────┐
-                            │                                   │
-      ─── Credentials ─────►│                                   │─── Auth Token / Session ──►
-      ─── Answers & Events ─►│                                   │─── Score & Diagnostic ────►
-                             │            QUIZNOVA-AI            │
-      [ STUDENT ACTOR ]      │          SYSTEM BOUNDARY          │    [ EDUCATOR / ADMIN ]
-                             │                                   │
-      ◄── Textbooks / PYQs ──│                                   │◄── Exam Content & Rules ───
-      ◄── Exam Package ──────│                                   │─── Cohort & Proctor Logs ─►
-                            │                                   │
-                            └───────────────────────────────────┘
+<p align="center">
+  <img src="./Project_Diagrams_Word/3.5.1_Level_0_DFD.png" alt="Figure 3.6: Data Flow Diagram (DFD) Level 0 – Context Level System Boundary" width="80%" />
+  <br><em>Figure 3.6: Data Flow Diagram (DFD) Level 0 – Context Level System Boundary</em>
+</p>
+
+```mermaid
+flowchart TD
+    Student["Student"]
+    Educator["Educator"]
+    System(["0.0<br/>QuizNova-AI Core Platform"])
+    DB[("Unified Database Store")]
+
+    Student -->|"1. Credentials, Exam Answers, Sync Packets"| System
+    System -->|"2. Available Tests, Proctor Warnings, AI Scorecard"| Student
+
+    Educator -->|"3. Credentials, Exam Specs, Custom Questions"| System
+    System -->|"4. Synthesized Bloom Questions, Class Analytics"| Educator
+
+    System <-->|"Read / Write Operations via Prisma ORM"| DB
 ```
 
 ### 3.5.2} Level 1 DFD
@@ -677,16 +763,52 @@ Decomposes the system into its primary subsystems:
 - **Process 4.0**: Diagnostic Scoring & Analytics Reporting.
 - **Process 5.0**: Digital Textbook & 36-Year PYQ Library Delivery.
 
-```
- [ User ] ──► (1.0 Auth & Session) ───────► [ D1: Users Table ]
-                     │
- [ Educator ] ──► (2.0 Exam Authoring) ────► [ D2: Quizzes & Questions Tables ]
-                     │
- [ Student ] ──► (3.0 Proctored Execution) ──► [ D3: Attempts & Proctor Audit Table ]
-                     │
-                 (4.0 Diagnostic Engine) ──► [ Generate Bloom Taxonomy Report ]
-                     │
- [ Student ] ◄── (5.0 Textbook & PYQ Engine) ◄─ [ D4: 41 Textbooks & 36-Year PYQs ]
+<p align="center">
+  <img src="./Project_Diagrams_Word/3.5.2_Level_1_DFD.png" alt="Figure 3.7: Data Flow Diagram (DFD) Level 1 – Subsystem Functional Decomposition" width="85%" />
+  <br><em>Figure 3.7: Data Flow Diagram (DFD) Level 1 – Subsystem Functional Decomposition</em>
+</p>
+
+```mermaid
+flowchart TB
+    Student["Student"]
+    Educator["Educator"]
+
+    P1(["1.0 Authentication and Session Engine"])
+    P2(["2.0 AI Question Synthesizer"])
+    P3(["3.0 Exam Execution and Proctor"])
+    P4(["4.0 Evaluation and Feedback Engine"])
+    P5(["5.0 Offline Packaging and Sync"])
+
+    subgraph DataStore["Central Storage"]
+        DS1[("Users and Credentials")]
+        DS2[("Quizzes and Questions")]
+        DS3[("Quiz Attempts and Analytics")]
+    end
+
+    Student & Educator -->|"Sign In Data"| P1
+    P1 <-->|"Verify and Persist"| DS1
+    P1 -->|"Session Token"| Student & Educator
+
+    Educator -->|"Topic Specs"| P2
+    P2 <-->|"Store Quiz and Questions"| DS2
+    P2 -->|"Generated Questions"| Educator
+
+    Student -->|"Start Exam"| P3
+    DS2 -->|"Read Questions"| P3
+    P3 -->|"Exam Room Telemetry"| Student
+    Student -->|"Submitted Responses"| P3
+    P3 -->|"Raw Submission Data"| P4
+
+    DS2 -->|"Answer Keys"| P4
+    P4 <-->|"Store Score"| DS3
+    P4 -->|"Scorecard"| Student
+    DS3 -->|"Performance Trends"| Educator
+
+    Educator & Student -->|"Download Package"| P5
+    DS2 -->|"Read Exam Data"| P5
+    P5 -->|"Export quizpkg"| Educator & Student
+    Student -->|"Upload Sync Batch"| P5
+    P5 -->|"Forward Submissions"| P4
 ```
 
 ### 3.5.3} Level 2A DFD (Assessment Creation & Bloom Engine)
@@ -696,6 +818,37 @@ Focuses on how educators author assessments, tag cognitive levels, and persist t
 - **Process 2.3**: Associate Bloom's Taxonomy cognitive tier with each question.
 - **Process 2.4**: Atomically commit records into SQLite via Prisma relational transaction.
 
+<p align="center">
+  <img src="./Project_Diagrams_Word/3.5.3_Level_2A_DFD.png" alt="Figure 3.8: Data Flow Diagram (DFD) Level 2A – Assessment Creation & Bloom Engine" width="80%" />
+  <br><em>Figure 3.8: Data Flow Diagram (DFD) Level 2A – Assessment Creation & Bloom Engine</em>
+</p>
+
+```mermaid
+flowchart TD
+    Student["Student Client"]
+
+    subgraph ExamProc["Process 3.0: Online Exam Execution Subsystem"]
+        P3_1["3.1 Session Timer and Navigation"]
+        P3_2["3.2 Focus Loss and Tab Detector"]
+        P4_1["4.1 Answer Matrix Scoring Engine"]
+        P4_2["4.2 Bloom Diagnostic Formulator"]
+    end
+
+    subgraph Database["Database Tables"]
+        T_Quiz[("quizzes and questions")]
+        T_Attempt[("quiz_attempts")]
+    end
+
+    Student -->|"Select Option"| P3_1
+    Student -->|"Window Blur Event"| P3_2
+    P3_2 -->|"Increment Violation Count"| P3_1
+    P3_1 -->|"Submit Payload"| P4_1
+    T_Quiz -->|"Fetch Correct Answer Keys"| P4_1
+    P4_1 -->|"Raw Marks and Accuracy"| P4_2
+    P4_2 -->|"Insert Graded Record"| T_Attempt
+    T_Attempt -->|"Deliver Final AI Scorecard"| Student
+```
+
 ### 3.5.4} Level 2B DFD (Exam Execution & Proctoring Sub-Process)
 Focuses on runtime assessment delivery and integrity enforcement:
 - **Process 3.1**: Verify candidate eligibility and lock fullscreen execution.
@@ -704,18 +857,67 @@ Focuses on runtime assessment delivery and integrity enforcement:
 - **Process 3.4**: Accumulate violation telemetry; execute auto-submit upon reaching limit.
 - **Process 3.5**: Transmit answers payload to evaluation engine.
 
+<p align="center">
+  <img src="./Project_Diagrams_Word/3.5.4_Level_2B_DFD.png" alt="Figure 3.9: Data Flow Diagram (DFD) Level 2B – Exam Execution & Proctoring Sub-Process" width="80%" />
+  <br><em>Figure 3.9: Data Flow Diagram (DFD) Level 2B – Exam Execution & Proctoring Sub-Process</em>
+</p>
+
+```mermaid
+flowchart TD
+    Student["Student Browser"]
+
+    subgraph OfflineSystem["Process 5.0: Offline Sync Architecture"]
+        P5_1["5.1 Package Bundler"]
+        P5_2["5.2 Local Storage Cache Manager"]
+        P5_3["5.3 Offline Exam Execution Sandbox"]
+        P5_4["5.4 Batch Sync Reconciliation Engine"]
+    end
+
+    subgraph CentralDB["Server Database"]
+        DB_Quizzes[("quizzes")]
+        DB_Attempts[("quiz_attempts")]
+    end
+
+    Student -->|"Click Save Offline"| P5_1
+    DB_Quizzes -->|"Extract Quiz and Question Records"| P5_1
+    P5_1 -->|"Encrypted quizpkg json"| P5_2
+
+    P5_2 -->|"Load Local Package"| P5_3
+    Student -->|"Complete Offline Test"| P5_3
+    P5_3 -->|"Record Attempt with Synced False"| P5_2
+
+    Student -->|"Reconnect and Click Sync Now"| P5_4
+    P5_2 -->|"Read Pending Attempts Array"| P5_4
+    P5_4 -->|"Insert Graded Attempts"| DB_Attempts
+    DB_Attempts -->|"Sync Confirmation"| Student
+```
+
 ### 3.5.6} Gantt Chart.
 The project schedule followed an Agile timeline spanning five engineering sprints:
 
+<p align="center">
+  <img src="./Project_Diagrams_Word/3.5.6_Gantt_Chart.png" alt="Figure 3.10: Project SDLC Gantt Chart & Engineering Sprint Schedule" width="90%" />
+  <br><em>Figure 3.10: Project SDLC Gantt Chart & Engineering Sprint Schedule</em>
+</p>
+
+```mermaid
+flowchart LR
+    M1["Week 1-2<br/>Requirements Analysis<br/>& Literature Review"] --> M2["Week 3-4<br/>System Architecture<br/>& Database Design"]
+    M2 --> M3["Week 5-6<br/>Frontend Development<br/>Next.js + RetroUI"]
+    M3 --> M4["Week 7-8<br/>Backend API Engine<br/>& Auth (OTP/Google)"]
+    M4 --> M5["Week 9-10<br/>AI Bloom Synthesizer<br/>& Question Forge"]
+    M5 --> M6["Week 11-12<br/>Offline Storage Engine<br/>& Batch Sync Manager"]
+    M6 --> M7["Week 13-14<br/>System Testing<br/>& Proctoring Audit"]
+    M7 --> M8["Week 15-16<br/>Production Deployment<br/>& Report Documentation"]
 ```
-Task / Sprint                       | Week 1 | Week 2 | Week 3 | Week 4 | Week 5 |
-------------------------------------+--------+--------+--------+--------+--------+
-Sprint 1: Architecture & DB Schema  | [====] |        |        |        |        |
-Sprint 2: Google Auth & Direct Reg  |        | [====] |        |        |        |
-Sprint 3: Exam Player & Proctoring  |        |        | [====] |        |        |
-Sprint 4: Balbharati & 36-Yr PYQs   |        |        |        | [====] |        |
-Sprint 5: QA, Testing & Deployment  |        |        |        |        | [====] |
-```
+
+| Task / Sprint | Week 1 | Week 2 | Week 3 | Week 4 | Week 5 | Status |
+|:---|:---:|:---:|:---:|:---:|:---:|:---:|
+| **Sprint 1: Architecture & DB Schema** | [====] | | | | | Completed |
+| **Sprint 2: Google Auth & Direct Reg** | | [====] | | | | Completed |
+| **Sprint 3: Exam Player & Proctoring** | | | [====] | | | Completed |
+| **Sprint 4: Balbharati & 36-Yr PYQs** | | | | [====] | | Completed |
+| **Sprint 5: QA, Testing & Deployment** | | | | | [====] | Completed |
 
 ## 3.6} Data Modelling.
 
@@ -773,26 +975,72 @@ The data model enforces relational normalization (3NF) to eliminate data redunda
 ## 3.7} E-R Diagram.
 Below is the Entity-Relationship Diagram representing the unified database schema:
 
-```
-  ┌────────────────────────┐              1:N              ┌────────────────────────┐
-  │         USERS          │ ─────────────────────────────<│        QUIZZES         │
-  │ PK: id                 │                               │ PK: id                 │
-  │     name, email        │                               │ FK: educatorId         │
-  │     passwordHash, role │                               │     title, timeLimit   │
-  └────────────────────────┘                               └────────────────────────┘
-              │ 1:N                                                    │ 1:N
-              │                                                        ▼
-              │                                            ┌────────────────────────┐
-              │                                            │       QUESTIONS        │
-              │                                            │ PK: id                 │
-              │                                            │ FK: quizId             │
-              ▼                                            │     text, bloomLevel   │
-  ┌────────────────────────┐                               └────────────────────────┘
-  │     QUIZ_ATTEMPTS      │                                           │
-  │ PK: id                 │>──────────────────────────────────────────┘
-  │ FK: quizId, studentId  │              N:1
-  │     score, bloomData   │
-  └────────────────────────┘
+<p align="center">
+  <img src="./Project_Diagrams_Word/3.7_ER_Diagram.png" alt="Figure 3.11: Entity-Relationship (E-R) Diagram (Single Unified Relational Schema)" width="85%" />
+  <br><em>Figure 3.11: Entity-Relationship (E-R) Diagram (Single Unified Relational Schema)</em>
+</p>
+
+```mermaid
+erDiagram
+    USERS ||--o{ QUIZZES : "authors (1:N)"
+    USERS ||--o{ QUIZ_ATTEMPTS : "submits (1:N)"
+    USERS ||..o{ OTP_VERIFICATIONS : "verifies email"
+    QUIZZES ||--|{ QUESTIONS : "contains (1:N)"
+    QUIZZES ||--o{ QUIZ_ATTEMPTS : "records (1:N)"
+
+    USERS {
+        string id PK
+        string name
+        string email UK
+        string phone_number
+        string password_hash
+        string role
+        datetime created_at
+    }
+
+    OTP_VERIFICATIONS {
+        string id PK
+        string email UK
+        string otp
+        datetime expires_at
+    }
+
+    QUIZZES {
+        string id PK
+        string educator_id FK
+        string title
+        string topic
+        string difficulty
+        int duration_minutes
+        int pass_percentage
+        boolean allow_offline
+    }
+
+    QUESTIONS {
+        string id PK
+        string quiz_id FK
+        string question_text
+        string options
+        int correct_answer
+        string explanation
+        string bloom_level
+        int points
+    }
+
+    QUIZ_ATTEMPTS {
+        string id PK
+        string quiz_id FK
+        string student_id FK
+        float score
+        float max_score
+        float percentage
+        boolean is_passed
+        int time_taken_seconds
+        int tab_switch_count
+        string ai_feedback_summary
+        boolean is_offline_synced
+        datetime completed_at
+    }
 ```
 
 
