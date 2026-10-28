@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "npm --prefix frontend run dev",
-    "build": "cd frontend && npm install && npm run build",
+    "build": "cd frontend && npm install && npm run build && node -e \"const fs=require('fs'); if(fs.existsSync('.next')) fs.cpSync('.next', '../.next', {recursive:true});\"",
     "start": "npm --prefix frontend run start"
   },
   "dependencies": {

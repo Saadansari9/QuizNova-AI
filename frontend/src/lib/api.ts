@@ -1,16 +1,24 @@
 import axios from 'axios';
 
-// Defaults to relative /api which leverages Next.js server proxy rewrite to localhost:5000
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || '/api';
+const getBaseUrl = () => {
+  const envUrl = process.env.NEXT_PUBLIC_API_URL;
+  if (!envUrl) return '/api';
+
+  // If running in browser on production (e.g. Vercel) and envUrl points to localhost, fall back to /api
+  if (typeof window !== 'undefined' && envUrl.includes('localhost') && !window.location.hostname.includes('localhost')) {
+    return '/api';
+  }
+  return envUrl;
+};
 
 /**
  * Axios instance preconfigured with withCredentials: true.
  * Ensures HTTP-Only cookies are automatically sent and received.
  */
 export const api = axios.create({
-  baseURL: API_BASE_URL,
+  baseURL: getBaseUrl(),
   withCredentials: true, // Required for HTTP-only cookies
-  timeout: 3000, // Fail fast if backend is offline or unreachable
+  timeout: 15000, // 15s timeout to comfortably handle serverless cold starts
   headers: {
     'Content-Type': 'application/json',
   },
