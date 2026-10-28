@@ -13,6 +13,7 @@ export interface AIGenerateRequest {
   count: number;
   difficulty: 'Easy' | 'Medium' | 'Hard';
   subtopics?: string;
+  apiKey?: string;
 }
 
 const domainKnowledge: Record<string, GeneratedQuestion[]> = {
@@ -225,7 +226,71 @@ const domainKnowledge: Record<string, GeneratedQuestion[]> = {
 };
 
 export const generateQuestions = async (req: AIGenerateRequest): Promise<GeneratedQuestion[]> => {
-  const { topic, count, difficulty } = req;
+  const { topic, count, difficulty, apiKey } = req;
+  const activeKey = apiKey || process.env.GEMINI_API_KEY;
+
+  // 1. Attempt Live Google Gemini Generation if an API key is provided
+  if (activeKey && activeKey.trim() !== '') {
+    try {
+      const geminiEndpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${activeKey.trim()}`;
+      const systemPrompt = `You are an expert assessment and quiz synthesis engine for education.
+Generate exactly ${count} multiple choice questions (MCQ) on the topic: "${topic}".
+Difficulty: ${difficulty}.
+
+Return STRICTLY a JSON array matching this structure without Markdown wraps or comments:
+[
+  {
+    "questionText": "Question string here",
+    "questionType": "MCQ",
+    "options": ["Option A", "Option B", "Option C", "Option D"],
+    "correctAnswer": 0,
+    "explanation": "Detailed pedagogical explanation of why this answer is correct",
+    "bloomLevel": "Remembering",
+    "points": ${difficulty === 'Hard' ? 3 : difficulty === 'Medium' ? 2 : 1}
+  }
+]
+Valid values for "bloomLevel" are strictly: "Remembering", "Understanding", "Applying", "Analyzing", or "Evaluating".
+"correctAnswer" must be an integer index (0, 1, 2, or 3) indicating which option is correct.`;
+
+      const response = await fetch(geminiEndpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents: [{ parts: [{ text: systemPrompt }] }],
+          generationConfig: {
+            temperature: 0.3,
+            maxOutputTokens: 2048,
+          },
+        }),
+      });
+
+      if (response.ok) {
+        const data: any = await response.json();
+        const rawText = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+        if (rawText) {
+          const cleanedJson = rawText.replace(/```json/gi, '').replace(/```/g, '').trim();
+          const parsed = JSON.parse(cleanedJson);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            return parsed.slice(0, count).map((q: any) => ({
+              questionText: q.questionText || 'Assessment Question',
+              questionType: 'MCQ',
+              options: Array.isArray(q.options) && q.options.length >= 2 ? q.options : ['Option A', 'Option B', 'Option C', 'Option D'],
+              correctAnswer: typeof q.correctAnswer === 'number' ? q.correctAnswer : 0,
+              explanation: q.explanation || 'Pedagogical explanation based on curriculum syllabus.',
+              bloomLevel: ['Remembering', 'Understanding', 'Applying', 'Analyzing', 'Evaluating'].includes(q.bloomLevel)
+                ? q.bloomLevel
+                : 'Understanding',
+              points: q.points || (difficulty === 'Hard' ? 3 : difficulty === 'Medium' ? 2 : 1),
+            }));
+          }
+        }
+      }
+    } catch (geminiError) {
+      console.warn('Gemini live generation encountered an error; seamlessly falling back to local domain engine:', geminiError);
+    }
+  }
+
+  // 2. Fallback to Local Pedagogical Knowledge Bank & Algorithmic Engine
   const normalizedTopic = topic.toLowerCase().trim();
 
   let matchedBank: GeneratedQuestion[] = [];

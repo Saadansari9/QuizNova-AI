@@ -29,6 +29,7 @@ export default function EducatorCreateQuizPage() {
   const [aiTopic, setAiTopic] = useState('Operating Systems - Deadlocks & Virtual Memory');
   const [aiCount, setAiCount] = useState(5);
   const [aiDifficulty, setAiDifficulty] = useState<'Easy' | 'Medium' | 'Hard'>('Medium');
+  const [geminiApiKey, setGeminiApiKey] = useState('');
   const [isGenerating, setIsGenerating] = useState(false);
 
   const [title, setTitle] = useState('');
@@ -65,6 +66,7 @@ export default function EducatorCreateQuizPage() {
         topic: aiTopic,
         count: Number(aiCount),
         difficulty: aiDifficulty,
+        apiKey: geminiApiKey.trim() || undefined,
       });
 
       if (res.data?.success && res.data?.questions && res.data.questions.length > 0) {
@@ -86,6 +88,7 @@ export default function EducatorCreateQuizPage() {
         topic: aiTopic,
         count: Number(aiCount),
         difficulty: aiDifficulty,
+        apiKey: geminiApiKey.trim() || undefined,
       });
       setQuestions(synthesized);
       if (!title) setTitle(aiTopic + ' - AI Examination');
@@ -299,24 +302,40 @@ export default function EducatorCreateQuizPage() {
             </div>
           </div>
 
-          <div className="mt-5 flex justify-end">
-            <button
-              onClick={handleGenerateAI}
-              disabled={isGenerating}
-              className="pixel-btn px-6 py-2.5 bg-[#8A5CFF] text-white font-minecraft text-xs uppercase flex items-center gap-2 disabled:opacity-60 cursor-pointer"
-            >
-              {isGenerating ? (
-                <>
-                  <div className="w-3.5 h-3.5 border-2 border-white border-t-transparent animate-spin"></div>
-                  <span>SYNTHESIZING BLOOM QUESTIONS...</span>
-                </>
-              ) : (
-                <>
-                  <Sparkles className="w-3.5 h-3.5 text-[#FFD000]" />
-                  <span>[ GENERATE AI QUESTIONS NOW ]</span>
-                </>
-              )}
-            </button>
+          {/* Optional Gemini API Key */}
+          <div className="mt-4 pt-4 border-t border-[#8A5CFF]/20 flex flex-col sm:flex-row items-center gap-3">
+            <div className="flex-1 w-full text-left">
+              <label className="block font-minecraft text-[10px] text-slate-400 uppercase mb-1">
+                GOOGLE GEMINI API KEY <span className="text-[#38E5FF] lowercase">(optional · leave blank for built-in AI synthesizer)</span>
+              </label>
+              <input
+                type="password"
+                value={geminiApiKey}
+                onChange={(e) => setGeminiApiKey(e.target.value)}
+                placeholder="AIzaSy... (leave blank to use QuizNova built-in pedagogical bank)"
+                className="w-full px-3 py-2 bg-[#0c0d14] border border-[#8A5CFF]/30 text-white placeholder:text-slate-600 font-mono text-[11px] focus:outline-none focus:border-[#8A5CFF] shadow-[2px_2px_0_0_#000]"
+              />
+            </div>
+            <div className="self-end mt-2 sm:mt-0">
+              <button
+                type="button"
+                onClick={handleGenerateAI}
+                disabled={isGenerating}
+                className="pixel-btn px-6 py-2.5 bg-[#8A5CFF] text-white font-minecraft text-xs uppercase flex items-center gap-2 disabled:opacity-60 cursor-pointer shadow-[3px_3px_0_0_#000]"
+              >
+                {isGenerating ? (
+                  <>
+                    <div className="w-3.5 h-3.5 border-2 border-white border-t-transparent animate-spin"></div>
+                    <span>SYNTHESIZING BLOOM QUESTIONS...</span>
+                  </>
+                ) : (
+                  <>
+                    <Sparkles className="w-3.5 h-3.5 text-[#FFD000]" />
+                    <span>[ GENERATE AI QUESTIONS NOW ]</span>
+                  </>
+                )}
+              </button>
+            </div>
           </div>
         </div>
 

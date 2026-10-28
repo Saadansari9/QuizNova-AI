@@ -10,6 +10,7 @@ const generateAISchema = z.object({
   count: z.number().min(1).max(20).default(5),
   difficulty: z.enum(['Easy', 'Medium', 'Hard']).default('Medium'),
   subtopics: z.string().optional(),
+  apiKey: z.string().optional(),
 });
 
 const createQuizSchema = z.object({
@@ -55,8 +56,8 @@ export const generateAIQuestionsHandler = async (req: AuthenticatedRequest, res:
       return;
     }
 
-    const { topic, count, difficulty, subtopics } = validated.data;
-    const questions = await generateQuestions({ topic, count, difficulty, subtopics });
+    const { topic, count, difficulty, subtopics, apiKey } = validated.data;
+    const questions = await generateQuestions({ topic, count, difficulty, subtopics, apiKey });
 
     res.status(200).json({
       success: true,

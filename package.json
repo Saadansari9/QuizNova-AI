@@ -6,5 +6,8 @@
     "dev": "npm --prefix frontend run dev",
     "build": "cd frontend && npm install && npm run build",
     "start": "npm --prefix frontend run start"
+  },
+  "dependencies": {
+    "puppeteer-core": "^25.16.0"
   }
 }

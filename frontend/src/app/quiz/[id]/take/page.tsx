@@ -18,6 +18,10 @@ import {
   CheckCircle2,
   HelpCircle,
   Zap,
+  Video,
+  Eye,
+  Maximize2,
+  Minimize2,
 } from 'lucide-react';
 
 export default function TakeQuizPage() {
@@ -33,6 +37,11 @@ export default function TakeQuizPage() {
 
   const [tabSwitches, setTabSwitches] = useState(0);
   const [showCheatingWarning, setShowCheatingWarning] = useState(false);
+  const [cameraActive, setCameraActive] = useState(false);
+  const [isFullscreen, setIsFullscreen] = useState(false);
+  const [cameraError, setCameraError] = useState<string | null>(null);
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+  const streamRef = useRef<MediaStream | null>(null);
 
   const [timeLeftSeconds, setTimeLeftSeconds] = useState<number>(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -88,8 +97,75 @@ export default function TakeQuizPage() {
       }
     };
 
+    const handleFullscreenChange = () => {
+      const active = !!document.fullscreenElement;
+      setIsFullscreen(active);
+      if (!active) {
+        setTabSwitches((prev) => {
+          const updated = prev + 1;
+          setShowCheatingWarning(true);
+          return updated;
+        });
+      }
+    };
+
     document.addEventListener('visibilitychange', handleVisibilityChange);
-    return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
+    document.addEventListener('fullscreenchange', handleFullscreenChange);
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      document.removeEventListener('fullscreenchange', handleFullscreenChange);
+    };
+  }, []);
+
+  const startCamera = async () => {
+    try {
+      setCameraError(null);
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: { width: 320, height: 240, facingMode: 'user' },
+        audio: false,
+      });
+      streamRef.current = stream;
+      if (videoRef.current) {
+        videoRef.current.srcObject = stream;
+      }
+      setCameraActive(true);
+    } catch {
+      setCameraError('Camera access denied or unavailable on this device.');
+      setCameraActive(false);
+    }
+  };
+
+  const stopCamera = () => {
+    if (streamRef.current) {
+      streamRef.current.getTracks().forEach((track) => track.stop());
+      streamRef.current = null;
+    }
+    if (videoRef.current) {
+      videoRef.current.srcObject = null;
+    }
+    setCameraActive(false);
+  };
+
+  const toggleFullscreen = async () => {
+    try {
+      if (!document.fullscreenElement) {
+        await document.documentElement.requestFullscreen();
+        setIsFullscreen(true);
+      } else {
+        await document.exitFullscreen();
+        setIsFullscreen(false);
+      }
+    } catch (err) {
+      console.warn('Fullscreen request failed:', err);
+    }
+  };
+
+  useEffect(() => {
+    return () => {
+      if (streamRef.current) {
+        streamRef.current.getTracks().forEach((track) => track.stop());
+      }
+    };
   }, []);
 
   const handleSubmit = useCallback(async () => {
@@ -315,12 +391,92 @@ export default function TakeQuizPage() {
             </div>
           </div>
 
-          {/* Right Palette */}
-          <div className="lg:col-span-4 bg-slate-900/80 backdrop-blur-xl rounded-3xl border border-slate-800 p-6 shadow-2xl flex flex-col justify-between">
-            <div>
-              <h3 className="text-xs font-bold text-white uppercase tracking-wider mb-4 pb-3 border-b border-slate-800">
-                Examination Palette
-              </h3>
+          {/* Right Column: Proctoring HUD & Examination Palette */}
+          <div className="lg:col-span-4 space-y-6 flex flex-col justify-between">
+            {/* AI Proctoring Telemetry HUD */}
+            <div className="bg-slate-900/80 backdrop-blur-xl rounded-3xl border border-slate-800 p-5 shadow-2xl">
+              <div className="flex items-center justify-between pb-3 border-b border-slate-800 mb-3">
+                <div className="flex items-center gap-2">
+                  <ShieldAlert className="w-4 h-4 text-cyan-400" />
+                  <span className="text-xs font-black uppercase text-white tracking-wider">AI Proctoring HUD</span>
+                </div>
+                <span className={`px-2 py-0.5 rounded-full text-[10px] font-mono font-bold border ${tabSwitches === 0 ? 'bg-emerald-950 text-emerald-400 border-emerald-800' : 'bg-rose-950 text-rose-400 border-rose-800 animate-pulse'}`}>
+                  {tabSwitches} / 3 Strikes
+                </span>
+              </div>
+
+              {/* Webcam Feed Box */}
+              <div className="relative rounded-2xl overflow-hidden bg-slate-950 border border-slate-800 aspect-[16/10] flex items-center justify-center mb-3">
+                {cameraActive ? (
+                  <>
+                    <video
+                      ref={videoRef}
+                      autoPlay
+                      playsInline
+                      muted
+                      className="w-full h-full object-cover -scale-x-100"
+                    />
+                    <div className="absolute inset-0 border-2 border-dashed border-cyan-500/40 pointer-events-none rounded-xl m-2 flex flex-col justify-between p-2">
+                      <div className="flex items-center justify-between text-[9px] font-mono text-cyan-400 bg-slate-950/70 px-1.5 py-0.5 rounded">
+                        <span className="flex items-center gap-1">
+                          <span className="w-1.5 h-1.5 rounded-full bg-rose-500 animate-ping"></span>
+                          REC ● LIVE
+                        </span>
+                        <span>FACE: SUPERVISED</span>
+                      </div>
+                      <div className="text-right text-[8px] font-mono text-cyan-400/80 bg-slate-950/70 px-1.5 py-0.5 rounded self-end">
+                        ANTI-CHEAT ACTIVE
+                      </div>
+                    </div>
+                  </>
+                ) : (
+                  <div className="text-center p-4">
+                    <Eye className="w-6 h-6 text-slate-600 mx-auto mb-1.5" />
+                    <p className="text-[11px] text-slate-300 font-semibold">Webcam Proctor Ready</p>
+                    <p className="text-[9px] text-slate-500 mt-0.5">Activate for live AI anti-cheating supervision</p>
+                  </div>
+                )}
+              </div>
+
+              {cameraError && (
+                <p className="text-[10px] text-rose-400 bg-rose-950/40 p-2 rounded-xl border border-rose-800/40 mb-3">{cameraError}</p>
+              )}
+
+              <div className="grid grid-cols-2 gap-2">
+                <button
+                  type="button"
+                  onClick={cameraActive ? stopCamera : startCamera}
+                  className={`px-3 py-2 rounded-xl text-[11px] font-bold flex items-center justify-center gap-1.5 border transition-all cursor-pointer ${
+                    cameraActive
+                      ? 'bg-rose-950/60 text-rose-300 border-rose-700/60 hover:bg-rose-900/60'
+                      : 'bg-indigo-950/80 text-indigo-300 border-indigo-700/60 hover:bg-indigo-900/60'
+                  }`}
+                >
+                  <Video className="w-3.5 h-3.5" />
+                  <span>{cameraActive ? 'Stop Cam' : 'Start Cam'}</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={toggleFullscreen}
+                  className={`px-3 py-2 rounded-xl text-[11px] font-bold flex items-center justify-center gap-1.5 border transition-all cursor-pointer ${
+                    isFullscreen
+                      ? 'bg-emerald-950/60 text-emerald-300 border-emerald-700/60'
+                      : 'bg-slate-800 text-slate-300 border-slate-700 hover:bg-slate-700'
+                  }`}
+                >
+                  <Maximize2 className="w-3.5 h-3.5" />
+                  <span>{isFullscreen ? 'Exit Full' : 'Fullscreen'}</span>
+                </button>
+              </div>
+            </div>
+
+            {/* Examination Palette */}
+            <div className="bg-slate-900/80 backdrop-blur-xl rounded-3xl border border-slate-800 p-6 shadow-2xl flex-1 flex flex-col justify-between">
+              <div>
+                <h3 className="text-xs font-bold text-white uppercase tracking-wider mb-4 pb-3 border-b border-slate-800">
+                  Examination Palette
+                </h3>
 
               <div className="grid grid-cols-5 gap-2.5 mb-6">
                 {quiz.questions?.map((q, idx) => {
@@ -380,8 +536,9 @@ export default function TakeQuizPage() {
               </button>
             </div>
           </div>
-        </main>
-      </div>
-    </ProtectedRoute>
-  );
+        </div>
+      </main>
+    </div>
+  </ProtectedRoute>
+);
 }
