@@ -111,36 +111,41 @@ export default function TakeQuizPage() {
     const fetchQuiz = async () => {
       try {
         setLoading(true);
-        const res = await api.get('/quiz/' + quizId);
-        if (res.data?.success && res.data?.quiz) {
-          const qData: Quiz = res.data.quiz;
-          setQuiz(qData);
-          setTimeLeftSeconds(qData.durationMinutes * 60);
-          startTimeRef.current = Date.now();
-          return;
+        let loadedQuiz: Quiz | null = null;
+        try {
+          const res = await api.get('/quiz/' + quizId);
+          if (res.data?.success && res.data?.quiz) {
+            loadedQuiz = res.data.quiz;
+          }
+        } catch {
+          // Backend offline or unreachable, fall through to local lookup
         }
-      } catch {
-        // Backend offline or unreachable, fall through to local lookup
-      }
 
-      // Local quiz lookup
-      const localQuiz = findQuizById(quizId);
-      if (localQuiz) {
-        setQuiz(localQuiz);
-        setTimeLeftSeconds(localQuiz.durationMinutes * 60);
-        startTimeRef.current = Date.now();
-      } else {
-        alert('Notice: Quiz loaded from local catalog.');
-        const fallback = findQuizById('quiz_os_deadlocks_01') || findQuizById('quiz_mb_sci_10_01');
-        if (fallback) {
-          setQuiz(fallback);
-          setTimeLeftSeconds(fallback.durationMinutes * 60);
+        // Local quiz lookup
+        if (!loadedQuiz) {
+          loadedQuiz = findQuizById(quizId);
+        }
+
+        // Default catalog fallback if specific ID not found
+        if (!loadedQuiz) {
+          loadedQuiz =
+            findQuizById('quiz_mb_sci_10_01') ||
+            findQuizById('quiz_mb_phy_12_01') ||
+            findQuizById('quiz_os_deadlocks_01');
+        }
+
+        if (loadedQuiz) {
+          setQuiz(loadedQuiz);
+          setTimeLeftSeconds((loadedQuiz.durationMinutes || 20) * 60);
           startTimeRef.current = Date.now();
         } else {
           router.push('/dashboard/student');
         }
+      } catch (err) {
+        console.error('Quiz initialization failed:', err);
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
     };
 
     fetchQuiz();

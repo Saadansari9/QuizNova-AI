@@ -7,7 +7,7 @@ import { useAuth } from '@/context/AuthContext';
 import { api } from '@/lib/api';
 import { Quiz, StudentAnalytics, OfflinePackage } from '@/types/quiz';
 import { saveQuizForOffline, getOfflineQuizzes } from '@/lib/offlineStorage';
-import { getAllQuizzes, getStudentAnalytics } from '@/lib/quizStorage';
+import { getAllQuizzes, getStudentAnalytics, findQuizById } from '@/lib/quizStorage';
 import {
   GraduationCap,
   Clock,
@@ -89,10 +89,48 @@ export default function StudentDashboard() {
   const handleSaveForOffline = async (quizId: string) => {
     try {
       setDownloadingId(quizId);
-      const res = await api.get('/quiz/' + quizId + '/export-offline');
-      if (res.data) {
-        saveQuizForOffline(res.data as OfflinePackage);
-        setOfflineSavedIds([...offlineSavedIds, quizId]);
+      let pkg: OfflinePackage | null = null;
+      try {
+        const res = await api.get('/quiz/' + quizId + '/export-offline');
+        if (res.data?.questions) {
+          pkg = res.data as OfflinePackage;
+        }
+      } catch {
+        // Fallback to local catalog
+      }
+
+      if (!pkg) {
+        const localQ = findQuizById(quizId);
+        if (localQ) {
+          pkg = {
+            packageVersion: '1.0.0',
+            quizId: localQ.id,
+            title: localQ.title,
+            description: localQ.description,
+            topic: localQ.topic,
+            difficulty: localQ.difficulty,
+            durationMinutes: localQ.durationMinutes,
+            totalMarks: localQ.totalMarks,
+            passPercentage: localQ.passPercentage,
+            exportedAt: new Date().toISOString(),
+            questions: (localQ.questions || []).map((q, idx) => ({
+              id: q.id || `q_${idx}`,
+              questionText: q.questionText,
+              questionType: q.questionType,
+              options: q.options,
+              points: q.points || 2,
+              bloomLevel: q.bloomLevel || 'Understanding',
+            })),
+            checksum: 'ck_' + Date.now().toString(36),
+          };
+        }
+      }
+
+      if (pkg) {
+        saveQuizForOffline(pkg);
+        setOfflineSavedIds((prev) => Array.from(new Set([...prev, quizId])));
+      } else {
+        alert('Could not export quiz for offline mode.');
       }
     } catch (err) {
       alert('Failed to save quiz for offline mode.');
