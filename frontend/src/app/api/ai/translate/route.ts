@@ -21,6 +21,9 @@ export async function POST(request: Request) {
 
     return NextResponse.json({
       success: true,
+      translation: result.translatedText,
+      translatedText: result.translatedText,
+      targetLanguage: result.targetLanguage,
       result,
     });
   } catch (error: any) {
