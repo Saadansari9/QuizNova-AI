@@ -260,17 +260,34 @@ export default function StudentDashboard() {
 
         {/* 4 Academic Department Portals */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-          <div className="pixel-box bg-[#1a1833] p-4 text-left">
+          <button
+            type="button"
+            onClick={() => {
+              setSelectedStandard('all');
+              setSelectedStream('all');
+              setSelectedSubject('all');
+              const el = document.getElementById('available-exams');
+              if (el) {
+                el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                el.classList.add('ring-4', 'ring-[#38E5FF]', 'shadow-[0_0_24px_#38E5FF]');
+                setTimeout(() => el.classList.remove('ring-4', 'ring-[#38E5FF]', 'shadow-[0_0_24px_#38E5FF]'), 2000);
+              }
+            }}
+            className="pixel-box bg-[#1a1833] p-4 text-left hover:bg-[#25224a] transition-all cursor-pointer group border-2 border-[#38E5FF] shadow-[4px_4px_0_0_#000] w-full"
+            title="Click to view and jump to available examinations"
+          >
             <div className="flex items-center gap-2 mb-1 text-[#38E5FF] font-minecraft text-xs uppercase">
-              <GraduationCap className="w-4 h-4" />
+              <GraduationCap className="w-4 h-4 text-[#38E5FF]" />
               <span>DEPT 1</span>
             </div>
-            <h3 className="font-minecraft text-sm font-bold text-white uppercase">EXAMS & QUIZZES</h3>
+            <h3 className="font-minecraft text-sm font-bold text-white uppercase group-hover:text-[#38E5FF] transition-colors">
+              EXAMS & QUIZZES
+            </h3>
             <p className="text-[10px] font-mono text-slate-300 mt-0.5">Balbharati textbook chapter tests</p>
-            <span className="inline-block mt-2 font-minecraft text-[10px] text-[#FFD000] bg-black px-1.5 py-0.5 border border-black uppercase font-bold">
-              ACTIVE VIEWING ↓
+            <span className="inline-flex items-center gap-1 mt-2 font-minecraft text-[10px] text-[#38E5FF] group-hover:text-white transition-colors">
+              VIEW EXAMS ↓
             </span>
-          </div>
+          </button>
 
           <Link
             href="/pyqs"
@@ -469,7 +486,7 @@ export default function StudentDashboard() {
         </div>
 
         {/* Quizzes List */}
-        <div className="mb-8 text-left">
+        <div id="available-exams" className="mb-8 text-left scroll-mt-24 transition-all duration-300 p-2">
           <div className="flex items-center justify-between mb-4">
             <h2 className="font-minecraft text-base sm:text-lg font-bold text-white flex items-center gap-2 uppercase">
               <Zap className="w-5 h-5 text-[#38E5FF]" />
