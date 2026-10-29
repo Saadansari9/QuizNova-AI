@@ -11,7 +11,8 @@ export async function GET(request: Request) {
   const rawVal = tokenMatch.split('=')[1]?.trim();
   if (rawVal) {
     try {
-      const decodedStr = Buffer.from(rawVal, 'base64').toString('utf-8');
+      const cleanRawVal = decodeURIComponent(rawVal);
+      const decodedStr = Buffer.from(cleanRawVal, 'base64').toString('utf-8');
       const parsedUser = JSON.parse(decodedStr);
       if (parsedUser && parsedUser.email) {
         return NextResponse.json({

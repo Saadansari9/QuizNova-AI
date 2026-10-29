@@ -30,9 +30,9 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, allowe
 
   if (loading) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-slate-50">
-        <div className="w-12 h-12 border-4 border-indigo-200 border-t-indigo-600 rounded-full animate-spin"></div>
-        <p className="mt-4 text-sm font-medium text-slate-600">Authenticating secure session...</p>
+      <div className="min-h-screen flex flex-col items-center justify-center bg-[#0c0d14] text-white font-minecraft">
+        <div className="w-12 h-12 border-4 border-indigo-500 border-t-yellow-400 rounded-full animate-spin"></div>
+        <p className="mt-4 text-xs font-bold text-slate-400 uppercase tracking-wider">Authenticating secure session...</p>
       </div>
     );
   }

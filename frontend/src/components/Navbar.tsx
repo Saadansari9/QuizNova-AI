@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
 import {
   BookOpen,
@@ -15,6 +16,12 @@ import {
 
 export const Navbar: React.FC = () => {
   const { user, logout, loading } = useAuth();
+  const pathname = usePathname();
+
+  // Hide global navbar during active examination for strict proctoring lockdown
+  if (pathname?.includes('/take') || pathname?.includes('/quiz/offline')) {
+    return null;
+  }
 
   return (
     <nav className="border-b-4 border-black bg-[#0f1422] sticky top-0 z-50 transition-all shadow-[0_4px_0_0_#000000]">
@@ -62,6 +69,13 @@ export const Navbar: React.FC = () => {
             >
               <Zap className="w-3.5 h-3.5 text-cyan-400" />
               <span>[ FORMULAS ]</span>
+            </Link>
+            <Link
+              href="/dashboard/student/ai-grader"
+              className="text-[#FFD000] hover:text-white px-3 py-1.5 border-2 border-transparent hover:border-black hover:bg-yellow-950/60 transition-all flex items-center gap-1.5 font-bold"
+            >
+              <Sparkles className="w-3.5 h-3.5 text-[#FFD000]" />
+              <span>[ AI GRADER ]</span>
             </Link>
             <Link
               href="/textbooks"

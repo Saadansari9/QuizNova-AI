@@ -19,6 +19,16 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
+function setAuthTokenCookie(u: User) {
+  if (typeof window === 'undefined') return;
+  try {
+    const tokenVal = btoa(JSON.stringify(u));
+    document.cookie = `token=${tokenVal}; path=/; max-age=604800; SameSite=Lax`;
+  } catch {
+    document.cookie = `token=active_session_${Date.now()}; path=/; max-age=604800; SameSite=Lax`;
+  }
+}
+
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
@@ -59,7 +69,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setUser(googleUser);
       if (typeof window !== 'undefined') {
         localStorage.setItem('quiznova_current_user', JSON.stringify(googleUser));
-        document.cookie = `token=active_session_${Date.now()}; path=/; max-age=604800; SameSite=Lax`;
+        setAuthTokenCookie(googleUser);
       }
     }
   }, [session, status]);
@@ -72,7 +82,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         setUser(res.data.user);
         if (typeof window !== 'undefined') {
           localStorage.setItem('quiznova_current_user', JSON.stringify(res.data.user));
-          document.cookie = `token=active_session_${Date.now()}; path=/; max-age=604800; SameSite=Lax`;
+          setAuthTokenCookie(res.data.user);
         }
         return;
       }
@@ -84,8 +94,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       const cached = localStorage.getItem('quiznova_current_user');
       if (cached) {
         try {
-          setUser(JSON.parse(cached));
-          document.cookie = `token=active_session_${Date.now()}; path=/; max-age=604800; SameSite=Lax`;
+          const u = JSON.parse(cached);
+          setUser(u);
+          setAuthTokenCookie(u);
           return;
         } catch {
           // ignore parse error
@@ -129,7 +140,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         setUser(fallbackGoogleUser);
         if (typeof window !== 'undefined') {
           localStorage.setItem('quiznova_current_user', JSON.stringify(fallbackGoogleUser));
-          document.cookie = `token=active_session_${Date.now()}; path=/; max-age=604800; SameSite=Lax`;
+          setAuthTokenCookie(fallbackGoogleUser);
         }
         window.location.href = target;
         return { success: true };
@@ -287,7 +298,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         setUser(res.data.user);
         if (typeof window !== 'undefined') {
           localStorage.setItem('quiznova_current_user', JSON.stringify(res.data.user));
-          document.cookie = `token=active_session_${Date.now()}; path=/; max-age=604800; SameSite=Lax`;
+          setAuthTokenCookie(res.data.user);
           sessionStorage.removeItem('pending_otp_' + normalizedEmail);
         }
         return { success: true, message: res.data.message };

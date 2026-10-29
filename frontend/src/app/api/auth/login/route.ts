@@ -43,6 +43,15 @@ export async function POST(request: Request) {
 
     if (OFFICIAL_ACCOUNTS[normalizedEmail]) {
       const acc = OFFICIAL_ACCOUNTS[normalizedEmail];
+      if (!acc.passwords.includes(password)) {
+        return NextResponse.json(
+          {
+            success: false,
+            message: `Invalid password for official ${acc.role} account. (Default: ${acc.passwords[0]})`,
+          },
+          { status: 401 }
+        );
+      }
       role = explicitRole || acc.role;
       cleanName = acc.name;
     } else {

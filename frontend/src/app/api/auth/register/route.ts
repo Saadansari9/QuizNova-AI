@@ -28,7 +28,9 @@ export async function POST(request: Request) {
       user,
     });
 
-    response.cookies.set('token', `active_session_${Date.now()}`, {
+    const tokenVal = Buffer.from(JSON.stringify(user)).toString('base64');
+
+    response.cookies.set('token', tokenVal, {
       httpOnly: false,
       secure: process.env.NODE_ENV === 'production',
       maxAge: 7 * 24 * 60 * 60,
