@@ -1,5 +1,29 @@
 import { NextResponse } from 'next/server';
 
+interface OfficialAccount {
+  name: string;
+  role: 'Student' | 'Educator';
+  passwords: string[];
+}
+
+const OFFICIAL_ACCOUNTS: Record<string, OfficialAccount> = {
+  'student@quiznova.edu': {
+    name: 'Saad Ansari (SSC Board Scholar)',
+    role: 'Student',
+    passwords: ['Student@123', 'student123', 'password123', '123456'],
+  },
+  'educator@quiznova.edu': {
+    name: 'Prof. Anjali Deshmukh (SSC Exam Chair)',
+    role: 'Educator',
+    passwords: ['Educator@123', 'educator123', 'password123', '123456'],
+  },
+  'admin@quiznova.edu': {
+    name: 'System Administrator (QuizNova)',
+    role: 'Educator',
+    passwords: ['Admin@123', 'admin123', 'password123', '123456'],
+  },
+};
+
 export async function POST(request: Request) {
   try {
     const body = await request.json();
@@ -13,20 +37,30 @@ export async function POST(request: Request) {
       );
     }
 
-    const isEdu =
-      explicitRole === 'Educator' ||
-      normalizedEmail.includes('educator') ||
-      normalizedEmail.includes('teacher') ||
-      normalizedEmail.includes('admin') ||
-      normalizedEmail.includes('prof');
+    // Check Official Pre-Configured Accounts
+    let role: 'Student' | 'Educator' = 'Student';
+    let cleanName = 'Saad Ansari';
 
-    const role = isEdu ? 'Educator' : 'Student';
-    const cleanName =
-      normalizedEmail
-        .split('@')[0]
-        .replace(/[._]/g, ' ')
-        .replace(/\b\w/g, (c: string) => c.toUpperCase()) ||
-      (role === 'Educator' ? 'Prof. Anjali Deshmukh' : 'Saad Ansari');
+    if (OFFICIAL_ACCOUNTS[normalizedEmail]) {
+      const acc = OFFICIAL_ACCOUNTS[normalizedEmail];
+      role = explicitRole || acc.role;
+      cleanName = acc.name;
+    } else {
+      const isEdu =
+        explicitRole === 'Educator' ||
+        normalizedEmail.includes('educator') ||
+        normalizedEmail.includes('teacher') ||
+        normalizedEmail.includes('admin') ||
+        normalizedEmail.includes('prof');
+
+      role = isEdu ? 'Educator' : 'Student';
+      cleanName =
+        normalizedEmail
+          .split('@')[0]
+          .replace(/[._]/g, ' ')
+          .replace(/\b\w/g, (c: string) => c.toUpperCase()) ||
+        (role === 'Educator' ? 'Prof. Anjali Deshmukh' : 'Saad Ansari');
+    }
 
     const user = {
       id: 'usr_' + Date.now(),

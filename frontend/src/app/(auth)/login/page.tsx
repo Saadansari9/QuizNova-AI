@@ -32,7 +32,7 @@ function LoginForm() {
   const [selectedRole, setSelectedRole] = useState<UserRole>('Student');
   const [formData, setFormData] = useState({
     email: 'student@quiznova.edu',
-    password: 'password123',
+    password: 'Student@123',
   });
   const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState<{ email?: string; password?: string }>({});
@@ -49,7 +49,7 @@ function LoginForm() {
     setSelectedRole(role);
 
     const demoEmail = role === 'Educator' ? 'educator@quiznova.edu' : 'student@quiznova.edu';
-    const demoPass = 'password123';
+    const demoPass = role === 'Educator' ? 'Educator@123' : 'Student@123';
 
     setFormData({ email: demoEmail, password: demoPass });
 
@@ -222,29 +222,81 @@ function LoginForm() {
             <p className="text-xs text-slate-400 mt-0.5">Select your role or click instant 1-click login below</p>
           </div>
 
-          {/* 1-Click Fast Profile Login Presets */}
-          <div className="mb-5 p-3.5 bg-[#0c0f1a] border-2 border-black shadow-[3px_3px_0_0_#000]">
-            <span className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">
-              ⚡ INSTANT 1-CLICK DEMO ACCESS (NO SETUP REQUIRED):
-            </span>
-            <div className="grid grid-cols-2 gap-2">
+          {/* Official Test Credentials Card */}
+          <div className="mb-4 p-3 bg-[#0c0f1a] border-2 border-black shadow-[3px_3px_0_0_#000]">
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-[10px] font-bold text-yellow-300 uppercase tracking-wider flex items-center gap-1.5 font-minecraft">
+                <Sparkles className="w-3.5 h-3.5 text-yellow-400" /> OFFICIAL LOGIN IDS &amp; PASSWORDS:
+              </span>
+              <span className="text-[9px] font-mono text-slate-400">CLICK TO LOAD</span>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-left font-mono">
+              {/* Student Card */}
+              <div
+                onClick={() => {
+                  setSelectedRole('Student');
+                  setFormData({ email: 'student@quiznova.edu', password: 'Student@123' });
+                }}
+                className={`p-2 border-2 border-black cursor-pointer transition-all ${
+                  selectedRole === 'Student'
+                    ? 'bg-[#38E5FF]/20 border-[#38E5FF] shadow-[2px_2px_0_0_#38E5FF]'
+                    : 'bg-[#151c2e] hover:bg-[#1a233a]'
+                }`}
+              >
+                <div className="flex items-center justify-between mb-1">
+                  <span className="text-[10px] font-bold text-[#38E5FF] uppercase font-minecraft flex items-center gap-1">
+                    <GraduationCap className="w-3 h-3" /> STUDENT ID
+                  </span>
+                  <span className="text-[8px] px-1 bg-black text-[#27E279] border border-black font-minecraft">SSC 10</span>
+                </div>
+                <p className="text-[10px] text-white">ID: <span className="text-yellow-300 font-bold">student@quiznova.edu</span></p>
+                <p className="text-[10px] text-slate-300">PASS: <span className="text-[#38E5FF] font-bold">Student@123</span></p>
+              </div>
+
+              {/* Educator Card */}
+              <div
+                onClick={() => {
+                  setSelectedRole('Educator');
+                  setFormData({ email: 'educator@quiznova.edu', password: 'Educator@123' });
+                }}
+                className={`p-2 border-2 border-black cursor-pointer transition-all ${
+                  selectedRole === 'Educator'
+                    ? 'bg-[#8A5CFF]/20 border-[#8A5CFF] shadow-[2px_2px_0_0_#8A5CFF]'
+                    : 'bg-[#151c2e] hover:bg-[#1a233a]'
+                }`}
+              >
+                <div className="flex items-center justify-between mb-1">
+                  <span className="text-[10px] font-bold text-[#8A5CFF] uppercase font-minecraft flex items-center gap-1">
+                    <Cpu className="w-3 h-3" /> TEACHER ID
+                  </span>
+                  <span className="text-[8px] px-1 bg-black text-[#27E279] border border-black font-minecraft">CHAIR</span>
+                </div>
+                <p className="text-[10px] text-white">ID: <span className="text-yellow-300 font-bold">educator@quiznova.edu</span></p>
+                <p className="text-[10px] text-slate-300">PASS: <span className="text-[#8A5CFF] font-bold">Educator@123</span></p>
+              </div>
+            </div>
+
+            {/* Instant 1-Click Launch Bar */}
+            <div className="mt-2.5 pt-2 border-t border-slate-800 flex items-center gap-2">
+              <span className="text-[9px] text-slate-400 font-minecraft uppercase">1-CLICK LOGIN:</span>
               <button
                 type="button"
                 onClick={() => handleQuickLogin('Student')}
                 disabled={isSubmitting}
-                className="pixel-btn px-2.5 py-2 bg-[#38E5FF] hover:bg-[#2dc3d9] text-black text-[11px] font-bold uppercase tracking-wider flex items-center justify-center gap-1.5 cursor-pointer shadow-[2px_2px_0_0_#000]"
+                className="flex-1 py-1.5 bg-[#38E5FF] hover:bg-[#2dc3d9] text-black text-[10px] font-bold uppercase tracking-wider flex items-center justify-center gap-1 cursor-pointer border border-black shadow-[1px_1px_0_0_#000]"
               >
-                <GraduationCap className="w-3.5 h-3.5 text-black" />
-                <span>STUDENT DEMO</span>
+                <GraduationCap className="w-3 h-3" />
+                <span>STUDENT DIRECT</span>
               </button>
               <button
                 type="button"
                 onClick={() => handleQuickLogin('Educator')}
                 disabled={isSubmitting}
-                className="pixel-btn px-2.5 py-2 bg-[#8A5CFF] hover:bg-[#784de8] text-white text-[11px] font-bold uppercase tracking-wider flex items-center justify-center gap-1.5 cursor-pointer shadow-[2px_2px_0_0_#000]"
+                className="flex-1 py-1.5 bg-[#8A5CFF] hover:bg-[#784de8] text-white text-[10px] font-bold uppercase tracking-wider flex items-center justify-center gap-1 cursor-pointer border border-black shadow-[1px_1px_0_0_#000]"
               >
-                <Cpu className="w-3.5 h-3.5 text-white" />
-                <span>TEACHER DEMO</span>
+                <Cpu className="w-3 h-3" />
+                <span>TEACHER DIRECT</span>
               </button>
             </div>
           </div>
