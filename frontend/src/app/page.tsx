@@ -34,6 +34,7 @@ export default function HomePage() {
 
   const [activeTopic, setActiveTopic] = useState('Operating Systems');
   const [showVideoModal, setShowVideoModal] = useState(false);
+  const [heroVideoPlaying, setHeroVideoPlaying] = useState(false);
 
   const previewData: Record<string, { prompt: string; options: string[]; answer: string; bloom: string }> = {
     'Operating Systems': {
@@ -139,38 +140,69 @@ export default function HomePage() {
           {/* Right Column: Hero Visual with Retro Pixel Border Frame */}
           <div className="lg:col-span-5 relative">
             <div className="pixel-box bg-[#171926] p-2 relative group">
-              <div className="relative border-2 border-black overflow-hidden bg-black aspect-4/3">
-                <img
-                  src="/images/hero_students.jpg"
-                  alt="Students studying collaboratively with laptops in library"
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-90"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
-
-                {/* Retro Play Overlay Button */}
-                <button
-                  onClick={() => setShowVideoModal(true)}
-                  className="absolute inset-0 flex items-center justify-center group-hover:bg-black/30 transition-all cursor-pointer"
-                >
-                  <div className="pixel-btn p-4 bg-[#FFD000] text-black shadow-[4px_4px_0_0_#000] group-hover:scale-110 transition-transform">
-                    <Play className="w-8 h-8 fill-black" />
+              {heroVideoPlaying ? (
+                <div className="relative">
+                  <QuizNovaVideoPlayer
+                    onClose={() => setHeroVideoPlaying(false)}
+                    initialUnmuted={true}
+                  />
+                  <div className="mt-2.5 flex items-center justify-between font-minecraft text-[10px]">
+                    <button
+                      onClick={() => setHeroVideoPlaying(false)}
+                      className="pixel-btn px-2.5 py-1 bg-[#171926] text-white uppercase border border-black hover:text-[#FF4582] cursor-pointer"
+                    >
+                      ← MINIMIZE TO POSTER
+                    </button>
+                    <button
+                      onClick={() => setShowVideoModal(true)}
+                      className="pixel-btn px-2.5 py-1 bg-[#38E5FF] text-black uppercase border border-black font-bold cursor-pointer"
+                    >
+                      ⛶ EXPAND FULLSCREEN
+                    </button>
                   </div>
-                </button>
-
-                <div className="absolute bottom-2 left-2 right-2 p-3 bg-black/90 border-2 border-black font-minecraft text-left">
-                  <div className="flex items-center justify-between">
-                    <span className="text-[11px] text-[#38E5FF] flex items-center gap-1.5 uppercase">
-                      <GraduationCap className="w-4 h-4 text-[#FFD000]" /> CAMPUS ARCADE EDITION
-                    </span>
-                    <span className="text-[10px] bg-[#27E279] text-black px-1.5 py-0.5 font-bold uppercase">
-                      LIVE
-                    </span>
-                  </div>
-                  <p className="text-[10px] font-mono text-slate-300 mt-1">
-                    ACTIVE IN UNIVERSITY LABS, HIGH SCHOOLS, & OFFLINE HUBS.
-                  </p>
                 </div>
-              </div>
+              ) : (
+                <div className="relative border-2 border-black overflow-hidden bg-black aspect-4/3">
+                  <img
+                    src="/images/hero_students.jpg"
+                    alt="Students studying collaboratively with laptops in library"
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-90"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent"></div>
+
+                  {/* Retro Play Overlay Button with Clear Video Description */}
+                  <div className="absolute inset-0 flex flex-col items-center justify-center p-3 text-center">
+                    <button
+                      onClick={() => setHeroVideoPlaying(true)}
+                      className="group/btn flex flex-col items-center cursor-pointer transition-transform hover:scale-105"
+                    >
+                      <div className="pixel-btn p-4 sm:p-5 bg-[#FFD000] text-black shadow-[5px_5px_0_0_#000] mb-2.5 group-hover/btn:bg-[#27E279] transition-colors">
+                        <Play className="w-8 h-8 sm:w-10 sm:h-10 fill-black translate-x-0.5" />
+                      </div>
+                      <span className="bg-black/95 text-white border-2 border-[#FFD000] px-2.5 py-1 font-minecraft text-[11px] sm:text-xs uppercase tracking-wider shadow-[3px_3px_0_0_#000]">
+                        ▶ PLAY AI VIDEO: WHAT IS QUIZNOVA, WORKING & BENEFITS
+                      </span>
+                      <span className="text-[9px] sm:text-[10px] font-mono text-[#38E5FF] bg-black/90 px-2 py-0.5 mt-1 border border-black uppercase font-bold">
+                        INTERACTIVE 4-CHAPTER BRIEFING • AI VOICE NARRATION
+                      </span>
+                    </button>
+                  </div>
+
+                  <div className="absolute bottom-2 left-2 right-2 p-2.5 bg-black/90 border-2 border-black font-minecraft text-left">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[11px] text-[#38E5FF] flex items-center gap-1.5 uppercase">
+                        <GraduationCap className="w-4 h-4 text-[#FFD000]" /> CAMPUS ARCADE EDITION
+                      </span>
+                      <span className="text-[10px] bg-[#27E279] text-black px-1.5 py-0.5 font-bold uppercase">
+                        LIVE
+                      </span>
+                    </div>
+                    <p className="text-[10px] font-mono text-slate-300 mt-0.5">
+                      ACTIVE IN UNIVERSITY LABS, HIGH SCHOOLS, & OFFLINE HUBS.
+                    </p>
+                  </div>
+                </div>
+              )}
 
               {/* Pixel Badges floating */}
               <div className="absolute -top-3 -left-3 bg-[#FF4582] text-white border-2 border-black px-2.5 py-1 font-minecraft text-[10px] uppercase shadow-[3px_3px_0_0_#000] animate-bounce">

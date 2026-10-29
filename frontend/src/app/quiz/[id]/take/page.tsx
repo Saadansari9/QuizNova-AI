@@ -22,6 +22,8 @@ import {
   Eye,
   Maximize2,
   Minimize2,
+  Globe,
+  Sparkles,
 } from 'lucide-react';
 
 export default function TakeQuizPage() {
@@ -46,6 +48,64 @@ export default function TakeQuizPage() {
   const [timeLeftSeconds, setTimeLeftSeconds] = useState<number>(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const startTimeRef = useRef<number>(Date.now());
+
+  // AI Multilingual Translation State (EN, Marathi, Hindi)
+  const [currentLang, setCurrentLang] = useState<'en' | 'mr' | 'hi'>('en');
+  const [translating, setTranslating] = useState(false);
+  const [translatedCache, setTranslatedCache] = useState<Record<string, { q: string; opts: string[] }>>({});
+
+  const handleLanguageChange = async (targetLang: 'en' | 'mr' | 'hi') => {
+    if (targetLang === currentLang) return;
+    setCurrentLang(targetLang);
+
+    const activeQ = quiz?.questions ? quiz.questions[currentIndex] : null;
+    if (targetLang === 'en' || !activeQ) return;
+
+    const cacheKey = `${activeQ.id || currentIndex}_${targetLang}`;
+    if (translatedCache[cacheKey]) return;
+
+    try {
+      setTranslating(true);
+      const res = await fetch('/api/ai/translate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          text: activeQ.questionText,
+          targetLanguage: targetLang === 'mr' ? 'marathi' : 'hindi',
+          context: 'Maharashtra State Board Exam Question & Options: ' + activeQ.options.join(' | ')
+        }),
+      });
+      const data = await res.json();
+      if (data.success && data.translation) {
+        // Also translate options
+        const optPromises = activeQ.options.map(async (opt: string) => {
+          try {
+            const oRes = await fetch('/api/ai/translate', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                text: opt,
+                targetLanguage: targetLang === 'mr' ? 'marathi' : 'hindi',
+              }),
+            });
+            const oData = await oRes.json();
+            return oData.success ? oData.translation : opt;
+          } catch {
+            return opt;
+          }
+        });
+        const translatedOpts = await Promise.all(optPromises);
+        setTranslatedCache((prev) => ({
+          ...prev,
+          [cacheKey]: { q: data.translation, opts: translatedOpts },
+        }));
+      }
+    } catch {
+      // Keep original on error
+    } finally {
+      setTranslating(false);
+    }
+  };
 
   useEffect(() => {
     const fetchQuiz = async () => {
@@ -326,24 +386,86 @@ export default function TakeQuizPage() {
                     </span>
                   </div>
 
-                  <button
-                    onClick={() => toggleFlag(currentIndex)}
-                    className={'flex items-center gap-1 text-xs font-bold px-3 py-1.5 rounded-xl border transition-all cursor-pointer ' +
-                      (flagged[currentIndex]
-                        ? 'bg-amber-950/60 text-amber-300 border-amber-500/50'
-                        : 'bg-slate-950 text-slate-400 border-slate-800 hover:text-white')}
-                  >
-                    <Flag className={'w-3.5 h-3.5 ' + (flagged[currentIndex] ? 'fill-amber-400 text-amber-400' : '')} />
-                    <span>{flagged[currentIndex] ? 'Flagged' : 'Flag for Review'}</span>
-                  </button>
+                  <div className="flex items-center gap-2">
+                    {/* AI Multilingual Vernacular Toggle */}
+                    <div className="flex items-center bg-slate-950 border border-slate-800 rounded-xl p-1 gap-1">
+                      <span className="text-[10px] font-mono text-cyan-400 px-1.5 flex items-center gap-1 font-bold">
+                        <Globe className="w-3 h-3 text-cyan-400" /> AI:
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => handleLanguageChange('en')}
+                        className={`px-2 py-0.5 rounded-lg text-[10px] font-bold transition-all cursor-pointer ${
+                          currentLang === 'en'
+                            ? 'bg-indigo-600 text-white'
+                            : 'text-slate-400 hover:text-white'
+                        }`}
+                      >
+                        EN
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => handleLanguageChange('mr')}
+                        className={`px-2 py-0.5 rounded-lg text-[10px] font-bold transition-all cursor-pointer ${
+                          currentLang === 'mr'
+                            ? 'bg-indigo-600 text-white'
+                            : 'text-slate-400 hover:text-white'
+                        }`}
+                        title="Translate to Marathi via AI"
+                      >
+                        मराठी
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => handleLanguageChange('hi')}
+                        className={`px-2 py-0.5 rounded-lg text-[10px] font-bold transition-all cursor-pointer ${
+                          currentLang === 'hi'
+                            ? 'bg-indigo-600 text-white'
+                            : 'text-slate-400 hover:text-white'
+                        }`}
+                        title="Translate to Hindi via AI"
+                      >
+                        हिंदी
+                      </button>
+                    </div>
+
+                    <button
+                      onClick={() => toggleFlag(currentIndex)}
+                      className={'flex items-center gap-1 text-xs font-bold px-3 py-1.5 rounded-xl border transition-all cursor-pointer ' +
+                        (flagged[currentIndex]
+                          ? 'bg-amber-950/60 text-amber-300 border-amber-500/50'
+                          : 'bg-slate-950 text-slate-400 border-slate-800 hover:text-white')}
+                    >
+                      <Flag className={'w-3.5 h-3.5 ' + (flagged[currentIndex] ? 'fill-amber-400 text-amber-400' : '')} />
+                      <span className="hidden sm:inline">{flagged[currentIndex] ? 'Flagged' : 'Flag for Review'}</span>
+                    </button>
+                  </div>
                 </div>
 
+                {translating && (
+                  <div className="mb-3 px-3 py-1.5 bg-indigo-950/60 border border-indigo-800/60 rounded-xl text-indigo-300 text-xs flex items-center gap-2">
+                    <Sparkles className="w-3.5 h-3.5 text-yellow-400 animate-spin" />
+                    <span>Gemini AI translating question to {currentLang === 'mr' ? 'Marathi' : 'Hindi'}...</span>
+                  </div>
+                )}
+
                 <h2 className="text-base sm:text-lg font-bold text-white leading-relaxed mb-6">
-                  {currentQ.questionText}
+                  {(() => {
+                    const cacheKey = `${currentQ.id || currentIndex}_${currentLang}`;
+                    if (currentLang !== 'en' && translatedCache[cacheKey]) {
+                      return translatedCache[cacheKey].q;
+                    }
+                    return currentQ.questionText;
+                  })()}
                 </h2>
 
                 <div className="space-y-3 mb-8">
                   {currentQ.options.map((option, optIdx) => {
+                    const cacheKey = `${currentQ.id || currentIndex}_${currentLang}`;
+                    const displayOption =
+                      currentLang !== 'en' && translatedCache[cacheKey]?.opts?.[optIdx]
+                        ? translatedCache[cacheKey].opts[optIdx]
+                        : option;
                     const isSelected = answers[currentQ.id || ''] === optIdx;
                     return (
                       <button
@@ -362,7 +484,7 @@ export default function TakeQuizPage() {
                         >
                           {String.fromCharCode(65 + optIdx)}
                         </div>
-                        <span className="text-xs sm:text-sm font-medium leading-relaxed">{option}</span>
+                        <span className="text-xs sm:text-sm font-medium leading-relaxed">{displayOption}</span>
                       </button>
                     );
                   })}

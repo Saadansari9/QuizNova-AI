@@ -167,10 +167,16 @@ const SCENES: Scene[] = [
   },
 ];
 
-export function QuizNovaVideoPlayer({ onClose }: { onClose?: () => void }) {
+export function QuizNovaVideoPlayer({
+  onClose,
+  initialUnmuted = false,
+}: {
+  onClose?: () => void;
+  initialUnmuted?: boolean;
+}) {
   const [currentSceneIdx, setCurrentSceneIdx] = useState(0);
   const [isPlaying, setIsPlaying] = useState(true);
-  const [isMuted, setIsMuted] = useState(true);
+  const [isMuted, setIsMuted] = useState(!initialUnmuted);
   const [elapsedSceneSec, setElapsedSceneSec] = useState(0);
 
   const scene = SCENES[currentSceneIdx];
@@ -258,38 +264,47 @@ export function QuizNovaVideoPlayer({ onClose }: { onClose?: () => void }) {
   const sceneProgressPercent = Math.min(100, Math.round((elapsedSceneSec / scene.duration) * 100));
 
   return (
-    <div className="relative w-full aspect-video bg-[#0c0d14] border-4 border-black text-white font-minecraft flex flex-col justify-between overflow-hidden shadow-[8px_8px_0_0_#000] select-none">
+    <div className="relative w-full min-h-[440px] md:aspect-video bg-[#0c0d14] border-4 border-black text-white font-minecraft flex flex-col justify-between overflow-hidden shadow-[8px_8px_0_0_#000] select-none">
       {/* Background Animated Retro Grid and Cyber Lines */}
       <div className="absolute inset-0 opacity-20 pointer-events-none bg-[radial-gradient(#38E5FF_1px,transparent_1px)] [background-size:24px_24px]"></div>
       <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black/70 pointer-events-none"></div>
 
       {/* Top HUD Bar */}
-      <div className="relative z-20 flex items-center justify-between p-3 sm:p-4 border-b-2 border-black bg-[#121420]/90 backdrop-blur-sm">
-        <div className="flex items-center gap-2 sm:gap-3">
-          <span className="w-3 h-3 rounded-full bg-[#FF4582] animate-ping"></span>
-          <span className="text-[11px] sm:text-xs text-[#38E5FF] tracking-wider uppercase flex items-center gap-1.5 font-bold">
-            <Sparkles className="w-4 h-4 text-[#FFD000]" /> QUIZNOVA-AI SYSTEM BRIEFING
+      <div className="relative z-20 flex items-center justify-between p-3 sm:p-4 border-b-2 border-black bg-[#121420]/90 backdrop-blur-sm gap-2">
+        <div className="flex items-center gap-2 sm:gap-3 truncate">
+          <span className="w-2.5 h-2.5 rounded-full bg-[#FF4582] animate-ping shrink-0"></span>
+          <span className="text-[10px] sm:text-xs text-[#38E5FF] tracking-wider uppercase flex items-center gap-1.5 font-bold truncate">
+            <Sparkles className="w-3.5 h-3.5 text-[#FFD000] shrink-0" /> QUIZNOVA-AI BRIEFING
           </span>
-          <span className={`hidden sm:inline-block px-2 py-0.5 text-[9px] uppercase font-bold border border-black shadow-[2px_2px_0_0_#000] ${scene.badgeColor}`}>
+          <span className={`hidden md:inline-block px-2 py-0.5 text-[9px] uppercase font-bold border border-black shadow-[2px_2px_0_0_#000] shrink-0 ${scene.badgeColor}`}>
             {scene.badge}
           </span>
         </div>
 
-        {/* Scene Selection Tabs */}
-        <div className="flex items-center gap-1 sm:gap-2">
+        {/* Scene Selection Tabs + Close */}
+        <div className="flex items-center gap-1 sm:gap-1.5 shrink-0">
           {SCENES.map((s, idx) => (
             <button
               key={s.id}
               onClick={() => setCurrentSceneIdx(idx)}
-              className={`px-2 py-1 text-[9px] sm:text-[10px] uppercase border border-black transition-all cursor-pointer ${
+              className={`px-1.5 sm:px-2 py-1 text-[8px] sm:text-[9px] uppercase border border-black transition-all cursor-pointer ${
                 currentSceneIdx === idx
                   ? 'bg-[#FFD000] text-black font-black shadow-[2px_2px_0_0_#000]'
                   : 'bg-[#171926] text-slate-400 hover:text-white'
               }`}
             >
-              {idx === 0 ? '1. WHAT IS IT' : idx === 1 ? '2. WORKING' : idx === 2 ? '3. BENEFITS' : '4. DEMO'}
+              {idx === 0 ? '1. INTRO' : idx === 1 ? '2. WORKING' : idx === 2 ? '3. BENEFITS' : '4. DEMO'}
             </button>
           ))}
+          {onClose && (
+            <button
+              onClick={onClose}
+              className="pixel-btn p-1 bg-[#FF4582] text-white hover:bg-red-600 transition-colors cursor-pointer ml-1"
+              title="Close Player"
+            >
+              ✕
+            </button>
+          )}
         </div>
       </div>
 

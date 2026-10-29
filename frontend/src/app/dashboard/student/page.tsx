@@ -157,6 +157,13 @@ export default function StudentDashboard() {
 
               <div className="mt-5 flex flex-wrap items-center gap-3">
                 <Link
+                  href="/dashboard/student/ai-grader"
+                  className="pixel-btn px-3.5 py-2 bg-[#FFD000] text-black font-minecraft text-xs uppercase flex items-center gap-2 cursor-pointer shadow-[3px_3px_0_0_#000] hover:scale-105 transition-transform"
+                >
+                  <Sparkles className="w-3.5 h-3.5 text-black" />
+                  <span>[ 🤖 AI THEORY & DESCRIPTIVE GRADER ]</span>
+                </Link>
+                <Link
                   href="/dashboard/student/offline"
                   className="pixel-btn px-3.5 py-2 bg-[#27E279] text-black font-minecraft text-xs uppercase flex items-center gap-2 cursor-pointer"
                 >
@@ -179,6 +186,38 @@ export default function StudentDashboard() {
               <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-transparent to-transparent"></div>
             </div>
           </div>
+        </div>
+
+        {/* AI Flagship Suite Banner */}
+        <div className="mb-6 pixel-box bg-gradient-to-r from-[#171926] via-[#1a1833] to-[#25152b] p-4 sm:p-5 border-2 border-[#FFD000] shadow-[4px_4px_0_0_#000] flex flex-col md:flex-row items-center justify-between gap-4">
+          <div className="flex items-center gap-3.5 text-left">
+            <div className="p-2.5 bg-[#FFD000] text-black border-2 border-black shadow-[2px_2px_0_0_#000] shrink-0">
+              <Sparkles className="w-6 h-6 fill-black" />
+            </div>
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="font-minecraft text-xs text-[#FFD000] uppercase font-bold tracking-wider">
+                  [ NEW AI ENGINE ]
+                </span>
+                <span className="bg-[#FF4582] text-white px-2 py-0.5 font-minecraft text-[9px] uppercase border border-black shadow-[1px_1px_0_0_#000]">
+                  GEMINI 1.5 FLASH
+                </span>
+              </div>
+              <h3 className="font-minecraft text-sm sm:text-base font-black text-white uppercase mt-0.5">
+                AI THEORY & SUBJECTIVE ANSWER EVALUATOR
+              </h3>
+              <p className="font-mono text-[11px] text-slate-300 mt-0.5">
+                Paste any Maharashtra State Board descriptive answer (Science, History, Accounts, Economics, Marathi) for instant rubric marks, key concepts check, and model answers.
+              </p>
+            </div>
+          </div>
+          <Link
+            href="/dashboard/student/ai-grader"
+            className="pixel-btn px-4 py-2.5 bg-[#FFD000] text-black font-minecraft text-xs uppercase flex items-center gap-2 shrink-0 shadow-[3px_3px_0_0_#000] hover:bg-[#27E279] transition-colors cursor-pointer"
+          >
+            <span>LAUNCH AI GRADER</span>
+            <ArrowRight className="w-4 h-4" />
+          </Link>
         </div>
 
         {/* 4 Academic Department Portals */}
