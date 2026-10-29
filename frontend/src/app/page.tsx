@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { useAuth } from '@/context/AuthContext';
+import { QuizNovaVideoPlayer } from '@/components/QuizNovaVideoPlayer';
 import {
   Sparkles,
   Zap,
@@ -207,20 +208,7 @@ export default function HomePage() {
             </div>
 
             <div className="lg:col-span-7">
-              <div className="border-4 border-black bg-black aspect-video shadow-[6px_6px_0_0_#000] relative flex items-center justify-center overflow-hidden">
-                <video
-                  controls
-                  className="w-full h-full object-cover"
-                  poster="/images/hero_students.jpg"
-                >
-                  <source src="/videos/demo.mp4" type="video/mp4" />
-                  <source src="/videos/classroom.mp4" type="video/mp4" />
-                  Your browser does not support HTML5 video tag.
-                </video>
-              </div>
-              <p className="text-[10px] font-mono text-slate-400 mt-2 text-center">
-                📁 LOCAL VIDEO SLOT: <code className="text-[#38E5FF] bg-black px-1.5 py-0.5 border border-slate-700">frontend/public/videos/demo.mp4</code>
-              </p>
+              <QuizNovaVideoPlayer />
             </div>
           </div>
         </div>
@@ -389,18 +377,7 @@ export default function HomePage() {
                 <X className="w-4 h-4" />
               </button>
             </div>
-            <div className="aspect-video bg-black flex items-center justify-center">
-              <video
-                controls
-                autoPlay
-                className="w-full h-full object-cover"
-                poster="/images/hero_students.jpg"
-              >
-                <source src="/videos/demo.mp4" type="video/mp4" />
-                <source src="/videos/classroom.mp4" type="video/mp4" />
-                Your browser does not support the video tag.
-              </video>
-            </div>
+            <QuizNovaVideoPlayer onClose={() => setShowVideoModal(false)} />
           </div>
         </div>
       )}

@@ -9,7 +9,7 @@ import { User, UserRole, RegisterCredentials } from '@/types/auth';
 interface AuthContextType {
   user: User | null;
   loading: boolean;
-  login: (email: string, password: string) => Promise<{ success: boolean; message?: string }>;
+  login: (email: string, password: string, role?: UserRole) => Promise<{ success: boolean; message?: string }>;
   googleLogin: (role?: UserRole) => Promise<{ success: boolean; message?: string }>;
   sendOtp: (email: string, name?: string) => Promise<{ success: boolean; message?: string; demoOtp?: string }>;
   register: (data: RegisterCredentials) => Promise<{ success: boolean; message?: string; errors?: Array<{ field: string; message: string }> }>;
@@ -161,21 +161,23 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
-  const login = async (email: string, password: string) => {
+  const login = async (email: string, password: string, role?: UserRole) => {
     const normalizedEmail = email.toLowerCase().trim();
 
-    // 1. Try Backend API
+    // 1. Try Backend API / Next.js Serverless Route
     try {
       const res = await api.post<{ success: boolean; message: string; user: User }>('/auth/login', {
         email: normalizedEmail,
         password,
+        role,
       });
 
       if (res.data?.success && res.data?.user) {
         setUser(res.data.user);
         if (typeof window !== 'undefined') {
           localStorage.setItem('quiznova_current_user', JSON.stringify(res.data.user));
-          document.cookie = `token=active_session_${Date.now()}; path=/; max-age=604800; SameSite=Lax`;
+          const tokenVal = typeof btoa !== 'undefined' ? btoa(JSON.stringify(res.data.user)) : `active_session_${Date.now()}`;
+          document.cookie = `token=${tokenVal}; path=/; max-age=604800; SameSite=Lax`;
         }
         return { success: true, message: res.data.message };
       }
@@ -194,21 +196,24 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             id: matched.id || 'usr_' + Date.now(),
             name: matched.name,
             email: matched.email,
-            role: matched.role || 'Student',
+            role: role || matched.role || 'Student',
             phoneNumber: matched.phoneNumber,
           };
           setUser(u);
           localStorage.setItem('quiznova_current_user', JSON.stringify(u));
-          document.cookie = `token=active_session_${Date.now()}; path=/; max-age=604800; SameSite=Lax`;
+          const tokenVal = typeof btoa !== 'undefined' ? btoa(JSON.stringify(u)) : `active_session_${Date.now()}`;
+          document.cookie = `token=${tokenVal}; path=/; max-age=604800; SameSite=Lax`;
           return { success: true, message: 'Welcome back, ' + u.name };
         }
       } catch {
         // ignore JSON parse error
       }
 
-      const isEducator = normalizedEmail.includes('educator') || normalizedEmail.includes('teacher') || normalizedEmail.includes('admin') || normalizedEmail.includes('prof');
+      const isEducator = role === 'Educator' || normalizedEmail.includes('educator') || normalizedEmail.includes('teacher') || normalizedEmail.includes('admin') || normalizedEmail.includes('prof');
       const detectedRole: UserRole = isEducator ? 'Educator' : 'Student';
-      const cleanName = normalizedEmail.split('@')[0].replace(/[._]/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase()) || 'Academic Learner';
+      const cleanName =
+        normalizedEmail.split('@')[0].replace(/[._]/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase()) ||
+        (detectedRole === 'Educator' ? 'Prof. Anjali Deshmukh' : 'Saad Ansari');
 
       const authedUser: User = {
         id: 'usr_' + Date.now(),
@@ -220,7 +225,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
       setUser(authedUser);
       localStorage.setItem('quiznova_current_user', JSON.stringify(authedUser));
-      document.cookie = `token=active_session_${Date.now()}; path=/; max-age=604800; SameSite=Lax`;
+      const tokenVal = typeof btoa !== 'undefined' ? btoa(JSON.stringify(authedUser)) : `active_session_${Date.now()}`;
+      document.cookie = `token=${tokenVal}; path=/; max-age=604800; SameSite=Lax`;
       return { success: true, message: 'Welcome back, ' + authedUser.name };
     }
 

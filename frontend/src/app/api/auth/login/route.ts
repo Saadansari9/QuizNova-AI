@@ -2,7 +2,8 @@ import { NextResponse } from 'next/server';
 
 export async function POST(request: Request) {
   try {
-    const { email, password } = await request.json();
+    const body = await request.json();
+    const { email, password, role: explicitRole } = body;
     const normalizedEmail = (email || '').toLowerCase().trim();
 
     if (!normalizedEmail || !password) {
@@ -13,6 +14,7 @@ export async function POST(request: Request) {
     }
 
     const isEdu =
+      explicitRole === 'Educator' ||
       normalizedEmail.includes('educator') ||
       normalizedEmail.includes('teacher') ||
       normalizedEmail.includes('admin') ||
@@ -23,7 +25,8 @@ export async function POST(request: Request) {
       normalizedEmail
         .split('@')[0]
         .replace(/[._]/g, ' ')
-        .replace(/\b\w/g, (c: string) => c.toUpperCase()) || 'Academic Scholar';
+        .replace(/\b\w/g, (c: string) => c.toUpperCase()) ||
+      (role === 'Educator' ? 'Prof. Anjali Deshmukh' : 'Saad Ansari');
 
     const user = {
       id: 'usr_' + Date.now(),
@@ -39,7 +42,10 @@ export async function POST(request: Request) {
       user,
     });
 
-    response.cookies.set('token', `active_session_${Date.now()}`, {
+    // Base64 encoded session token containing user metadata
+    const tokenVal = Buffer.from(JSON.stringify(user)).toString('base64');
+
+    response.cookies.set('token', tokenVal, {
       httpOnly: false,
       secure: process.env.NODE_ENV === 'production',
       maxAge: 7 * 24 * 60 * 60,

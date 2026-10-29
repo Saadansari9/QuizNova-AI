@@ -4,20 +4,78 @@ import React, { useState, Suspense } from 'react';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
-import { Mail, Lock, LogIn, AlertCircle, ShieldCheck, CheckCircle2, Zap, Sparkles, GraduationCap } from 'lucide-react';
+import { UserRole } from '@/types/auth';
+import {
+  Mail,
+  Lock,
+  LogIn,
+  AlertCircle,
+  ShieldCheck,
+  CheckCircle2,
+  Zap,
+  Sparkles,
+  GraduationCap,
+  Eye,
+  EyeOff,
+  UserCheck,
+  Cpu,
+  Layers,
+} from 'lucide-react';
 
 function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const redirectUrl = searchParams.get('redirect') || '/dashboard';
-  
+
   const { login, googleLogin } = useAuth();
 
-  const [formData, setFormData] = useState({ email: '', password: '' });
+  const [selectedRole, setSelectedRole] = useState<UserRole>('Student');
+  const [formData, setFormData] = useState({
+    email: 'student@quiznova.edu',
+    password: 'password123',
+  });
+  const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState<{ email?: string; password?: string }>({});
   const [serverError, setServerError] = useState<string | null>(null);
+  const [successMsg, setSuccessMsg] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isGoogleLoading, setIsGoogleLoading] = useState(false);
+
+  // Quick 1-Click Profile Login Handler
+  const handleQuickLogin = async (role: UserRole) => {
+    setServerError(null);
+    setSuccessMsg(null);
+    setIsSubmitting(true);
+    setSelectedRole(role);
+
+    const demoEmail = role === 'Educator' ? 'educator@quiznova.edu' : 'student@quiznova.edu';
+    const demoPass = 'password123';
+
+    setFormData({ email: demoEmail, password: demoPass });
+
+    try {
+      const result = await login(demoEmail, demoPass, role);
+      if (result.success) {
+        setSuccessMsg(`Authenticated as ${role === 'Educator' ? 'Prof. Anjali Deshmukh' : 'Saad Ansari'}! Launching console...`);
+        const target =
+          redirectUrl && redirectUrl !== '/dashboard'
+            ? redirectUrl
+            : role === 'Educator'
+            ? '/dashboard/educator'
+            : '/dashboard/student';
+
+        setTimeout(() => {
+          window.location.href = target;
+        }, 400);
+      } else {
+        setServerError(result.message || 'Login encountered an unexpected issue.');
+        setIsSubmitting(false);
+      }
+    } catch (err: any) {
+      setServerError(err?.message || 'Login failed. Please try again.');
+      setIsSubmitting(false);
+    }
+  };
 
   const validateForm = () => {
     const err: { email?: string; password?: string } = {};
@@ -37,25 +95,32 @@ function LoginForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setServerError(null);
+    setSuccessMsg(null);
 
     if (!validateForm()) return;
 
     try {
       setIsSubmitting(true);
-      const result = await login(formData.email, formData.password);
+      const result = await login(formData.email, formData.password, selectedRole);
+
       if (result.success) {
+        setSuccessMsg('Session authorized! Navigating to console...');
         const isEdu =
+          selectedRole === 'Educator' ||
           formData.email.toLowerCase().includes('educator') ||
           formData.email.toLowerCase().includes('teacher') ||
           formData.email.toLowerCase().includes('admin');
+
         const target =
           redirectUrl && redirectUrl !== '/dashboard'
             ? redirectUrl
             : isEdu
             ? '/dashboard/educator'
             : '/dashboard/student';
-        window.location.href = target;
-        return;
+
+        setTimeout(() => {
+          window.location.href = target;
+        }, 400);
       } else {
         setServerError(result.message || 'Invalid email or password');
         setIsSubmitting(false);
@@ -69,14 +134,21 @@ function LoginForm() {
   const handleGoogleSignIn = async () => {
     try {
       setIsGoogleLoading(true);
-      const result = await googleLogin('Student');
+      setServerError(null);
+      const result = await googleLogin(selectedRole);
+
       if (result.success) {
+        setSuccessMsg('Google Scholar verified! Entering console...');
         const target =
           redirectUrl && redirectUrl !== '/dashboard'
             ? redirectUrl
+            : selectedRole === 'Educator'
+            ? '/dashboard/educator'
             : '/dashboard/student';
-        window.location.href = target;
-        return;
+
+        setTimeout(() => {
+          window.location.href = target;
+        }, 400);
       } else {
         setServerError(result.message || 'Google sign-in failed');
         setIsGoogleLoading(false);
@@ -98,40 +170,132 @@ function LoginForm() {
           <img
             src="/images/student_quiz_fun.jpg"
             alt="Smiling student winning a quiz"
-            className="absolute inset-0 w-full h-full object-cover opacity-40 mix-blend-luminosity filter contrast-125"
+            className="absolute inset-0 w-full h-full object-cover opacity-35 mix-blend-luminosity filter contrast-125"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-[#0a0d14] via-[#0a0d14]/70 to-transparent"></div>
 
           <div className="relative z-10">
             <span className="inline-block px-3 py-1 bg-yellow-400 text-black border-2 border-black shadow-[3px_3px_0_0_#000000] text-xs font-bold uppercase tracking-wider">
-              ★ PLAYER AUTHENTICATION
+              ★ SECURE AUTHENTICATION CONSOLE
             </span>
           </div>
 
-          <div className="relative z-10">
+          <div className="relative z-10 space-y-4">
             <h3 className="text-xl font-bold text-white leading-tight">
-              "READY PLAYER ONE? SYNC YOUR ASSESSMENT QUEST!"
+              &quot;SYNC YOUR KNOWLEDGE QUEST IN THE CAMPUS ARENA!&quot;
             </h3>
-            <p className="text-xs text-cyan-300 mt-2 font-normal">
-              State Board syllabus chapters, Bloom AI analytics & offline sync ready for battle.
+            <p className="text-xs text-cyan-300 font-normal leading-relaxed">
+              Maharashtra State Board syllabus chapters, 6 Bloom cognitive levels &amp; zero-latency offline sync ready.
             </p>
+
+            <div className="pt-4 border-t-2 border-black/80 space-y-2 text-[10px] font-mono text-slate-400">
+              <div className="flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-[#27E279]"></span>
+                <span>Active SSC/HSC 9-12 Syllabus</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-[#38E5FF]"></span>
+                <span>Zero-Latency Offline Attempt Sync</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-[#FFD000]"></span>
+                <span>Live Web Proctoring Supervision</span>
+              </div>
+            </div>
           </div>
         </div>
 
         {/* Right Side: Retro Form */}
-        <div className="md:col-span-7 p-8 sm:p-10 flex flex-col justify-center bg-[#151c2e]">
-          <div className="mb-6">
-            <div className="inline-flex items-center justify-center w-12 h-12 bg-yellow-400 border-3 border-black shadow-[3px_3px_0_0_#000000] mb-3">
-              <Zap className="w-7 h-7 text-black fill-black" />
+        <div className="md:col-span-7 p-6 sm:p-10 flex flex-col justify-center bg-[#151c2e]">
+          <div className="mb-5">
+            <div className="flex items-center justify-between mb-2">
+              <div className="inline-flex items-center justify-center w-10 h-10 bg-yellow-400 border-2 border-black shadow-[2px_2px_0_0_#000000]">
+                <Zap className="w-6 h-6 text-black fill-black" />
+              </div>
+              <span className="text-[10px] font-mono text-[#27E279] bg-black px-2 py-0.5 border border-[#27E279]/40">
+                ● SYSTEM OPERATIONAL
+              </span>
             </div>
-            <h1 className="text-2xl font-bold text-white tracking-wide uppercase">
+            <h1 className="text-xl sm:text-2xl font-bold text-white tracking-wide uppercase">
               SIGN IN TO CONSOLE
             </h1>
-            <p className="text-xs text-slate-400 mt-1">Insert credentials to resume your academic quest</p>
+            <p className="text-xs text-slate-400 mt-0.5">Select your role or click instant 1-click login below</p>
           </div>
 
+          {/* 1-Click Fast Profile Login Presets */}
+          <div className="mb-5 p-3.5 bg-[#0c0f1a] border-2 border-black shadow-[3px_3px_0_0_#000]">
+            <span className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">
+              ⚡ INSTANT 1-CLICK DEMO ACCESS (NO SETUP REQUIRED):
+            </span>
+            <div className="grid grid-cols-2 gap-2">
+              <button
+                type="button"
+                onClick={() => handleQuickLogin('Student')}
+                disabled={isSubmitting}
+                className="pixel-btn px-2.5 py-2 bg-[#38E5FF] hover:bg-[#2dc3d9] text-black text-[11px] font-bold uppercase tracking-wider flex items-center justify-center gap-1.5 cursor-pointer shadow-[2px_2px_0_0_#000]"
+              >
+                <GraduationCap className="w-3.5 h-3.5 text-black" />
+                <span>STUDENT DEMO</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => handleQuickLogin('Educator')}
+                disabled={isSubmitting}
+                className="pixel-btn px-2.5 py-2 bg-[#8A5CFF] hover:bg-[#784de8] text-white text-[11px] font-bold uppercase tracking-wider flex items-center justify-center gap-1.5 cursor-pointer shadow-[2px_2px_0_0_#000]"
+              >
+                <Cpu className="w-3.5 h-3.5 text-white" />
+                <span>TEACHER DEMO</span>
+              </button>
+            </div>
+          </div>
+
+          {/* Portal Role Selector Toggle */}
+          <div className="mb-4">
+            <label className="block text-[10px] font-bold text-slate-300 uppercase tracking-wider mb-1.5">
+              ACTIVE ACCESS PORTAL:
+            </label>
+            <div className="grid grid-cols-2 gap-2">
+              <button
+                type="button"
+                onClick={() => {
+                  setSelectedRole('Student');
+                  if (formData.email.includes('educator')) {
+                    setFormData({ ...formData, email: 'student@quiznova.edu' });
+                  }
+                }}
+                className={`py-2 px-3 text-xs uppercase font-bold border-2 border-black transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
+                  selectedRole === 'Student'
+                    ? 'bg-[#38E5FF] text-black shadow-[3px_3px_0_0_#000]'
+                    : 'bg-[#0a0d14] text-slate-400 hover:text-white'
+                }`}
+              >
+                <GraduationCap className="w-3.5 h-3.5" />
+                <span>STUDENT PORTAL</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => {
+                  setSelectedRole('Educator');
+                  if (formData.email.includes('student')) {
+                    setFormData({ ...formData, email: 'educator@quiznova.edu' });
+                  }
+                }}
+                className={`py-2 px-3 text-xs uppercase font-bold border-2 border-black transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
+                  selectedRole === 'Educator'
+                    ? 'bg-[#8A5CFF] text-white shadow-[3px_3px_0_0_#000]'
+                    : 'bg-[#0a0d14] text-slate-400 hover:text-white'
+                }`}
+              >
+                <Cpu className="w-3.5 h-3.5" />
+                <span>EDUCATOR CONSOLE</span>
+              </button>
+            </div>
+          </div>
+
+          {/* Feedback Messages */}
           {serverError && (
-            <div className="mb-6 p-3 bg-red-950/80 border-3 border-black shadow-[3px_3px_0_0_#000000] flex items-start gap-2.5 text-red-300 text-xs">
+            <div className="mb-4 p-3 bg-red-950/80 border-2 border-black shadow-[3px_3px_0_0_#000000] flex items-start gap-2.5 text-red-300 text-xs">
               <AlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5 text-red-400" />
               <div>
                 <p className="font-bold uppercase tracking-wider">Authentication Error</p>
@@ -140,56 +304,76 @@ function LoginForm() {
             </div>
           )}
 
-          <form onSubmit={handleSubmit} className="space-y-4">
+          {successMsg && (
+            <div className="mb-4 p-3 bg-emerald-950/90 border-2 border-black shadow-[3px_3px_0_0_#000] flex items-center gap-2.5 text-emerald-300 text-xs">
+              <CheckCircle2 className="w-4 h-4 text-emerald-400 flex-shrink-0" />
+              <span className="font-bold tracking-wider">{successMsg}</span>
+            </div>
+          )}
+
+          {/* Standard Login Form */}
+          <form onSubmit={handleSubmit} className="space-y-3.5">
             <div>
-              <label className="block text-xs font-bold text-yellow-300 uppercase tracking-wider mb-1.5">
+              <label className="block text-[11px] font-bold text-yellow-300 uppercase tracking-wider mb-1">
                 PLAYER EMAIL ADDRESS
               </label>
               <div className="relative">
-                <Mail className="w-4 h-4 text-slate-400 absolute left-3 top-3.5" />
+                <Mail className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
                 <input
                   type="email"
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  placeholder="scholar@university.edu"
-                  className={'w-full pl-10 pr-4 py-2.5 bg-[#0a0d14] border-3 text-xs text-white placeholder:text-slate-600 focus:outline-none transition-all ' +
+                  placeholder={selectedRole === 'Educator' ? 'educator@quiznova.edu' : 'student@quiznova.edu'}
+                  className={'w-full pl-9 pr-4 py-2 bg-[#0a0d14] border-2 text-xs font-mono text-white placeholder:text-slate-600 focus:outline-none transition-all ' +
                     (errors.email
-                      ? 'border-red-500 shadow-[3px_3px_0_0_#ef4444]'
-                      : 'border-black shadow-[3px_3px_0_0_#000000] focus:shadow-[4px_4px_0_0_#6366f1]')}
+                      ? 'border-red-500 shadow-[2px_2px_0_0_#ef4444]'
+                      : 'border-black shadow-[2px_2px_0_0_#000000] focus:border-[#38E5FF]')}
                 />
               </div>
-              {errors.email && <p className="mt-1 text-xs text-red-400">{errors.email}</p>}
+              {errors.email && <p className="mt-1 text-xs text-red-400 font-mono">{errors.email}</p>}
             </div>
 
             <div>
-              <div className="flex justify-between items-center mb-1.5">
-                <label className="block text-xs font-bold text-yellow-300 uppercase tracking-wider">
+              <div className="flex justify-between items-center mb-1">
+                <label className="block text-[11px] font-bold text-yellow-300 uppercase tracking-wider">
                   SECURITY KEY / PASSWORD
                 </label>
-                <span className="text-[11px] text-cyan-400 hover:underline cursor-pointer">
-                  [ FORGOT? ]
-                </span>
+                <button
+                  type="button"
+                  onClick={() => setFormData({ ...formData, password: 'password123' })}
+                  className="text-[10px] text-cyan-400 hover:underline cursor-pointer"
+                >
+                  [ AUTO-FILL DEMO KEY ]
+                </button>
               </div>
               <div className="relative">
-                <Lock className="w-4 h-4 text-slate-400 absolute left-3 top-3.5" />
+                <Lock className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
                 <input
-                  type="password"
+                  type={showPassword ? 'text' : 'password'}
                   value={formData.password}
                   onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                   placeholder="••••••••••••"
-                  className={'w-full pl-10 pr-4 py-2.5 bg-[#0a0d14] border-3 text-xs text-white placeholder:text-slate-600 focus:outline-none transition-all ' +
+                  className={'w-full pl-9 pr-10 py-2 bg-[#0a0d14] border-2 text-xs font-mono text-white placeholder:text-slate-600 focus:outline-none transition-all ' +
                     (errors.password
-                      ? 'border-red-500 shadow-[3px_3px_0_0_#ef4444]'
-                      : 'border-black shadow-[3px_3px_0_0_#000000] focus:shadow-[4px_4px_0_0_#6366f1]')}
+                      ? 'border-red-500 shadow-[2px_2px_0_0_#ef4444]'
+                      : 'border-black shadow-[2px_2px_0_0_#000000] focus:border-[#38E5FF]')}
                 />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-2.5 text-slate-400 hover:text-white"
+                  title={showPassword ? 'Hide password' : 'Show password'}
+                >
+                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                </button>
               </div>
-              {errors.password && <p className="mt-1 text-xs text-red-400">{errors.password}</p>}
+              {errors.password && <p className="mt-1 text-xs text-red-400 font-mono">{errors.password}</p>}
             </div>
 
             <button
               type="submit"
               disabled={isSubmitting}
-              className="pixel-btn w-full py-3 bg-yellow-400 hover:bg-yellow-300 text-black font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 cursor-pointer disabled:opacity-60 shadow-[4px_4px_0_0_#000000]"
+              className="pixel-btn w-full py-2.5 bg-yellow-400 hover:bg-yellow-300 text-black font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 cursor-pointer disabled:opacity-60 shadow-[3px_3px_0_0_#000000]"
             >
               {isSubmitting ? (
                 <>
@@ -199,12 +383,12 @@ function LoginForm() {
               ) : (
                 <>
                   <LogIn className="w-4 h-4 text-black" />
-                  <span>[ INSERT CREDENTIALS / SIGN IN ]</span>
+                  <span>[ SIGN IN TO {selectedRole.toUpperCase()} CONSOLE ]</span>
                 </>
               )}
             </button>
 
-            <div className="relative flex items-center justify-center my-3">
+            <div className="relative flex items-center justify-center my-2">
               <div className="border-t-2 border-black w-full"></div>
               <span className="bg-[#151c2e] px-2 text-[10px] uppercase font-bold text-slate-400 tracking-wider">
                 OR
@@ -216,7 +400,7 @@ function LoginForm() {
               type="button"
               onClick={handleGoogleSignIn}
               disabled={isGoogleLoading}
-              className="pixel-btn w-full py-2.5 bg-[#0a0d14] hover:bg-[#1a2236] border-3 border-black text-white font-bold text-xs flex items-center justify-center gap-2.5 cursor-pointer shadow-[3px_3px_0_0_#000000]"
+              className="pixel-btn w-full py-2 bg-[#0a0d14] hover:bg-[#1a2236] border-2 border-black text-white font-bold text-xs flex items-center justify-center gap-2.5 cursor-pointer shadow-[3px_3px_0_0_#000000]"
             >
               {isGoogleLoading ? (
                 <div className="w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
@@ -244,13 +428,11 @@ function LoginForm() {
             </button>
           </form>
 
-          <div className="mt-6 pt-4 border-t-2 border-black text-center">
-            <p className="text-xs text-slate-400">
-              NEW PLAYER?{' '}
-              <Link href="/register" className="font-bold text-cyan-400 hover:text-cyan-300 hover:underline">
-                [ CREATE ACCOUNT ]
-              </Link>
-            </p>
+          <div className="mt-5 pt-3 border-t-2 border-black text-center flex items-center justify-between text-xs">
+            <span className="text-slate-400">NEED A FRESH ACCOUNT?</span>
+            <Link href="/register" className="font-bold text-cyan-400 hover:text-cyan-300 hover:underline">
+              [ REGISTER ACCOUNT ]
+            </Link>
           </div>
         </div>
       </div>
@@ -260,11 +442,13 @@ function LoginForm() {
 
 export default function LoginPage() {
   return (
-    <Suspense fallback={
-      <div className="min-h-screen flex items-center justify-center bg-slate-950">
-        <div className="w-8 h-8 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
-      </div>
-    }>
+    <Suspense
+      fallback={
+        <div className="min-h-screen flex items-center justify-center bg-slate-950">
+          <div className="w-8 h-8 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
+        </div>
+      }
+    >
       <LoginForm />
     </Suspense>
   );
